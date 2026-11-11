@@ -1,0 +1,1 @@
+{ "name": "scan-fixture", "dependencies": { "express": "^4.19.0" } }

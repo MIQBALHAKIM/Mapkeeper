@@ -1,0 +1,10 @@
+{
+  "nodes": [
+    { "id": "src_auth_session_validatetoken", "label": "ValidateToken", "file_type": "code", "source_file": "src/auth/session.py", "source_location": null, "community": 1 },
+    { "id": "docs_design", "label": "Design Rationale", "file_type": "rationale", "source_file": "docs/design.md", "source_location": null, "community": 2 }
+  ],
+  "edges": [
+    { "source": "src_auth_session_validatetoken", "target": "docs_design", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.85, "source_file": "docs/design.md" },
+    { "source": "src_auth_session_validatetoken", "target": "docs_design", "relation": "teleports_to", "confidence": "INFERRED", "confidence_score": 0.5, "source_file": "docs/design.md" }
+  ]
+}

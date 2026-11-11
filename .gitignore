@@ -1,0 +1,11 @@
+.DS_Store
+**/.DS_Store
+node_modules/
+graphify-out/
+project-map/.cache/
+project-map/.backup-v1/
+*.tmp-*
+.specify/extensions/.cache/
+.specify/extensions/.backup/
+.specify/extensions/*/local-config.yml
+.specify/extensions/.registry

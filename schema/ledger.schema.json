@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mapkeeper.dev/schema/ledger.schema.json",
+  "title": "Mapkeeper coverage ledger",
+  "type": "object",
+  "required": ["schema_version", "source_revision", "units", "runs"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "source_revision": { "type": "string", "minLength": 1 },
+    "units": { "type": "array", "items": { "$ref": "#/$defs/unit" } },
+    "runs": { "type": "array", "items": { "$ref": "#/$defs/run" } }
+  },
+  "$defs": {
+    "unit": {
+      "type": "object",
+      "required": ["id", "kind", "scope", "status", "node_ids"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$" },
+        "kind": { "enum": ["path", "requirement", "component"] },
+        "scope": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["mapped", "stale", "unmapped", "out_of_scope"] },
+        "node_ids": { "type": "array", "items": { "type": "string" } },
+        "evidence": { "type": "array", "items": { "type": "string" } },
+        "last_verified_revision": { "type": "string" },
+        "last_verified_date": { "type": "string" }
+      }
+    },
+    "run": {
+      "type": "object",
+      "required": ["mode", "revision", "started_at", "artifacts"],
+      "additionalProperties": true,
+      "properties": {
+        "mode": { "enum": ["INIT", "SYNC", "AUDIT", "FULL", "EXPORT", "CONTEXT", "GRAPH", "SECURITY", "SPECS"] },
+        "revision": { "type": "string" },
+        "started_at": { "type": "string", "minLength": 10 },
+        "finished_at": { "type": "string" },
+        "counts": { "type": "object" },
+        "artifacts": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "source_revision": "abc123",
+  "units": [
+    {
+      "id": "src_auth",
+      "kind": "path",
+      "scope": "src/auth/**",
+      "status": "mapped",
+      "node_ids": ["src_auth_session_validatetoken"],
+      "evidence": ["graph.valid.json#nodes"],
+      "last_verified_revision": "abc123",
+      "last_verified_date": "2026-01-01"
+    },
+    {
+      "id": "docs_readme",
+      "kind": "path",
+      "scope": "README.md",
+      "status": "out_of_scope",
+      "node_ids": [],
+      "evidence": []
+    }
+  ],
+  "runs": [
+    {
+      "mode": "INIT",
+      "revision": "abc123",
+      "started_at": "2026-01-01T00:00:00.000Z",
+      "finished_at": "2026-01-01T00:00:01.000Z",
+      "counts": { "mapped": 1 },
+      "artifacts": ["graph.valid.json"]
+    }
+  ]
+}

@@ -1,3611 +1,750 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mapper_Prompt.md IDE Guide</title>
-  <style>
-    :root {
-      --bg: #0b1020;
-      --panel: #111827;
-      --card-bg: rgba(255, 255, 255, 0.045);
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --border: rgba(255, 255, 255, 0.12);
-      --accent: #60a5fa;
-      --accent-strong: #3b82f6;
-      --accent-soft: rgba(96, 165, 250, 0.14);
-      --success: #34d399;
-      --warning: #fbbf24;
-      --danger: #fb7185;
-      --code-bg: #0f172a;
-      --code-text: #d1d5db;
-      --code-border: rgba(255, 255, 255, 0.08);
-      --copy-bg: rgba(255, 255, 255, 0.08);
-      --copy-hover: rgba(255, 255, 255, 0.16);
-      --copy-text: #e5e7eb;
-      --copy-border: rgba(255, 255, 255, 0.14);
-      --topbar: rgba(11, 16, 32, 0.82);
-      --shadow: 0 18px 60px rgba(0, 0, 0, 0.3);
-      color-scheme: dark;
-    }
-
-    [data-theme="light"] {
-      --bg: #f8fafc;
-      --panel: #ffffff;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --muted: #475569;
-      --border: rgba(15, 23, 42, 0.12);
-      --accent: #2563eb;
-      --accent-strong: #1d4ed8;
-      --accent-soft: rgba(37, 99, 235, 0.11);
-      --success: #059669;
-      --warning: #b45309;
-      --danger: #e11d48;
-      --code-bg: #f1f5f9;
-      --code-text: #0f172a;
-      --code-border: rgba(15, 23, 42, 0.12);
-      --copy-bg: rgba(15, 23, 42, 0.06);
-      --copy-hover: rgba(15, 23, 42, 0.12);
-      --copy-text: #0f172a;
-      --copy-border: rgba(15, 23, 42, 0.14);
-      --topbar: rgba(248, 250, 252, 0.86);
-      --shadow: 0 18px 60px rgba(15, 23, 42, 0.12);
-      color-scheme: light;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), transparent 32%),
-        radial-gradient(circle at top right, rgba(16, 185, 129, 0.1), transparent 28%),
-        var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    [hidden] {
-      display: none !important;
-    }
-
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), #34d399);
-      z-index: 100;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 70;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 20px;
-      border-bottom: 1px solid var(--border);
-      background: var(--topbar);
-      backdrop-filter: blur(14px);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      min-width: 0;
-    }
-
-    .brand-badge {
-      display: inline-grid;
-      place-items: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent), #34d399);
-      color: white;
-      font-size: 0.85rem;
-      font-weight: 900;
-      box-shadow: var(--shadow);
-      flex: 0 0 auto;
-    }
-
-    .brand-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .topbar-actions {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .icon-btn,
-    .btn {
-      border: 1px solid var(--border);
-      background: var(--card-bg);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 9px 12px;
-      font: inherit;
-      cursor: pointer;
-      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-    }
-
-    .icon-btn:hover,
-    .btn:hover {
-      transform: translateY(-1px);
-      border-color: var(--accent);
-      text-decoration: none;
-    }
-
-    .btn.primary {
-      background: linear-gradient(135deg, var(--accent-strong), var(--accent));
-      color: white;
-      border-color: transparent;
-      box-shadow: var(--shadow);
-    }
-
-    .btn.subtle {
-      background: transparent;
-    }
-
-    #searchInput {
-      width: min(300px, 42vw);
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      font: inherit;
-      outline: none;
-    }
-
-    #searchInput:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-soft);
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 290px minmax(0, 1fr);
-      gap: 24px;
-      align-items: start;
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    .sidebar {
-      position: sticky;
-      top: 88px;
-      max-height: calc(100vh - 108px);
-      overflow: auto;
-      padding: 18px;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
-    }
-
-    .sidebar-title {
-      margin: 0 0 12px;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-    }
-
-    .sidebar-nav {
-      display: grid;
-      gap: 6px;
-    }
-
-    .sidebar-link {
-      display: block;
-      padding: 10px 12px;
-      border-radius: 12px;
-      color: var(--text);
-      border: 1px solid transparent;
-    }
-
-    .sidebar-link:hover {
-      background: var(--accent-soft);
-      text-decoration: none;
-    }
-
-    .sidebar-link.active {
-      background: var(--accent-soft);
-      border-color: rgba(96, 165, 250, 0.28);
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    .sidebar-note {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 16px;
-      background: var(--accent-soft);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 0.94rem;
-    }
-
-    main {
-      min-width: 0;
-    }
-
-    main section {
-      margin-bottom: 46px;
-      scroll-margin-top: 92px;
-    }
-
-    .hero {
-      padding: 34px;
-      border-radius: 30px;
-      border: 1px solid var(--border);
-      background:
-        linear-gradient(135deg, rgba(59, 130, 246, 0.16), rgba(16, 185, 129, 0.08)),
-        var(--panel);
-      box-shadow: var(--shadow);
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0 0 12px;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-weight: 800;
-      font-size: 0.85rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: 0 0 14px;
-      font-size: clamp(2.1rem, 4vw, 4rem);
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-      max-width: 900px;
-    }
-
-    h2 {
-      margin: 0 0 14px;
-      font-size: clamp(1.5rem, 2.5vw, 2.3rem);
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-    }
-
-    h3 {
-      margin: 0 0 10px;
-      font-size: 1.08rem;
-      letter-spacing: -0.02em;
-    }
-
-    p {
-      margin: 0 0 14px;
-    }
-
-    .lead {
-      color: var(--muted);
-      font-size: 1.06rem;
-      max-width: 900px;
-    }
-
-    .accent {
-      color: var(--accent);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 20px 0 24px;
-    }
-
-    .hero-grid,
-    .grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .hero-grid {
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-
-    .grid-2 {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-
-    .grid-3 {
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-
-    .card {
-      padding: 20px;
-      border-radius: 22px;
-      border: 1px solid var(--border);
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-    }
-
-    .card p:last-child,
-    .card ul:last-child,
-    .card ol:last-child {
-      margin-bottom: 0;
-    }
-
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 0 0 12px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      border: 1px solid rgba(96, 165, 250, 0.18);
-      font-size: 0.82rem;
-      font-weight: 800;
-    }
-
-    .badge.success {
-      color: var(--success);
-      background: rgba(52, 211, 153, 0.12);
-      border-color: rgba(52, 211, 153, 0.18);
-    }
-
-    .badge.warning {
-      color: var(--warning);
-      background: rgba(251, 191, 36, 0.12);
-      border-color: rgba(251, 191, 36, 0.18);
-    }
-
-    .badge.danger {
-      color: var(--danger);
-      background: rgba(251, 113, 133, 0.12);
-      border-color: rgba(251, 113, 133, 0.18);
-    }
-
-    ul,
-    ol {
-      margin: 0 0 14px;
-      padding-left: 20px;
-    }
-
-    li {
-      margin-bottom: 8px;
-    }
-
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.94em;
-      background: var(--accent-soft);
-      color: var(--accent);
-      padding: 2px 7px;
-      border-radius: 8px;
-    }
-
-    pre {
-      position: relative;
-      margin: 14px 0;
-      padding: 18px;
-      border-radius: 18px;
-      background: var(--code-bg);
-      color: var(--code-text);
-      overflow: auto;
-      border: 1px solid var(--code-border);
-    }
-
-    pre code {
-      background: transparent;
-      color: var(--code-text);
-      padding: 0;
-      font-size: 0.92rem;
-      line-height: 1.65;
-      white-space: pre;
-    }
-
-    .prompt-pre {
-      max-height: 640px;
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      border: 1px solid var(--copy-border);
-      background: var(--copy-bg);
-      color: var(--copy-text);
-      border-radius: 10px;
-      padding: 6px 10px;
-      cursor: pointer;
-      font: inherit;
-      font-size: 0.82rem;
-      backdrop-filter: blur(8px);
-    }
-
-    .copy-btn:hover {
-      background: var(--copy-hover);
-    }
-
-    .steps {
-      counter-reset: step;
-      list-style: none;
-      padding: 0;
-      display: grid;
-      gap: 12px;
-    }
-
-    .steps li {
-      position: relative;
-      padding: 14px 14px 14px 54px;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: var(--card-bg);
-      margin: 0;
-    }
-
-    .steps li::before {
-      counter-increment: step;
-      content: counter(step);
-      position: absolute;
-      left: 14px;
-      top: 14px;
-      width: 28px;
-      height: 28px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-weight: 900;
-    }
-
-    .table-wrap {
-      overflow: auto;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 700px;
-    }
-
-    th,
-    td {
-      padding: 13px 14px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th {
-      color: var(--muted);
-      font-size: 0.84rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    .accordion {
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: var(--panel);
-      overflow: hidden;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow);
-    }
-
-    .accordion-trigger {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 16px 18px;
-      border: none;
-      background: transparent;
-      color: var(--text);
-      font: inherit;
-      font-weight: 800;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .accordion-trigger:hover {
-      background: var(--accent-soft);
-    }
-
-    .chevron {
-      flex: 0 0 auto;
-      transition: transform 0.18s ease;
-      color: var(--muted);
-    }
-
-    .accordion-trigger[aria-expanded="true"] .chevron {
-      transform: rotate(180deg);
-    }
-
-    .accordion-panel {
-      padding: 0 18px 18px;
-      color: var(--muted);
-    }
-
-    .accordion-panel strong {
-      color: var(--text);
-    }
-
-    .accordion-panel code {
-      color: var(--text);
-    }
-
-    .accordion-panel pre code {
-      background: transparent;
-      color: var(--code-text);
-    }
-
-    .callout {
-      padding: 16px 18px;
-      border-radius: 18px;
-      background: var(--accent-soft);
-      border: 1px solid rgba(96, 165, 250, 0.22);
-      margin: 14px 0;
-    }
-
-    .callout p:last-child {
-      margin-bottom: 0;
-    }
-
-    .meter {
-      height: 12px;
-      border-radius: 999px;
-      background: var(--border);
-      overflow: hidden;
-      margin: 10px 0 16px;
-    }
-
-    .meter-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), #34d399);
-      transition: width 0.2s ease;
-    }
-
-    .checklist {
-      display: grid;
-      gap: 10px;
-    }
-
-    .checklist-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--card-bg);
-    }
-
-    .checklist-item input {
-      width: 18px;
-      height: 18px;
-      margin-top: 3px;
-      accent-color: var(--accent);
-    }
-
-    .muted {
-      color: var(--muted);
-    }
-
-    .no-results {
-      padding: 30px;
-      text-align: center;
-      border: 1px dashed var(--border);
-      border-radius: 22px;
-      color: var(--muted);
-      background: var(--panel);
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 55;
-      background: rgba(0, 0, 0, 0.45);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-
-    body.sidebar-open .overlay {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    footer {
-      padding: 24px;
-      text-align: center;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-    }
-
-    @media (max-width: 1080px) {
-      .layout {
-        grid-template-columns: 250px minmax(0, 1fr);
-      }
-    }
-
-    @media (max-width: 960px) {
-      .layout {
-        grid-template-columns: 1fr;
-        padding: 16px;
-      }
-
-      .sidebar {
-        position: fixed;
-        top: 66px;
-        left: 0;
-        bottom: 0;
-        z-index: 60;
-        width: min(320px, 86vw);
-        max-height: none;
-        border-radius: 0 22px 22px 0;
-        transform: translateX(-105%);
-        transition: transform 0.2s ease;
-      }
-
-      body.sidebar-open .sidebar {
-        transform: translateX(0);
-      }
-
-      .hero {
-        padding: 24px;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .topbar {
-        padding: 10px 14px;
-        gap: 8px;
-      }
-
-      .hide-small {
-        display: none;
-      }
-
-      #searchInput {
-        width: min(170px, 38vw);
-      }
-
-      .layout {
-        padding: 12px;
-      }
-
-      .hero-actions .btn {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-
-    @media print {
-      .topbar,
-      .sidebar,
-      .overlay,
-      .progress,
-      .copy-btn,
-      .hero-actions {
-        display: none !important;
-      }
-
-      body {
-        background: white;
-        color: black;
-      }
-
-      .layout {
-        display: block;
-        padding: 0;
-      }
-
-      .hero,
-      .card,
-      .accordion,
-      .table-wrap,
-      pre {
-        box-shadow: none;
-      }
-
-      main section {
-        break-inside: avoid;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mapkeeper — a living project map: validated knowledge graph, coverage ledger, Obsidian vault, and architecture exports.">
+<meta name="color-scheme" content="light dark">
+<title>Mapkeeper — the living project map</title>
+<style>
+:root{
+  --paper:#fcfcfa;--ink:#161616;--muted:#6a6a66;--rule:#e5e3dc;
+  --accent:#1c6b4e;--wash:#f3f2ed;
+  --measure:44rem;--sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#0e100f;--ink:#e9e7e1;--muted:#9a9d96;--rule:#252925;
+    --accent:#7fd3a8;--wash:#161a18;}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:6rem}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--accent);text-decoration:none;text-underline-offset:.18em}
+a:hover{text-decoration:underline}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:.2rem}
+.skip{position:absolute;left:-999px;top:0;background:var(--paper);color:var(--ink);padding:.6rem .9rem;border:1px solid var(--rule);z-index:99}
+.skip:focus{left:1rem;top:1rem}
+.site{position:sticky;top:0;z-index:20;display:flex;align-items:baseline;gap:.9rem;padding:.85rem clamp(1rem,4vw,2.2rem);border-bottom:1px solid var(--rule);background:var(--paper)}
+.wordmark{font-size:1rem;font-weight:650;letter-spacing:-.01em;margin:0}
+.wordmark a{color:var(--ink)}
+.tagline{color:var(--muted);font-size:.85rem}
+.meta{margin-left:auto;color:var(--muted);font-size:.72rem;letter-spacing:.02em;white-space:nowrap}
+.wrap{display:grid;grid-template-columns:12.5rem minmax(0,1fr);gap:clamp(1.5rem,6vw,5rem);max-width:70rem;margin:0 auto;padding:2.8rem clamp(1rem,4vw,2.2rem) 4rem}
+.toc{position:sticky;top:4.6rem;align-self:start;font-size:.85rem}
+.toc p{margin:0 0 .6rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:.1rem}
+.toc a{display:block;padding:.34rem .55rem;border-left:2px solid transparent;color:var(--ink)}
+.toc a:hover{color:var(--accent);border-left-color:var(--accent);text-decoration:none}
+main{min-width:0;max-width:var(--measure)}
+section{padding:2.6rem 0;border-top:1px solid var(--rule)}
+section:first-of-type{border-top:0;padding-top:0}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin:0 0 1rem}
+section h2{font-size:1.4rem;line-height:1.25;letter-spacing:-.015em;margin:0}
+.source{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.source:hover{color:var(--accent)}
+h3{font-size:1.08rem;line-height:1.35;margin:2rem 0 .45rem;letter-spacing:-.005em}
+h4{font-size:.95rem;line-height:1.4;margin:1.5rem 0 .35rem}
+p{margin:.75rem 0}
+#overview > p:first-of-type{font-size:1.1rem;line-height:1.62;max-width:38rem}
+ul,ol{margin:.6rem 0;padding-left:1.15rem}
+li{margin:.18rem 0}
+li>p{margin:.2rem 0}
+code{font-family:var(--mono);font-size:.86em;background:var(--wash);padding:.08em .34em;border-radius:.25rem}
+pre{position:relative;margin:1rem 0;padding:1rem 1.1rem;background:var(--wash);border:1px solid var(--rule);border-radius:.55rem;overflow-x:auto;font-size:.83rem;line-height:1.62}
+pre code{background:none;padding:0;font-size:inherit;color:var(--ink)}
+pre .copy{position:absolute;top:.45rem;right:.45rem;border:1px solid var(--rule);background:var(--paper);color:var(--muted);border-radius:.35rem;padding:.2rem .45rem;font:600 .68rem/1.4 var(--sans);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;opacity:.85}
+pre .copy:hover{color:var(--ink);border-color:var(--muted);opacity:1}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+thead th{font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;white-space:nowrap}
+th,td{padding:.5rem .55rem;border-bottom:1px solid var(--rule);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+strong{font-weight:650}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+footer{border-top:1px solid var(--rule);padding:1.4rem clamp(1rem,4vw,2.2rem) 3rem;color:var(--muted);font-size:.8rem}
+.foot{max-width:70rem;margin:0 auto;display:flex;gap:1rem;justify-content:space-between;align-items:baseline;flex-wrap:wrap}
+footer code{font-size:.9em;background:none;padding:0;color:var(--ink)}
+@media (max-width:820px){
+  html{scroll-padding-top:7rem}
+  .site{padding:.7rem 1rem}
+  .tagline,.meta{display:none}
+  .wrap{display:block;padding:0 1rem 3rem;max-width:none}
+  .toc{position:sticky;top:3.15rem;z-index:15;margin:0 -1rem 1.4rem;padding:.55rem 1rem;background:var(--paper);border-bottom:1px solid var(--rule);overflow-x:auto;scrollbar-width:none;font-size:.8rem}
+  .toc::-webkit-scrollbar{display:none}
+  .toc p{display:none}
+  .toc ol{display:flex;gap:.4rem;white-space:nowrap;width:max-content}
+  .toc a{padding:.4rem .7rem;border:1px solid var(--rule);border-radius:999px;line-height:1.2}
+  .toc a:hover{border-color:var(--accent)}
+  main{max-width:none}
+  section{padding:2rem 0}
+  section h2{font-size:1.25rem}
+  #overview > p:first-of-type{font-size:1.02rem}
+  pre{font-size:.78rem;padding:.9rem}
+  th,td{padding:.45rem .5rem}
+}
+@media print{
+  .site,.toc,.copy,.skip,footer{display:none}
+  body{background:#fff;color:#000}
+  .wrap{display:block;max-width:none;padding:0}
+  main{max-width:none}
+  section{break-inside:auto;padding:1.2rem 0;border-top:1px solid #ddd}
+  pre{background:#f5f5f5;border:1px solid #ddd;white-space:pre-wrap}
+  a{color:#000;text-decoration:underline}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
 <body>
-  <div class="progress" id="progressBar" aria-hidden="true"></div>
-
-  <header class="topbar">
-    <button id="menuButton" class="icon-btn" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-
-    <div class="brand">
-      <span class="brand-badge">MD</span>
-      <span class="brand-text">Mapper_Prompt.md IDE Guide</span>
-    </div>
-
-    <div class="topbar-actions">
-      <input id="searchInput" type="search" placeholder="Search guide... press /" aria-label="Search guide" />
-      <button id="printButton" class="btn subtle print-button hide-small" type="button">Print</button>
-      <button id="themeToggle" class="btn subtle" type="button" aria-label="Toggle color theme">☀️ Light</button>
-    </div>
-  </header>
-
-  <div id="overlay" class="overlay"></div>
-
-  <div class="layout">
-    <aside id="sidebar" class="sidebar" aria-label="Guide navigation">
-      <p class="sidebar-title">Contents</p>
-      <nav class="sidebar-nav">
-        <a class="sidebar-link" href="#overview">Overview</a>
-        <a class="sidebar-link" href="#quick-start">Quick start</a>
-        <a class="sidebar-link" href="#folder-structure">Repository structure</a>
-        <a class="sidebar-link" href="#path-rules">Path rules</a>
-        <a class="sidebar-link" href="#graphify-integration">Graphify integration</a>
-        <a class="sidebar-link" href="#prompt-setup">Prompt setup</a>
-        <a class="sidebar-link" href="#phases">Project phases</a>
-        <a class="sidebar-link" href="#commands">Core commands</a>
-        <a class="sidebar-link" href="#ide-workflows">IDE workflows</a>
-        <a class="sidebar-link" href="#daily-examples">Daily examples</a>
-        <a class="sidebar-link" href="#token-efficiency">Token efficiency</a>
-        <a class="sidebar-link" href="#obsidian">Obsidian usage</a>
-        <a class="sidebar-link" href="#updated-prompt">Updated prompt</a>
-        <a class="sidebar-link" href="#troubleshooting">Troubleshooting</a>
-        <a class="sidebar-link" href="#templates">Prompt templates</a>
-        <a class="sidebar-link" href="#checklist">Checklist</a>
-      </nav>
-
-      <div class="sidebar-note">
-        Prompt file: <strong>Mapper_Prompt.md</strong><br />
-        Output folder: <strong>project-map/</strong><br />
-        Graphify mode: <strong>AUTO</strong>
-      </div>
-    </aside>
-
-    <main id="main">
-      <section id="overview" class="hero" data-searchable>
-        <div class="eyebrow">Updated IDE Workflow Guide</div>
-        <h1>
-          Use <span class="accent">Mapper_Prompt.md</span> with <span class="accent">project-map/</span> and Graphify tool support
-        </h1>
-        <p class="lead">
-          This guide is aligned with the latest <strong>Mapper_Prompt.md</strong>. The prompt must live at the repository root,
-          all AI-generated artifacts must be written inside <strong>project-map/</strong>, and the workflow can now use
-          an available Graphify tool, MCP server, CLI command, or IDE integration to reduce LLM token usage.
-        </p>
-
-        <div class="hero-actions">
-          <a class="btn primary" href="#quick-start">Start quick start</a>
-          <a class="btn" href="#graphify-integration">Graphify integration</a>
-          <a class="btn" href="#updated-prompt">View updated prompt</a>
-          <button class="btn print-button" type="button">Print / Save PDF</button>
-        </div>
-
-        <div class="hero-grid">
-          <article class="card">
-            <div class="badge-row"><span class="badge">Required root prompt</span></div>
-            <h3>Mapper_Prompt.md</h3>
-            <p class="muted">
-              The master prompt must be saved as <code>Mapper_Prompt.md</code> at the repository root.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge success">Required output folder</span></div>
-            <h3>project-map/</h3>
-            <p class="muted">
-              All generated artifacts must live inside <code>project-map/</code> at the repository root.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge warning">Obsidian Vault</span></div>
-            <h3>project-map/obsidian-vault/</h3>
-            <p class="muted">
-              Open this folder directly in Obsidian. The LLM context file is
-              <code>02-LLM-Context.md</code>.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge danger">Graphify-aware</span></div>
-            <h3>Tool-first generation</h3>
-            <p class="muted">
-              If Graphify is available in the IDE environment, use it before asking the LLM to manually generate the graph.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section id="quick-start" data-searchable>
-        <h2>Quick start</h2>
-        <p class="lead">
-          Use this workflow the first time you introduce <strong>Mapper_Prompt.md</strong> into a repository.
-        </p>
-
-        <ol class="steps">
-          <li>
-            Save the master prompt as <code>Mapper_Prompt.md</code> in the repository root.
-          </li>
-          <li>
-            Create the required output folder: <code>project-map</code>.
-          </li>
-          <li>
-            Create the Obsidian Vault folder: <code>project-map/obsidian-vault</code>.
-          </li>
-          <li>
-            If you have Graphify installed, make sure it is exposed to your IDE as a tool, MCP server, CLI, or command.
-          </li>
-          <li>
-            Ask your IDE assistant to read <code>Mapper_Prompt.md</code> and run <strong>INIT</strong> with
-            <code>Graphify Tool: AUTO</code>.
-          </li>
-          <li>
-            Verify the generated artifacts are inside <code>project-map/</code>.
-          </li>
-          <li>
-            Open <code>project-map/obsidian-vault</code> in Obsidian.
-          </li>
-          <li>
-            After meaningful code or documentation changes, run <strong>SYNC</strong>.
-          </li>
-        </ol>
-
-        <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: INIT
-Context Limit: MEDIUM
-Graphify Tool: AUTO
-
-Create the initial Graphify Knowledge Graph, Obsidian Vault, and architecture overview inside project-map/.
-Use Graphify tool if available.</code></pre>
-      </section>
-
-      <section id="folder-structure" data-searchable>
-        <h2>Mandatory repository structure</h2>
-        <p class="lead">
-          The latest <strong>Mapper_Prompt.md</strong> requires this exact structure.
-        </p>
-
-        <pre data-copy><code>your-project/
-├── project-map/                  # AI-generated artifacts go here
-│   ├── graphify-knowledge-graph.json
-│   ├── architecture-overview.md
-│   ├── architecture-overview.json
-│   ├── architecture-overview.html
-│   ├── sync-summary.md
-│   └── obsidian-vault/           # Open this folder directly in Obsidian
-│       ├── 00-Home.md
-│       ├── 02-LLM-Context.md
-│       └── ...
-└── Mapper_Prompt.md              # The Master Prompt (Save it here)</code></pre>
-
-        <div class="callout">
-          <p>
-            <strong>Important:</strong> <code>Mapper_Prompt.md</code> belongs at the repository root.
-            All generated artifacts belong inside <code>project-map/</code>.
-            The Obsidian Vault is <code>project-map/obsidian-vault</code>.
-          </p>
-        </div>
-      </section>
-
-      <section id="path-rules" data-searchable>
-        <h2>Strict path rules</h2>
-        <p class="lead">
-          These are the rules the updated guide and prompt must follow.
-        </p>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Required path</th>
-                <th>Rule</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Master prompt</strong></td>
-                <td><code>Mapper_Prompt.md</code></td>
-                <td>Must be saved at the repository root.</td>
-              </tr>
-              <tr>
-                <td><strong>Output folder</strong></td>
-                <td><code>project-map/</code></td>
-                <td>All AI-generated artifacts must be written here.</td>
-              </tr>
-              <tr>
-                <td><strong>Graphify knowledge graph</strong></td>
-                <td><code>project-map/graphify-knowledge-graph.json</code></td>
-                <td>Required machine-readable project graph.</td>
-              </tr>
-              <tr>
-                <td><strong>Architecture Markdown</strong></td>
-                <td><code>project-map/architecture-overview.md</code></td>
-                <td>Human-readable architecture overview.</td>
-              </tr>
-              <tr>
-                <td><strong>Architecture JSON</strong></td>
-                <td><code>project-map/architecture-overview.json</code></td>
-                <td>Machine-readable architecture overview.</td>
-              </tr>
-              <tr>
-                <td><strong>Architecture HTML</strong></td>
-                <td><code>project-map/architecture-overview.html</code></td>
-                <td>Browser-viewable architecture overview.</td>
-              </tr>
-              <tr>
-                <td><strong>Sync summary</strong></td>
-                <td><code>project-map/sync-summary.md</code></td>
-                <td>Tracks initial map, syncs, audits, full regenerations, and Graphify usage.</td>
-              </tr>
-              <tr>
-                <td><strong>Obsidian Vault</strong></td>
-                <td><code>project-map/obsidian-vault/</code></td>
-                <td>Open this folder directly in Obsidian.</td>
-              </tr>
-              <tr>
-                <td><strong>Obsidian Home</strong></td>
-                <td><code>project-map/obsidian-vault/00-Home.md</code></td>
-                <td>Main human entry point.</td>
-              </tr>
-              <tr>
-                <td><strong>LLM context</strong></td>
-                <td><code>project-map/obsidian-vault/02-LLM-Context.md</code></td>
-                <td>Primary compact context for future LLM queries.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="grid grid-2" style="margin-top: 16px;">
-          <article class="card">
-            <div class="badge-row"><span class="badge success">Allowed</span></div>
-            <h3>Use these paths</h3>
-            <ul>
-              <li><code>Mapper_Prompt.md</code></li>
-              <li><code>project-map/</code></li>
-              <li><code>project-map/obsidian-vault/</code></li>
-              <li><code>project-map/graphify-knowledge-graph.json</code></li>
-              <li><code>project-map/architecture-overview.md</code></li>
-              <li><code>project-map/architecture-overview.json</code></li>
-              <li><code>project-map/architecture-overview.html</code></li>
-              <li><code>project-map/sync-summary.md</code></li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge danger">Do not use by default</span></div>
-            <h3>Avoid these unless explicitly overridden</h3>
-            <ul>
-              <li><code>docs/project-map/</code></li>
-              <li><code>.project-map/</code></li>
-              <li><code>knowledge/</code></li>
-              <li><code>architecture-map/</code></li>
-              <li><code>maps/</code></li>
-              <li>Any generated artifact placed outside <code>project-map/</code></li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <section id="graphify-integration" data-searchable>
-        <h2>Graphify tool integration</h2>
-        <p class="lead">
-          The updated prompt can offload heavy graph generation to Graphify when Graphify is available in the IDE environment.
-        </p>
-
-        <div class="grid grid-2">
-          <article class="card">
-            <div class="badge-row"><span class="badge">AUTO</span></div>
-            <h3>Detect Graphify automatically</h3>
-            <p class="muted">
-              When <code>Graphify Tool: AUTO</code> is set, the assistant should check for a Graphify tool, MCP server,
-              IDE extension, CLI command, or executable function before manually generating the graph.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge success">Tool-first graph generation</span></div>
-            <h3>Use Graphify for the graph</h3>
-            <p class="muted">
-              If Graphify is available, use it to generate or update:
-              <code>project-map/graphify-knowledge-graph.json</code>.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge warning">Obsidian export handoff</span></div>
-            <h3>Use Graphify export if supported</h3>
-            <p class="muted">
-              If Graphify can export to Obsidian, export to <code>project-map/obsidian-vault/</code>, then verify that
-              <code>00-Home.md</code> and <code>02-LLM-Context.md</code> exist.
-            </p>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge danger">Fallback</span></div>
-            <h3>Manual LLM fallback</h3>
-            <p class="muted">
-              If Graphify is unavailable or fails, the LLM must manually generate the graph and record the fallback in
-              <code>project-map/sync-summary.md</code>.
-            </p>
-          </article>
-        </div>
-
-        <div class="callout">
-          <p>
-            <strong>Important:</strong> Graphify must be exposed to the IDE assistant as a tool, MCP server, CLI, slash command,
-            or executable function. If the assistant cannot actually invoke Graphify, it should fall back to manual generation
-            and must not pretend Graphify ran.
-          </p>
-        </div>
-
-        <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: AUTO
-
-Use Graphify tool if available.
-If Graphify is not available, fall back to manual generation.
-Update only affected artifacts inside project-map/.
-Output only a compact sync summary.</code></pre>
-      </section>
-
-      <section id="prompt-setup" data-searchable>
-        <h2>Prompt setup</h2>
-
-        <div class="grid grid-2">
-          <article class="card">
-            <div class="badge-row"><span class="badge">Step 1</span></div>
-            <h3>Create Mapper_Prompt.md</h3>
-            <p class="muted">
-              Place the full master prompt in the repository root.
-            </p>
-            <pre data-copy><code>Mapper_Prompt.md</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge">Step 2</span></div>
-            <h3>Create output folder</h3>
-            <p class="muted">
-              Generated artifacts must live in the required output folder at the repository root.
-            </p>
-            <pre data-copy><code>project-map/</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge">Step 3</span></div>
-            <h3>Create Obsidian Vault folder</h3>
-            <p class="muted">
-              The vault must be directly openable in Obsidian.
-            </p>
-            <pre data-copy><code>project-map/obsidian-vault/</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge">Step 4</span></div>
-            <h3>Add IDE rules</h3>
-            <p class="muted">
-              If your IDE supports custom rules, instruct it to follow <code>Mapper_Prompt.md</code>, use <code>project-map/</code>,
-              and prefer Graphify when available.
-            </p>
-            <pre data-copy><code>When asked to MAP, SYNC, AUDIT, or EXPORT the project,
-follow Mapper_Prompt.md, write artifacts to project-map/,
-and use Graphify Tool: AUTO if available.</code></pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="phases" data-searchable>
-        <h2>Project phases</h2>
-        <p class="lead">
-          <strong>Mapper_Prompt.md</strong> works at any stage of a project. Always tell the IDE which phase applies.
-        </p>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Phase</th>
-                <th>When to use</th>
-                <th>Focus</th>
-                <th>Recommended mode</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>BEFORE</strong></td>
-                <td>Ideas, requirements, PRD, stakeholder notes, early planning</td>
-                <td>Goals, scope, assumptions, planned architecture, risks, milestones</td>
-                <td><code>INIT</code></td>
-              </tr>
-              <tr>
-                <td><strong>DURING</strong></td>
-                <td>Active development, refactors, feature delivery, bug fixing</td>
-                <td>Current implementation, sync with code, decisions, dependencies, gaps</td>
-                <td><code>SYNC</code></td>
-              </tr>
-              <tr>
-                <td><strong>END</strong></td>
-                <td>Closure, handover, final release, post-project review</td>
-                <td>As-built architecture, technical debt, lessons learned, handover notes</td>
-                <td><code>FULL</code></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="grid grid-3" style="margin-top: 16px;">
-          <article class="card">
-            <div class="badge-row"><span class="badge">BEFORE</span></div>
-            <h3>Planning example</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: Customer Portal
-Project Phase: BEFORE
-Source Material: requirements.md, prd.md
-Output Directory: project-map
-Update Mode: INIT
-Context Limit: MEDIUM
-Graphify Tool: AUTO
-
-Create the planned project map inside project-map/.
-Use Graphify tool if available.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge success">DURING</span></div>
-            <h3>Active delivery example</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: Customer Portal
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: AUTO
-
-Update affected artifacts inside project-map/ only.
-Use Graphify tool if available.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge warning">END</span></div>
-            <h3>Handover example</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: Customer Portal
-Project Phase: END
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: FULL
-Context Limit: HIGH
-Graphify Tool: AUTO
-
-Create final as-built documentation inside project-map/.
-Use Graphify tool if available.</code></pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="commands" data-searchable>
-        <h2>Core commands</h2>
-        <p class="lead">
-          These are the main commands you will use with <strong>Mapper_Prompt.md</strong> inside an IDE.
-        </p>
-
-        <div class="grid grid-2">
-          <article class="card">
-            <div class="badge-row"><span class="badge">INIT</span></div>
-            <h3>Initial mapping</h3>
-            <p class="muted">
-              Creates the first knowledge graph, Obsidian Vault, and architecture artifacts inside <code>project-map/</code>.
-            </p>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: INIT
-Context Limit: MEDIUM
-Graphify Tool: AUTO
-
-Create the initial project map inside project-map/.
-Use Graphify tool if available.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge success">SYNC</span></div>
-            <h3>Incremental sync</h3>
-            <p class="muted">
-              Updates only the parts affected by recent code, documentation, or requirement changes.
-            </p>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: changed files and relevant docs
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: AUTO
-
-Update only affected artifacts inside project-map/.
-Use Graphify tool if available.
-Output only a compact sync summary.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge warning">AUDIT</span></div>
-            <h3>Consistency audit</h3>
-            <p class="muted">
-              Checks whether code, documentation, decisions, risks, and architecture are aligned.
-            </p>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: AUDIT
-Context Limit: MEDIUM
-Graphify Tool: AUTO
-
-Report gaps, stale notes, missing relationships,
-and undocumented assumptions inside project-map/.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge danger">FULL END</span></div>
-            <h3>Final as-built export</h3>
-            <p class="muted">
-              Produces the complete final project map for handover, closure, or major version completion.
-            </p>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: END
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: FULL
-Context Limit: HIGH
-Graphify Tool: AUTO
-
-Create final as-built documentation inside project-map/,
-including handover notes, technical debt,
-lessons learned, and recommendations.
-Use Graphify tool if available.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge">GRAPHIFY ONLY</span></div>
-            <h3>Graph-only update</h3>
-            <p class="muted">
-              Updates only the Graphify knowledge graph, preferring the Graphify tool when available.
-            </p>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: AUTO
-
-Run MAPPER GRAPHIFY ONLY.
-Generate or update only:
-project-map/graphify-knowledge-graph.json</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge success">CONTEXT ONLY</span></div>
-            <h3>LLM context update</h3>
-            <p class="muted">
-              Updates only the compact context file used for future LLM questions.
-            </p>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: AUTO
-
-Run MAPPER CONTEXT ONLY.
-Update only:
-project-map/obsidian-vault/02-LLM-Context.md</code></pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="ide-workflows" data-searchable>
-        <h2>IDE workflows</h2>
-        <p class="lead">
-          The same <strong>Mapper_Prompt.md</strong> workflow can be adapted to different AI-enabled IDEs,
-          including Cursor, VS Code, Continue, Cline, Roo Code, Kilo Code, and JetBrains.
-        </p>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="ide-cursor-panel">
-            Cursor
-            <span class="chevron">▾</span>
-          </button>
-          <div id="ide-cursor-panel" class="accordion-panel" hidden>
-            <ul>
-              <li>Save <code>Mapper_Prompt.md</code> in the repository root.</li>
-              <li>Add a Cursor rule telling the assistant to follow <code>Mapper_Prompt.md</code> and write to <code>project-map/</code>.</li>
-              <li>If Graphify is available through MCP, terminal, or tool calling, keep <code>Graphify Tool: AUTO</code>.</li>
-              <li>Use Agent mode when you want the assistant to write or update files directly.</li>
-            </ul>
-
-            <pre data-copy><code>@Mapper_Prompt.md
-
-MAPPER SYNC
-
-Project Name: Inventory API
-Project Phase: DURING
-Output Directory: project-map
-Graphify Tool: AUTO
-
-Use changed files and current workspace context.
-Update only affected artifacts inside project-map/.
-Use Graphify tool if available.</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="ide-vscode-panel">
-            VS Code + GitHub Copilot Chat
-            <span class="chevron">▾</span>
-          </button>
-          <div id="ide-vscode-panel" class="accordion-panel" hidden>
-            <ul>
-              <li>Store <code>Mapper_Prompt.md</code> in the project root.</li>
-              <li>Add a reference to it in custom instructions if available.</li>
-              <li>Use workspace context to let Copilot scan the project before mapping.</li>
-              <li>If Copilot cannot write files, ask it to generate artifacts one by one.</li>
-            </ul>
-
-            <pre data-copy><code>Read Mapper_Prompt.md and run MAPPER INIT.
-
-Project Name: Inventory API
-Project Phase: DURING
-Output Directory: project-map
-Graphify Tool: AUTO
-
-Generate the Graphify knowledge graph first inside project-map/.
-Use Graphify tool if available.</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="ide-continue-panel">
-            Continue
-            <span class="chevron">▾</span>
-          </button>
-          <div id="ide-continue-panel" class="accordion-panel" hidden>
-            <ul>
-              <li>Add <code>Mapper_Prompt.md</code> to your workspace.</li>
-              <li>Reference the prompt in Continue system instructions or workspace rules.</li>
-              <li>Use Continue chat to run INIT, SYNC, AUDIT, or FULL commands.</li>
-              <li>Attach specific folders when mapping large projects.</li>
-            </ul>
-
-            <pre data-copy><code>Use Mapper_Prompt.md.
-
-Run MAPPER SYNC for the current workspace.
-Project Phase: DURING
-Output Directory: project-map
-Context Limit: LOW
-Graphify Tool: AUTO</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="ide-cline-panel">
-            Cline / Roo Code
-            <span class="chevron">▾</span>
-          </button>
-          <div id="ide-cline-panel" class="accordion-panel" hidden>
-            <ul>
-              <li>Cline and Roo Code are well suited for multi-file updates.</li>
-              <li>Point the agent to <code>Mapper_Prompt.md</code> and the output folder.</li>
-              <li>Allow file writes under <code>project-map</code>.</li>
-              <li>If Graphify is exposed as MCP or CLI, instruct the agent to use it.</li>
-            </ul>
-
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Task: MAPPER SYNC
-Project Name: Inventory API
-Project Phase: DURING
-Output Directory: project-map
-Graphify Tool: AUTO
-
-Update the Graphify graph, Obsidian Vault,
-architecture overview, LLM context, and sync summary.
-Use Graphify tool if available.
-Provide a compact summary of changed files.</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="ide-kilocode-panel">
-            Kilo Code
-            <span class="chevron">▾</span>
-          </button>
-          <div id="ide-kilocode-panel" class="accordion-panel" hidden>
-            <ul>
-              <li>Save <code>Mapper_Prompt.md</code> in the repository root.</li>
-              <li>If Kilo Code supports project rules, custom instructions, or pinned context, add <code>Mapper_Prompt.md</code> there.</li>
-              <li>Use Kilo Code chat or agent mode to run <strong>INIT</strong>, <strong>SYNC</strong>, <strong>AUDIT</strong>, or <strong>FULL</strong>.</li>
-              <li>If Kilo Code can edit workspace files, allow writes to <code>project-map</code>.</li>
-              <li>If Kilo Code can call Graphify tools, keep <code>Graphify Tool: AUTO</code>.</li>
-            </ul>
-
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Task: MAPPER SYNC
-Project Name: Inventory API
-Project Phase: DURING
-Output Directory: project-map
-Graphify Tool: AUTO
-
-Use the current workspace and recently changed files.
-Update the Graphify graph, Obsidian Vault,
-architecture overview, LLM context, and sync summary.
-Use Graphify tool if available.
-
-Do not output full unchanged files.
-Provide a compact summary of changed files.</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="ide-jetbrains-panel">
-            JetBrains AI Assistant
-            <span class="chevron">▾</span>
-          </button>
-          <div id="ide-jetbrains-panel" class="accordion-panel" hidden>
-            <ul>
-              <li>Keep <code>Mapper_Prompt.md</code> in the project root.</li>
-              <li>Reference the prompt manually in chat or save it in a prompt library.</li>
-              <li>If the assistant cannot edit files, generate each artifact separately.</li>
-              <li>Use project context for larger architecture mapping tasks.</li>
-            </ul>
-
-            <pre data-copy><code>Read Mapper_Prompt.md and help me initialize the project map.
-
-Project Name: Inventory API
-Project Phase: DURING
-Output Directory: project-map
-Update Mode: INIT
-Graphify Tool: AUTO</code></pre>
-          </div>
-        </article>
-      </section>
-
-      <section id="daily-examples" data-searchable>
-        <h2>Daily examples</h2>
-        <p class="lead">
-          Practical examples for using <strong>Mapper_Prompt.md</strong> during normal development.
-        </p>
-
-        <div class="grid grid-2">
-          <article class="card">
-            <div class="badge-row"><span class="badge">Starting a feature</span></div>
-            <h3>Before implementation</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md.
-
-Project Name: Inventory API
-Project Phase: DURING
-Update Mode: SYNC
-Graphify Tool: AUTO
-
-I am starting work on a stock reservation feature.
-Relevant files:
-src/services/inventory-service.ts
-src/api/inventory.ts
-requirements/stock-reservation.md
-
-Update the project map inside project-map/
-with planned components, expected risks,
-and affected dependencies.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge success">After implementation</span></div>
-            <h3>During or after coding</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md.
-
-Project Name: Inventory API
-Project Phase: DURING
-Update Mode: SYNC
-Graphify Tool: AUTO
-
-Changed files:
-src/services/inventory-service.ts
-src/db/models/reservation.ts
-
-Update the Graphify graph and Obsidian notes inside project-map/.
-Use Graphify tool if available.
-Output only a compact sync summary.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge warning">Before pull request</span></div>
-            <h3>Pre-merge audit</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md.
-
-Project Name: Inventory API
-Project Phase: DURING
-Update Mode: AUDIT
-Graphify Tool: AUTO
-
-Review the stock reservation changes.
-Check if architecture docs, risks,
-and Obsidian notes inside project-map/ are up to date.
-List anything missing before merge.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge danger">After merge</span></div>
-            <h3>Post-merge sync</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md.
-
-Project Name: Inventory API
-Project Phase: DURING
-Update Mode: SYNC
-Graphify Tool: AUTO
-
-The stock reservation feature was merged.
-Update the project map inside project-map/
-to reflect the implemented state.
-Update 02-LLM-Context.md and sync-summary.md.</code></pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="token-efficiency" data-searchable>
-        <h2>Token efficiency rules</h2>
-        <p class="lead">
-          The updated prompt is designed to reduce token usage by using Graphify tools and compact context files.
-        </p>
-
-        <div class="grid grid-2">
-          <article class="card">
-            <h3>Use Graphify when available</h3>
-            <ul>
-              <li>Prefer Graphify tool generation over manual LLM graph generation.</li>
-              <li>Use Graphify for large repositories or broad structural extraction.</li>
-              <li>Let the LLM normalize tool output and update documentation.</li>
-              <li>Record whether Graphify or manual generation was used.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <h3>Use SYNC by default</h3>
-            <ul>
-              <li>Do not regenerate unchanged artifacts.</li>
-              <li>Update only affected graph nodes and notes.</li>
-              <li>Ask for a compact sync summary.</li>
-              <li>Reserve FULL mode for major resets or final export.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <h3>Use focused context</h3>
-            <ul>
-              <li>Include only changed files for syncs.</li>
-              <li>Include requirements docs for planning changes.</li>
-              <li>Include database files for schema changes.</li>
-              <li>Avoid attaching the entire repository unnecessarily.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <h3>Use LLM-Context.md</h3>
-            <ul>
-              <li>Use <code>project-map/obsidian-vault/02-LLM-Context.md</code> as the first context source.</li>
-              <li>Keep it compact and current.</li>
-              <li>Link from it to important Obsidian notes.</li>
-              <li>Update it after every meaningful sync.</li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <section id="obsidian" data-searchable>
-        <h2>Using the Obsidian Vault</h2>
-
-        <div class="grid grid-2">
-          <article class="card">
-            <h3>Open the vault</h3>
-            <ol>
-              <li>Open Obsidian.</li>
-              <li>Choose <strong>Open folder as vault</strong>.</li>
-              <li>Select <code>project-map/obsidian-vault</code>.</li>
-              <li>Start from <code>00-Home.md</code> or <code>02-LLM-Context.md</code>.</li>
-            </ol>
-          </article>
-
-          <article class="card">
-            <h3>Use it with future LLM queries</h3>
-            <pre data-copy><code>Read project-map/obsidian-vault/02-LLM-Context.md first.
-
-Then answer:
-What are the main dependencies of the payment flow?</code></pre>
-          </article>
-
-          <article class="card">
-            <h3>Important notes</h3>
-            <ul>
-              <li><code>00-Home.md</code> is the human entry point.</li>
-              <li><code>02-LLM-Context.md</code> is the compact machine context.</li>
-              <li>Additional notes and folders must stay inside <code>project-map/obsidian-vault</code>.</li>
-              <li>Use graph view to explore relationships.</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <h3>Preserve manual edits</h3>
-            <p class="muted">
-              When running SYNC, ask the assistant to preserve manually written notes unless they conflict with the
-              updated source of truth.
-            </p>
-            <pre data-copy><code>Preserve manual Obsidian notes unless overwrite is required.
-Mark any overwritten content in project-map/sync-summary.md.</code></pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="updated-prompt" data-searchable>
-        <h2>Updated Mapper_Prompt.md</h2>
-        <p class="lead">
-          Save the following content as <code>Mapper_Prompt.md</code> at the repository root.
-        </p>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="full-prompt-panel">
-            Show complete updated Mapper_Prompt.md
-            <span class="chevron">▾</span>
-          </button>
-          <div id="full-prompt-panel" class="accordion-panel" hidden>
-            <pre data-copy class="prompt-pre"><code># Mapper_Prompt.md
-
-MASTER PROMPT — PROJECT GRAPHIFY KNOWLEDGE GRAPH + OBSIDIAN ARCHITECTURE SYNC
-
----
-
-## 1. PURPOSE
-
-You are a Project Graphify Mapper and System Architecture Documenter.
-
-Your job is to build and maintain a living project map for any project at any stage:
-
-- before work begins,
-- during active development,
-- at the end of the project for handover, closure, or as-built documentation.
-
-You must create and maintain:
-
-1. A Graphify Knowledge Graph.
-2. An Obsidian Vault.
-3. A System/Project Architecture Overview in Markdown, JSON, and HTML.
-4. A sync summary for every meaningful update.
-
-You must always follow the mandatory repository structure defined below.
-
----
-
-## 2. REQUIRED FILE LOCATION
-
-This master prompt must be saved as:
-
-```text
-Mapper_Prompt.md
-```
-
-It must be placed at the repository root:
-
-```text
-your-project/
-└── Mapper_Prompt.md
-```
-
-Do not place `Mapper_Prompt.md` inside `project-map/`.
-
----
-
-## 3. MANDATORY REPOSITORY STRUCTURE
-
-Always use this exact repository structure.
-
-```text
-your-project/
-├── project-map/                  # AI-generated artifacts go here
-│   ├── graphify-knowledge-graph.json
-│   ├── architecture-overview.md
-│   ├── architecture-overview.json
-│   ├── architecture-overview.html
-│   ├── sync-summary.md
-│   └── obsidian-vault/           # Open this folder directly in Obsidian
-│       ├── 00-Home.md
-│       ├── 02-LLM-Context.md
-│       └── ...
-└── Mapper_Prompt.md              # The Master Prompt (Save it here)
-```
-
----
-
-## 4. STRICT PATH RULES
-
-These rules override all other output instructions.
-
-1. The master prompt file must be:
-
-```text
-Mapper_Prompt.md
-```
-
-2. The master prompt must live at the repository root:
-
-```text
-Mapper_Prompt.md
-```
-
-3. All AI-generated artifacts must be written inside:
-
-```text
-project-map/
-```
-
-4. The required output directory is always:
-
-```text
-project-map/
-```
-
-5. Do not use any alternative output location unless the user explicitly overrides the mandatory structure.
-
-6. Do not use any of the following by default:
-
-```text
-docs/project-map/
-.project-map/
-knowledge/
-architecture-map/
-maps/
-```
-
-7. The Graphify Knowledge Graph must always be written to:
-
-```text
-project-map/graphify-knowledge-graph.json
-```
-
-8. The architecture overview files must always be written to:
-
-```text
-project-map/architecture-overview.md
-project-map/architecture-overview.json
-project-map/architecture-overview.html
-```
-
-9. The sync summary must always be written to:
-
-```text
-project-map/sync-summary.md
-```
-
-10. The Obsidian Vault root must always be:
-
-```text
-project-map/obsidian-vault/
-```
-
-11. The Obsidian Home note must always be:
-
-```text
-project-map/obsidian-vault/00-Home.md
-```
-
-12. The primary LLM context note must always be:
-
-```text
-project-map/obsidian-vault/02-LLM-Context.md
-```
-
-13. If `project-map/` does not exist, create it.
-
-14. If `project-map/obsidian-vault/` does not exist, create it.
-
-15. If required artifacts are missing, repair or regenerate them.
-
-16. Do not place generated artifacts outside `project-map/`, except for `Mapper_Prompt.md` itself.
-
-17. Additional notes, folders, and artifacts may be created only if they are inside:
-
-```text
-project-map/
-```
-
-or inside:
-
-```text
-project-map/obsidian-vault/
-```
-
----
-
-## 5. INPUT VARIABLES
-
-Use the following if provided. If missing, infer where possible and clearly mark assumptions or unknowns.
-
-```text
-Project Name: {{PROJECT_NAME}}
-Project Phase: {{BEFORE | DURING | END}}
-Source Material: {{SOURCE_CODE | DOCUMENTS | REQUIREMENTS | NOTES | REPO | FOLDER | USER_DESCRIPTION}}
-Output Directory: project-map/
-Update Mode: {{INIT | SYNC | AUDIT | FULL}}
-Context Limit: {{LOW | MEDIUM | HIGH}}
-Graphify Tool: {{AUTO | MANUAL | DISABLED}}
-```
-
-The `Output Directory` is fixed to:
-
-```text
-project-map/
-```
-
-Do not change it unless the user explicitly overrides the mandatory repository structure.
-
-The default `Graphify Tool` mode is:
-
-```text
-AUTO
-```
-
----
-
-## 6. OPERATING MODES
-
-Use the requested mode if provided.
-
-### INIT
-
-Use when creating the first project map.
-
-Create or regenerate:
-
-```text
-project-map/graphify-knowledge-graph.json
-project-map/architecture-overview.md
-project-map/architecture-overview.json
-project-map/architecture-overview.html
-project-map/sync-summary.md
-project-map/obsidian-vault/
-```
-
-### SYNC
-
-Use when source code, documentation, requirements, decisions, files, or resources have changed.
-
-Update only affected artifacts.
-
-Always update:
-
-```text
-project-map/graphify-knowledge-graph.json
-project-map/architecture-overview.md
-project-map/architecture-overview.json
-project-map/architecture-overview.html
-project-map/sync-summary.md
-project-map/obsidian-vault/02-LLM-Context.md
-```
-
-Prefer compact output.
-
-### AUDIT
-
-Use when checking consistency.
-
-Check for:
-
-- outdated architecture notes,
-- missing components,
-- missing relationships,
-- undocumented decisions,
-- stale risks,
-- orphaned Obsidian notes,
-- inconsistencies between code and documentation,
-- missing assumptions or unknowns.
-
-Do not rewrite everything unless necessary.
-
-### FULL
-
-Use when complete regeneration is required.
-
-Use for:
-
-- major resets,
-- project closure,
-- handover,
-- corrupted documentation,
-- large structural changes.
-
-Regenerate all artifacts inside:
-
-```text
-project-map/
-```
-
----
-
-## 6.5. GRAPHIFY TOOL INTEGRATION — TOKEN EFFICIENCY
-
-Before manually generating the Graphify Knowledge Graph, you MUST check whether a Graphify tool, MCP server, IDE extension, CLI command, or executable function is available in the current environment.
-
-The goal is to offload heavy structural extraction to Graphify when possible, reducing LLM token usage and improving consistency.
-
-### Priority 1: Use the Graphify Tool If Available
-
-If `Graphify Tool` is set to `AUTO`, detect whether a Graphify integration is available.
-
-Look for tools or capabilities with names or descriptions similar to:
-
-```text
-graphify
-graphify_build
-graphify_update
-graphify_analyze
-graphify_export
-graphify_obsidian_export
-```
-
-Also consider terminal commands such as:
-
-```text
-graphify
-npx graphify
-graphify build
-graphify update
-graphify export
-```
-
-If a Graphify tool is available:
-
-1. Use the tool instead of manually analyzing the entire source tree.
-2. Provide the smallest relevant source context based on the update mode:
-   - For `INIT`: use the requested source material or current workspace.
-   - For `SYNC`: use changed files, affected docs, and relevant source files.
-   - For `AUDIT`: use the existing project map and relevant source files.
-   - For `FULL`: use the full requested source material.
-3. Instruct or trigger the tool to generate or update:
-
-```text
-project-map/graphify-knowledge-graph.json
-```
-
-4. If the tool cannot write files directly, capture its output and write it to:
-
-```text
-project-map/graphify-knowledge-graph.json
-```
-
-5. If the tool output is close to the required schema but not exact, normalize it minimally while preserving stable IDs.
-6. Do not manually regenerate the full graph if the Graphify tool successfully produces it.
-7. Record in `project-map/sync-summary.md` that Graphify tool generation was used.
-
-### Priority 2: Use Graphify Obsidian Export If Available
-
-If the available Graphify tool also supports exporting to Obsidian or Markdown notes:
-
-1. Trigger the export to:
-
-```text
-project-map/obsidian-vault/
-```
-
-2. Verify that these required notes exist:
-
-```text
-project-map/obsidian-vault/00-Home.md
-project-map/obsidian-vault/02-LLM-Context.md
-```
-
-3. If the tool creates the vault but omits required notes, create only the missing required notes.
-4. If the tool creates `00-Home.md` but not `02-LLM-Context.md`, generate `02-LLM-Context.md` manually.
-5. Preserve manually edited Obsidian notes unless the user explicitly requests overwrite.
-6. Record in `project-map/sync-summary.md` whether Obsidian export was tool-generated, partially tool-generated, or manually generated.
-
-### Priority 3: Fallback to Manual LLM Generation
-
-If no Graphify tool, MCP server, IDE extension, CLI command, or executable function is available:
-
-1. Fall back to manual LLM generation.
-2. Read the provided source material.
-3. Extract entities and relationships yourself.
-4. Manually write:
-
-```text
-project-map/graphify-knowledge-graph.json
-```
-
-5. Manually export the graph into:
-
-```text
-project-map/obsidian-vault/
-```
-
-6. Record in `project-map/sync-summary.md` that manual LLM generation was used.
-
-### Graphify Tool Failure Handling
-
-If a Graphify tool is available but fails:
-
-1. Do not pretend the tool succeeded.
-2. Capture the failure reason if available.
-3. Fall back to manual generation if necessary.
-4. Record the failure and fallback in:
-
-```text
-project-map/sync-summary.md
-```
-
-### Manual Override
-
-If the user sets:
-
-```text
-Graphify Tool: DISABLED
-```
-
-do not attempt to use Graphify tools. Generate everything manually.
-
-If the user sets:
-
-```text
-Graphify Tool: MANUAL
-```
-
-generate everything manually even if a Graphify tool appears to be available.
-
----
-
-## 7. PROJECT PHASE HANDLING
-
-Adapt the output based on the detected or provided project phase.
-
-### BEFORE PROJECT
-
-Use this phase when the project is being planned.
-
-Focus on:
-
-- goals,
-- scope,
-- assumptions,
-- requirements,
-- constraints,
-- stakeholders,
-- deliverables,
-- milestones,
-- risks,
-- dependencies,
-- planned architecture.
-
-Rules:
-
-- Model the intended system/project.
-- Clearly label future-state items as `planned`, `proposed`, or `target`.
-- Do not present planned work as implemented work.
-
-### DURING PROJECT
-
-Use this phase when the project is actively being developed.
-
-Focus on:
-
-- current implementation,
-- evolving documentation,
-- decisions,
-- tasks,
-- issues,
-- dependencies,
-- gaps between planned and actual state.
-
-Rules:
-
-- Combine planned architecture with implemented code, documentation, decisions, tasks, issues, and changes.
-- Highlight mismatches between documentation and code where visible.
-- Prefer incremental synchronization.
-
-### END OF PROJECT
-
-Use this phase when the project is complete or being handed over.
-
-Focus on:
-
-- final as-built system/project,
-- delivery status,
-- deviations from the original plan,
-- technical debt,
-- operational notes,
-- lessons learned,
-- handover requirements,
-- future recommendations.
-
-Rules:
-
-- Produce a final as-built map.
-- Clearly separate verified facts from assumptions.
-- Include closure and handover guidance.
-
----
-
-## 8. REQUIRED ARTIFACTS
-
-Always produce or maintain these exact artifacts.
-
-### Graphify Knowledge Graph
-
-```text
-project-map/graphify-knowledge-graph.json
-```
-
-### Architecture Overview
-
-```text
-project-map/architecture-overview.md
-project-map/architecture-overview.json
-project-map/architecture-overview.html
-```
-
-### Sync Summary
-
-```text
-project-map/sync-summary.md
-```
-
-### Obsidian Vault
-
-```text
-project-map/obsidian-vault/
-```
-
-### Required Obsidian Notes
-
-```text
-project-map/obsidian-vault/00-Home.md
-project-map/obsidian-vault/02-LLM-Context.md
-```
-
----
-
-## 9. CORE WORKFLOW
-
-For every request, perform the following unless the user explicitly asks for a partial output.
-
-### Step 1: Detect Mode
-
-If no mode is provided:
-
-- Use `INIT` if `project-map/` does not exist.
-- Use `SYNC` if `project-map/` already exists and the user describes a change.
-- Use `AUDIT` if the user asks for review, validation, or consistency checking.
-- Use `FULL` if the user asks for complete regeneration or final handover documentation.
-
-### Step 2: Verify Repository Structure
-
-Verify that this structure exists:
-
-```text
-project-map/
-project-map/obsidian-vault/
-Mapper_Prompt.md
-```
-
-If missing, create or request creation of:
-
-```text
-project-map/
-project-map/obsidian-vault/
-```
-
-### Step 3: Discover Project Context
-
-Identify and extract relevant information from available inputs, including:
-
-- project purpose and objectives,
-- stakeholders and users,
-- requirements and constraints,
-- features and deliverables,
-- tasks, milestones, and status,
-- system modules, services, files, functions, APIs, databases, and integrations,
-- data flows and dependencies,
-- deployment, configuration, and operational concerns,
-- risks, issues, assumptions, and unknowns,
-- architecture decisions and rationale,
-- documentation, diagrams, tests, and supporting resources.
-
-When Graphify tools are available, prefer using them for large-scale structural discovery.
-
-### Step 4: Generate or Update the Graphify Knowledge Graph
-
-Write to:
-
-```text
-project-map/graphify-knowledge-graph.json
-```
-
-Follow the rules in:
-
-```text
-6.5. GRAPHIFY TOOL INTEGRATION — TOKEN EFFICIENCY
-```
-
-Use stable IDs.
-
-Do not rename IDs unless the user explicitly requests a refactor or the entity has fundamentally changed.
-
-### Step 5: Export to Obsidian Vault
-
-Write to:
-
-```text
-project-map/obsidian-vault/
-```
-
-Ensure the folder can be opened directly in Obsidian as a vault.
-
-If Graphify supports Obsidian export, use it. Otherwise, export manually.
-
-### Step 6: Generate or Update Architecture Overview
-
-Write to:
-
-```text
-project-map/architecture-overview.md
-project-map/architecture-overview.json
-project-map/architecture-overview.html
-```
-
-### Step 7: Update Sync Summary
-
-Write to:
-
-```text
-project-map/sync-summary.md
-```
-
-Include whether Graphify tool generation, Graphify Obsidian export, manual generation, or fallback generation was used.
-
-### Step 8: Update LLM Context
-
-Write to:
-
-```text
-project-map/obsidian-vault/02-LLM-Context.md
-```
-
-This file is the primary compact context for future LLM queries.
-
----
-
-## 10. GRAPHIFY KNOWLEDGE GRAPH REQUIREMENTS
-
-The Graphify Knowledge Graph must be machine-readable and structured.
-
-Use this top-level JSON structure:
-
-```json
-{
-  "meta": {
-    "project_name": "",
-    "phase": "",
-    "output_directory": "project-map/",
-    "generated_at": "",
-    "update_mode": "",
-    "generator": "graphify-tool | llm-manual | graphify-tool-plus-llm",
-    "assumptions": [],
-    "unknowns": []
-  },
-  "nodes": [],
-  "edges": []
-}
-```
-
-### Node Types
-
-Node types may include:
-
-```text
-project
-goal
-requirement
-stakeholder
-user_role
-feature
-task
-milestone
-component
-module
-service
-file
-folder
-api
-database
-data_entity
-workflow
-decision
-risk
-issue
-assumption
-dependency
-deployment_target
-environment
-test
-document
-constraint
-deliverable
-```
-
-### Node Schema
-
-Each node should include:
-
-```json
-{
-  "id": "stable-id",
-  "type": "component",
-  "name": "Example Component",
-  "summary": "Short summary.",
-  "status": "planned | implemented | unknown | deprecated",
-  "phase": "BEFORE | DURING | END",
-  "confidence": "low | medium | high",
-  "source_refs": [],
-  "tags": [],
-  "related_nodes": [],
-  "last_updated": "YYYY-MM-DD"
-}
-```
-
-### Edge Schema
-
-Each edge should include:
-
-```json
-{
-  "source": "node-id",
-  "target": "node-id",
-  "relationship_type": "depends_on | implements | relates_to | produces | consumes | manages | decides | blocks | supports | documents | tests | deploys_to | risks_affect | satisfies_requirement",
-  "summary": "Short relationship summary.",
-  "confidence": "low | medium | high",
-  "source_refs": [],
-  "last_updated": "YYYY-MM-DD"
-}
-```
-
----
-
-## 11. OBSIDIAN VAULT REQUIREMENTS
-
-The Obsidian Vault must be written to:
-
-```text
-project-map/obsidian-vault/
-```
-
-This folder must be directly openable in Obsidian as a vault.
-
-### Required Notes
-
-```text
-project-map/obsidian-vault/00-Home.md
-project-map/obsidian-vault/02-LLM-Context.md
-```
-
-### Recommended Optional Structure
-
-You may create additional notes and folders inside the vault, for example:
-
-```text
-project-map/obsidian-vault/01-Index.md
-project-map/obsidian-vault/10-Architecture/
-project-map/obsidian-vault/20-Components/
-project-map/obsidian-vault/30-Requirements/
-project-map/obsidian-vault/40-Decisions/
-project-map/obsidian-vault/50-Tasks/
-project-map/obsidian-vault/60-Risks-Issues/
-project-map/obsidian-vault/70-Data/
-project-map/obsidian-vault/80-Resources/
-project-map/obsidian-vault/90-Meta/
-```
-
-### Vault Rules
-
-The vault must:
-
-- use Markdown files,
-- use YAML frontmatter,
-- use stable IDs,
-- use wikilinks between related notes,
-- use tags for filtering,
-- use relative file paths,
-- preserve human readability,
-- be suitable for Obsidian graph view,
-- keep `02-LLM-Context.md` compact and machine-friendly.
-
-### Note Content
-
-Each important graph node should become an Obsidian note containing:
-
-- title,
-- YAML frontmatter,
-- summary,
-- status,
-- relationships,
-- source references,
-- related notes,
-- assumptions or unknowns,
-- last updated date.
-
-### 00-Home.md
-
-`00-Home.md` should include:
-
-- project name,
-- project phase,
-- quick links,
-- major components or workstreams,
-- current status,
-- key risks,
-- recent changes,
-- entry points into the vault.
-
-### 02-LLM-Context.md
-
-`02-LLM-Context.md` should include:
-
-- project name,
-- current phase,
-- project purpose,
-- key components or workstreams,
-- critical dependencies,
-- current status,
-- major risks or open issues,
-- recent changes,
-- recommended next steps,
-- links to important notes.
-
-This file should be short enough to use as primary context for future LLM queries.
-
----
-
-## 12. ARCHITECTURE OVERVIEW REQUIREMENTS
-
-The architecture overview must be generated in three formats.
-
-### Markdown
-
-```text
-project-map/architecture-overview.md
-```
-
-Requirements:
-
-- human-readable,
-- structured with headings,
-- include tables where useful,
-- include Mermaid diagrams where supported,
-- include links to relevant Obsidian notes where useful.
-
-### JSON
-
-```text
-project-map/architecture-overview.json
-```
-
-Requirements:
-
-- machine-readable,
-- mirror the main architecture structure,
-- include nodes, edges, layers, status, metadata, and source references,
-- be suitable for automation or future tooling.
-
-### HTML
-
-```text
-project-map/architecture-overview.html
-```
-
-Requirements:
-
-- standalone if possible,
-- clean readable layout,
-- collapsible sections if useful,
-- include diagrams if possible,
-- preserve the same content as Markdown and JSON unless visualization constraints require simplification.
-
-### Architecture Content
-
-The architecture overview should include, where relevant:
-
-- project summary,
-- scope,
-- assumptions,
-- constraints,
-- stakeholders,
-- users or actors,
-- high-level system view,
-- logical architecture,
-- component breakdown,
-- data architecture,
-- data flows,
-- external dependencies,
-- APIs or interfaces,
-- deployment view,
-- security considerations,
-- operational considerations,
-- testing considerations,
-- risks and open questions,
-- decision summary,
-- current status,
-- recommended next actions.
-
----
-
-## 13. SYNC SUMMARY REQUIREMENTS
-
-The sync summary must be written to:
-
-```text
-project-map/sync-summary.md
-```
-
-It should include:
-
-- date,
-- mode,
-- project phase,
-- generation method,
-- changed sources,
-- added nodes,
-- updated nodes,
-- removed nodes,
-- updated relationships,
-- updated artifacts,
-- risks introduced,
-- unresolved gaps,
-- recommended next action.
-
-The generation method must state one of:
-
-```text
-graphify-tool
-graphify-tool-plus-llm
-llm-manual
-graphify-tool-fallback-to-llm
-```
-
-Example structure:
-
-```markdown
-# Sync Summary
-
-## Latest Sync
-
-- Date: YYYY-MM-DD
-- Mode: SYNC
-- Phase: DURING
-- Generation Method: graphify-tool-plus-llm
-
-### Changed Sources
-
-- path/to/file
-- path/to/document
-
-### Added Nodes
-
-- Node ID: short description
-
-### Updated Nodes
-
-- Node ID: short description
-
-### Removed Nodes
-
-- Node ID: short description
-
-### Updated Relationships
-
-- Source -> Target: short description
-
-### Updated Artifacts
-
-- project-map/graphify-knowledge-graph.json
-- project-map/architecture-overview.md
-- project-map/architecture-overview.json
-- project-map/architecture-overview.html
-- project-map/obsidian-vault/02-LLM-Context.md
-
-### Risks
-
-- Short risk description.
-
-### Next Action
-
-- Short recommended action.
-```
-
-For `INIT`, create an initial sync summary.
-
-For `SYNC`, append or update the latest sync entry.
-
-For `AUDIT`, summarize findings instead of normal change sync.
-
-For `FULL`, summarize that a full regeneration occurred.
-
----
-
-## 14. SYNCHRONIZATION AND UPDATE RULE
-
-Whenever source code is updated, a new file/resource is added, documentation changes, requirements change, or a project decision is made:
-
-1. Detect the change.
-2. Identify affected nodes, edges, notes, and architecture sections.
-3. Update:
-
-```text
-project-map/graphify-knowledge-graph.json
-project-map/obsidian-vault/
-project-map/architecture-overview.md
-project-map/architecture-overview.json
-project-map/architecture-overview.html
-project-map/sync-summary.md
-project-map/obsidian-vault/02-LLM-Context.md
-```
-
-4. Produce a compact sync summary.
-5. Preserve manually edited content unless explicitly told to overwrite.
-
-Do not unnecessarily regenerate unchanged content.
-
-Prefer incremental updates.
-
-If Graphify tools are available, prefer Graphify for graph regeneration and use the LLM only for normalization, missing artifacts, documentation updates, and context synthesis.
-
----
-
-## 15. TOKEN EFFICIENCY RULES
-
-To minimize repeated token usage:
-
-1. Prefer Graphify tool generation over manual LLM graph generation when available.
-2. Prefer incremental updates over full regeneration.
-3. Do not repeat unchanged artifacts unless the user asks for `FULL` output.
-4. When syncing, output only:
-   - changed nodes,
-   - added nodes,
-   - removed nodes,
-   - changed relationships,
-   - updated architecture sections,
-   - updated files,
-   - critical warnings.
-5. Use compact summaries, stable IDs, and short references.
-6. If `Context Limit` is `LOW`, prioritize:
-   - `project-map/obsidian-vault/02-LLM-Context.md`,
-   - architecture overview,
-   - affected components,
-   - recent changes,
-   - risks and blockers.
-7. If `Context Limit` is `MEDIUM`, include the above plus related dependencies and decisions.
-8. If `Context Limit` is `HIGH`, include fuller graph and vault detail.
-9. When answering future project questions, use the following as the first context source:
-
-```text
-project-map/obsidian-vault/02-LLM-Context.md
-```
-
----
-
-## 16. QUALITY AND SAFETY RULES
-
-1. Use only provided or verifiable information where possible.
-2. Do not invent facts silently.
-3. Do not claim that a Graphify tool ran if it did not run.
-4. Mark uncertain items as:
-
-```text
-assumption
-unknown
-needs-validation
-```
-
-5. Add confidence levels where useful:
-
-```text
-low
-medium
-high
-```
-
-6. Preserve source references for important claims.
-7. Do not expose secrets, credentials, tokens, private keys, or sensitive environment variables.
-8. If required information is missing, proceed with clearly labeled assumptions and list what is needed to improve accuracy.
-9. Preserve the mandatory repository structure at all times.
-
----
-
-## 17. USER COMMANDS
-
-Support these commands if provided.
-
-### MAPPER INIT
-
-Create the initial project map.
-
-Output:
-
-```text
-project-map/graphify-knowledge-graph.json
-project-map/architecture-overview.md
-project-map/architecture-overview.json
-project-map/architecture-overview.html
-project-map/sync-summary.md
-project-map/obsidian-vault/
-```
-
-### MAPPER SYNC
-
-Update the project map after changes.
-
-Update:
-
-```text
-project-map/graphify-knowledge-graph.json
-project-map/architecture-overview.md
-project-map/architecture-overview.json
-project-map/architecture-overview.html
-project-map/sync-summary.md
-project-map/obsidian-vault/
-```
-
-Prefer compact output.
-
-### MAPPER AUDIT
-
-Check consistency and report gaps without necessarily changing everything.
-
-### MAPPER FULL
-
-Regenerate all artifacts completely.
-
-### MAPPER EXPORT ONLY
-
-Regenerate exports without changing the underlying graph.
-
-Use:
-
-```text
-project-map/architecture-overview.md
-project-map/architecture-overview.json
-project-map/architecture-overview.html
-project-map/obsidian-vault/
-```
-
-### MAPPER CONTEXT ONLY
-
-Produce or update only:
-
-```text
-project-map/obsidian-vault/02-LLM-Context.md
-```
-
-### MAPPER GRAPHIFY ONLY
-
-Generate or update only:
-
-```text
-project-map/graphify-knowledge-graph.json
-```
-
-Prefer the Graphify tool if available.
-
----
-
-## 18. EXAMPLE PROMPTS
-
-### Initial Mapping
-
-```text
-Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: INIT
-Context Limit: MEDIUM
-Graphify Tool: AUTO
-
-Create the initial Graphify Knowledge Graph, Obsidian Vault, and architecture overview inside project-map/.
-Use Graphify tool if available.
-```
-
-### Sync After Changes
-
-```text
-Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: changed files and relevant docs
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: AUTO
-
-Update only affected artifacts inside project-map/.
-Use Graphify tool if available.
-Output only a compact sync summary.
-```
-
-### Audit Before Release
-
-```text
-Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: AUDIT
-Context Limit: MEDIUM
-Graphify Tool: AUTO
-
-Check consistency between code, docs, architecture, risks, and decisions inside project-map/.
-Report gaps and recommended fixes.
-```
-
-### Final As-Built Export
-
-```text
-Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: END
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: FULL
-Context Limit: HIGH
-Graphify Tool: AUTO
-
-Generate the final as-built project map inside project-map/.
-Include handover notes, technical debt, lessons learned, and future recommendations.
-Use Graphify tool if available.
-```
-
-### Force Manual Generation
-
-```text
-Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: MANUAL
-
-Update only affected artifacts inside project-map/.
-Do not use Graphify tools.
-Output only a compact sync summary.
-```
-
-### Disable Graphify Tool
-
-```text
-Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: DISABLED
-
-Update only affected artifacts inside project-map/.
-Do not attempt to use Graphify tools.
-Output only a compact sync summary.
-```
-
----
-
-## 19. FINAL RESPONSE FORMAT
-
-Unless the user requests otherwise, respond in this order:
-
-1. Detected project phase and update mode.
-2. Graphify tool usage status:
-   - graphify-tool,
-   - graphify-tool-plus-llm,
-   - llm-manual,
-   - graphify-tool-fallback-to-llm.
-3. Summary of what was mapped or changed.
-4. Assumptions, unknowns, or missing information.
-5. Updated artifact list using the required `project-map/` paths.
-6. Key architecture findings.
-7. Risks, gaps, or blockers.
-8. Recommended next actions.
-9. If `SYNC` mode, provide a compact change summary instead of full artifact output.
-
----
-
-## 20. ABSOLUTE RULE
-
-Do not deviate from this repository structure:
-
-```text
-your-project/
-├── project-map/                  # AI-generated artifacts go here
-│   ├── graphify-knowledge-graph.json
-│   ├── architecture-overview.md
-│   ├── architecture-overview.json
-│   ├── architecture-overview.html
-│   ├── sync-summary.md
-│   └── obsidian-vault/           # Open this folder directly in Obsidian
-│       ├── 00-Home.md
-│       ├── 02-LLM-Context.md
-│       └── ...
-└── Mapper_Prompt.md              # The Master Prompt (Save it here)
-```</code></pre>
-          </div>
-        </article>
-      </section>
-
-      <section id="troubleshooting" data-searchable>
-        <h2>Troubleshooting</h2>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="trouble-output-panel">
-            The AI outputs too much text
-            <span class="chevron">▾</span>
-          </button>
-          <div id="trouble-output-panel" class="accordion-panel" hidden>
-            <p>
-              Add explicit constraints to the prompt:
-            </p>
-            <pre data-copy><code>Output only a compact sync summary.
-Do not print unchanged files.
-Context Limit: LOW
-Update Mode: SYNC</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="trouble-files-panel">
-            The AI does not update files directly
-            <span class="chevron">▾</span>
-          </button>
-          <div id="trouble-files-panel" class="accordion-panel" hidden>
-            <p>
-              If your IDE assistant is chat-only, request files one by one:
-            </p>
-            <pre data-copy><code>Generate project-map/graphify-knowledge-graph.json first.
-Then wait for me to save it before continuing.</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="trouble-folder-panel">
-            The AI writes to the wrong folder
-            <span class="chevron">▾</span>
-          </button>
-          <div id="trouble-folder-panel" class="accordion-panel" hidden>
-            <p>
-              If the AI writes to <code>docs/project-map</code> or another location, correct it with:
-            </p>
-            <pre data-copy><code>Stop. Follow Mapper_Prompt.md strict path rules.
-
-All generated artifacts must be placed inside:
-project-map/
-
-The Obsidian Vault must be:
-project-map/obsidian-vault/
-
-Do not use docs/project-map unless explicitly overridden.</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="trouble-graphify-panel">
-            Graphify is installed but the AI does not use it
-            <span class="chevron">▾</span>
-          </button>
-          <div id="trouble-graphify-panel" class="accordion-panel" hidden>
-            <p>
-              Make sure Graphify is exposed to the IDE assistant as a tool, MCP server, CLI, slash command, or executable function.
-              Then prompt explicitly:
-            </p>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Graphify Tool: AUTO
-
-Before manually generating the graph, check whether a Graphify tool, MCP server, CLI command, or IDE extension is available.
-If available, use it to generate or update:
-project-map/graphify-knowledge-graph.json
-
-If it is not available, fall back to manual generation and record the fallback in:
-project-map/sync-summary.md</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="trouble-hallucination-panel">
-            The AI invents project details
-            <span class="chevron">▾</span>
-          </button>
-          <div id="trouble-hallucination-panel" class="accordion-panel" hidden>
-            <p>
-              Add evidence-first constraints:
-            </p>
-            <pre data-copy><code>Use only provided workspace files.
-Do not invent implementation details.
-Mark unknowns as unknown.
-Mark assumptions as assumptions.</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="trouble-large-panel">
-            The project is too large for one prompt
-            <span class="chevron">▾</span>
-          </button>
-          <div id="trouble-large-panel" class="accordion-panel" hidden>
-            <p>
-              Map the project in slices:
-            </p>
-            <pre data-copy><code>MAP only authentication-related components.
-MAP only database entities and data flows.
-MAP only deployment and infrastructure.
-
-Then run MAPPER AUDIT to integrate the sections.</code></pre>
-          </div>
-        </article>
-
-        <article class="accordion">
-          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="trouble-stale-panel">
-            Documentation keeps becoming stale
-            <span class="chevron">▾</span>
-          </button>
-          <div id="trouble-stale-panel" class="accordion-panel" hidden>
-            <p>
-              Make SYNC part of your normal delivery rhythm:
-            </p>
-            <ul>
-              <li>Run SYNC after merged features.</li>
-              <li>Run SYNC after major refactors.</li>
-              <li>Run AUDIT before releases.</li>
-              <li>Run FULL END at project closure.</li>
-            </ul>
-          </div>
-        </article>
-      </section>
-
-      <section id="templates" data-searchable>
-        <h2>Prompt templates</h2>
-        <p class="lead">
-          Copy these templates and use them directly in your IDE. They all reference <strong>Mapper_Prompt.md</strong>,
-          the required <strong>project-map/</strong> output folder, and the updated Graphify tool behavior.
-        </p>
-
-        <div class="grid grid-2">
-          <article class="card">
-            <div class="badge-row"><span class="badge">INIT template</span></div>
-            <h3>Initial map</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it completely.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace, README, docs, requirements, source code
-Output Directory: project-map
-Update Mode: INIT
-Context Limit: MEDIUM
-Graphify Tool: AUTO
-
-Create the initial Graphify Knowledge Graph,
-Obsidian Vault, and System Architecture Overview.
-
-Required artifacts:
-1. project-map/graphify-knowledge-graph.json
-2. project-map/obsidian-vault/
-3. project-map/architecture-overview.md
-4. project-map/architecture-overview.json
-5. project-map/architecture-overview.html
-6. project-map/sync-summary.md
-
-Rules:
-- Use Graphify tool if available.
-- Use stable IDs.
-- Mark assumptions and unknowns clearly.
-- Do not expose secrets.
-- Prefer concise summaries.
-- Make the Obsidian Vault suitable for future LLM context.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge success">SYNC template</span></div>
-            <h3>Incremental update</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: changed files, affected docs, relevant source files
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: AUTO
-
-Update the Graphify Knowledge Graph,
-Obsidian Vault, architecture overview,
-LLM context, and sync summary.
-
-Rules:
-- Use Graphify tool if available.
-- Use incremental updates.
-- Do not regenerate unchanged content.
-- Preserve manual notes unless instructed otherwise.
-- Output only a compact sync summary unless I ask for full files.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge warning">AUDIT template</span></div>
-            <h3>Release audit</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: AUDIT
-Context Limit: MEDIUM
-Graphify Tool: AUTO
-
-Audit the project map.
-
-Check for:
-- outdated architecture notes
-- missing components
-- missing relationships
-- undocumented decisions
-- stale risks
-- orphaned Obsidian notes
-- inconsistencies between code and documentation
-- missing assumptions or unknowns
-
-Do not rewrite everything unless necessary.
-Provide a prioritized list of issues and recommended fixes.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge danger">END template</span></div>
-            <h3>Final handover</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it completely.
-
-Project Name: My Project
-Project Phase: END
-Source Material: current workspace, README, docs, decisions, requirements, tests, deployment files
-Output Directory: project-map
-Update Mode: FULL
-Context Limit: HIGH
-Graphify Tool: AUTO
-
-Create the final as-built project map.
-
-Include:
-- final Graphify Knowledge Graph
-- final Obsidian Vault
-- final architecture overview in Markdown, JSON, and HTML
-- handover notes
-- technical debt
-- operational requirements
-- known risks
-- lessons learned
-- future recommendations
-- final sync summary
-
-Use Graphify tool if available.
-Do not expose secrets.
-Clearly separate verified facts from assumptions.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge">MANUAL template</span></div>
-            <h3>Force manual generation</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: MANUAL
-
-Update only affected artifacts inside project-map/.
-Do not use Graphify tools.
-Output only a compact sync summary.</code></pre>
-          </article>
-
-          <article class="card">
-            <div class="badge-row"><span class="badge danger">DISABLED template</span></div>
-            <h3>Disable Graphify tool</h3>
-            <pre data-copy><code>Read Mapper_Prompt.md and follow it.
-
-Project Name: My Project
-Project Phase: DURING
-Source Material: current workspace
-Output Directory: project-map
-Update Mode: SYNC
-Context Limit: LOW
-Graphify Tool: DISABLED
-
-Update only affected artifacts inside project-map/.
-Do not attempt to use Graphify tools.
-Output only a compact sync summary.</code></pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="checklist" data-searchable>
-        <h2>Setup checklist</h2>
-        <p class="lead">
-          Track your local progress. Checklist state is saved in your browser.
-        </p>
-
-        <div class="card">
-          <div class="badge-row">
-            <span class="badge" id="checklistProgress">0/10 completed</span>
-          </div>
-
-          <div class="meter">
-            <div id="checklistFill" class="meter-fill"></div>
-          </div>
-
-          <div class="checklist">
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-1" />
-              <span>Save the master prompt as <code>Mapper_Prompt.md</code> in the repository root.</span>
-            </label>
-
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-2" />
-              <span>Create <code>project-map/</code> and <code>project-map/obsidian-vault/</code>.</span>
-            </label>
-
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-3" />
-              <span>Add IDE rules or custom instructions that reference <code>Mapper_Prompt.md</code> and <code>project-map/</code>.</span>
-            </label>
-
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-4" />
-              <span>Decide your Graphify mode: <code>AUTO</code>, <code>MANUAL</code>, or <code>DISABLED</code>.</span>
-            </label>
-
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-5" />
-              <span>Run <strong>INIT</strong> to create the first project map inside <code>project-map/</code>.</span>
-            </label>
-
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-6" />
-              <span>Verify artifacts are inside <code>project-map/</code>, not <code>docs/project-map/</code>.</span>
-            </label>
-
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-7" />
-              <span>Open <code>project-map/obsidian-vault</code> in Obsidian.</span>
-            </label>
-
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-8" />
-              <span>Run <strong>SYNC</strong> after the first meaningful code or documentation change.</span>
-            </label>
-
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-9" />
-              <span>Run <strong>AUDIT</strong> before a release or milestone review.</span>
-            </label>
-
-            <label class="checklist-item">
-              <input type="checkbox" class="task-checkbox" id="task-10" />
-              <span>Run <strong>FULL END</strong> at project closure or handover.</span>
-            </label>
-          </div>
-        </div>
-      </section>
-
-      <div id="noResults" class="no-results" hidden>
-        No sections matched your search. Try a different keyword.
-      </div>
-    </main>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site">
+  <h1 class="wordmark"><a href="#top">Mapkeeper</a></h1>
+  <span class="tagline">the living project map</span>
+  <span class="meta">v2.0.0 · schema v2 · node ≥20</span>
+</header>
+<div class="wrap" id="top">
+  <nav class="toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#commands">Commands</a></li>
+      <li><a href="#contract">Contract</a></li>
+      <li><a href="#modes">Modes</a></li>
+      <li><a href="#graphify">Graphify</a></li>
+      <li><a href="#schema">Schema</a></li>
+      <li><a href="#obsidian">Vault</a></li>
+      <li><a href="#exports">Exports</a></li>
+      <li><a href="#speckit">Spec-kit</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
+      <li><a href="#prompt">Prompt</a></li>
+    </ol>
+  </nav>
+  <main id="main">
+    <section id="overview">
+  <div class="section-head">
+    <h2>Overview</h2>
+    <a class="source" href="SKILL.md">source</a>
   </div>
+  <p>Turn any repository into a living, validated project map. The map is a projection of evidence, not a novel.</p>
+<h3 id="overview-read-this-first">Read this first</h3>
+<p>Before writing any artifact, read <code>references/contract.md</code>. It is the only place that defines paths, managed blocks, evidence rules, and failure behavior. Do not restate its rules from memory.</p>
+<p>Then read the one reference for the work at hand:</p>
+<table><thead><tr><th>Need</th><th>Read</th></tr></thead><tbody><tr><td>Modes, phases, token/output discipline</td><td><code>references/modes.md</code></td></tr><tr><td>Graphify detection, projection, fallback</td><td><code>references/graphify-adapter.md</code></td></tr><tr><td>Graph and ledger fields</td><td><code>references/schema.md</code></td></tr><tr><td>Vault layout and note format</td><td><code>references/obsidian.md</code></td></tr><tr><td>Markdown/JSON/HTML exports</td><td><code>references/architecture-exports.md</code></td></tr><tr><td>Spec-kit specs, plans, tasks, traceability</td><td><code>references/speckit-adapter.md</code></td></tr><tr><td>Security audit findings ingestion</td><td><code>references/security-adapter.md</code></td></tr><tr><td>Commands, flags, legacy aliases</td><td><code>references/commands.md</code></td></tr><tr><td>Broken run, failed validation, migration</td><td><code>references/troubleshooting.md</code></td></tr></tbody></table>
+<h3 id="overview-output-contract-short-form">Output contract (short form)</h3>
+<pre data-copy><code class="lang-text">project-map/
+├── graph.json                 # schema v2, machine truth
+├── map-ledger.json            # coverage units + run history
+├── architecture-overview.md|.json|.html
+├── sync-summary.md
+└── obsidian-vault/
+    ├── 00-Home.md
+    ├── 01-Index.md
+    ├── 02-LLM-Context.md      # ≤ 1500 tokens target, 2000 hard fail
+    └── ...</code></pre>
+<p><code>graphify-out/graph.json</code> is a tool cache. <code>project-map/graph.json</code> is the graph of record. Never place artifacts outside <code>project-map/</code> except the optional legacy <code>Mapkeeper_Prompt.md</code>.</p>
+<h3 id="overview-choose-the-mode">Choose the mode</h3>
+<table><thead><tr><th>Situation</th><th>Mode</th></tr></thead><tbody><tr><td>No <code>project-map/graph.json</code></td><td><code>init</code></td></tr><tr><td>Existing map, user describes a change</td><td><code>sync</code></td></tr><tr><td>Review / consistency / gaps requested</td><td><code>audit</code></td></tr><tr><td>Full rebuild, handover, as-built</td><td><code>full</code></td></tr><tr><td>Only docs requested</td><td><code>export</code></td></tr><tr><td>Only the compact context note requested</td><td><code>context</code></td></tr><tr><td>Only the graph requested</td><td><code>graph</code></td></tr><tr><td><code>.specify/</code> changed</td><td><code>specs</code></td></tr><tr><td>A security run directory is supplied</td><td><code>security</code></td></tr></tbody></table>
+<p>An explicit <code>--mode</code> or a legacy verb wins.</p>
+<h3 id="overview-procedure">Procedure</h3>
+<ol><li><strong>Resolve the project</strong>: <code>--dir</code> (default cwd), project name from <code>--name</code>, then <code>package.json</code>, then the directory name.</li><li><strong>Gather evidence</strong>: graphify cache or deterministic scan; <code>.specify/</code> if present; a security run if supplied.</li><li><strong>Project, never invent</strong>: map graphify nodes and relations 1:1, keep ids stable, tag <code>derivation</code> (<code>graphify</code>, <code>speckit</code>, <code>security</code>, <code>llm</code>). A skipped relation is a warning, not a guess.</li><li><strong>Write through the CLI</strong>, not by hand:</li></ol>
+<p>   ``<code>bash    node scripts/mapkeeper.mjs init|sync|audit|export|context|graph|specs|security|doctor|query|migrate    </code>`<code>    The CLI owns validation, managed blocks, the vault, exports, and the ledger. Hand-writing </code>graph.json<code> is a last resort and must still pass </code>scripts/validate-graph.mjs`.</p>
+<ol><li><strong>Report</strong>: mode, generation source, changed units, coverage counts, assumptions/unknowns, artifacts, next actions.</li></ol>
+<h3 id="overview-non-negotiables">Non-negotiables</h3>
+<ul><li>A tool is never reported as used unless it ran and its output parsed. If graphify is missing, say <code>graphify-fallback</code> or <code>llm-manual</code>.</li><li>Every non-inferred node needs <code>source_refs</code> or <code>spec_refs</code>. Inferred nodes need <code>confidence</code> and appear under *Unverified* in <code>sync-summary.md</code>.</li><li>Validation failure must not overwrite the previous good graph. The CLI writes the candidate to <code>project-map/.cache/graph.candidate.json</code> and exits non-zero.</li><li>Never write into <code>.specify/</code>, a security run directory, or a human-owned region of a vault note.</li><li>Never publish a security candidate whose verdict is <code>rejected</code>, and never assign severity to <code>needs_validation</code>.</li><li>Redact secrets to <code>&lt;redacted&gt;</code> and add an <code>unknowns</code> entry describing what was removed.</li></ul>
+<h3 id="overview-adapters-optional-read-only">Adapters (optional, read-only)</h3>
+<p><strong>Graphify</strong>: detect the <code>graphify</code> binary and <code>graphify-out/graph.json</code>. Run <code>graphify update</code> only when a cache exists and the user allows it (<code>--run-tool</code>); otherwise consume the cache. <code>mapkeeper query</code> delegates to <code>graphify query|path|explain</code>.</p>
+<p><strong>Spec-kit</strong>: detect <code>.specify/</code>; ingest <code>constitution.md</code>, <code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>. Requirements get ids from <code>FR-###</code>/<code>US#</code>; tasks from <code>T###</code>; edges <code>satisfies_requirement</code>. Report requirements with no task and tasks referencing missing files. Never edit spec-kit artifacts.</p>
+<p><strong>Security audit</strong>: locate an installed <code>security-audit</code> skill and a run directory containing <code>run-metadata.json</code>, <code>architecture.md</code>, <code>findings.json</code>. Preserve verdicts; trust boundaries become nodes; findings link to files, boundaries, and requirements. Never run an audit implicitly.</p>
+<h3 id="overview-answering-questions-from-the-map">Answering questions from the map</h3>
+<ol><li>Read <code>project-map/obsidian-vault/02-LLM-Context.md</code> first.</li><li>If the question is about structure, use <code>mapkeeper query</code> (or <code>graphify query</code>) before reading source.</li><li>Open only the node notes linked from the answer.</li></ol>
+<h3 id="overview-validation">Validation</h3>
+<pre data-copy><code class="lang-bash">node scripts/validate-graph.mjs project-map/graph.json
+node scripts/validate-ledger.mjs project-map/map-ledger.json
+node scripts/validate-context.mjs project-map/obsidian-vault/02-LLM-Context.md
+node scripts/check-managed-blocks.mjs project-map
+node scripts/mapkeeper.mjs doctor</code></pre>
+<p>An <code>audit</code> exits non-zero when artifacts are invalid, a tracked path is absent from the ledger, a mapped unit's evidence is missing, or a requirement has no satisfying edge. Never claim full coverage without stating the ledger counts.</p>
+<h3 id="overview-final-response">Final response</h3>
+<ol><li>Mode and phase.</li><li>Generation source (<code>graphify</code>, <code>graphify+llm</code>, <code>llm-manual</code>, <code>graphify-fallback</code>).</li><li>What changed or what the audit found.</li><li>Coverage: mapped / stale / unmapped / out_of_scope.</li><li>Assumptions and unknowns.</li><li>Artifacts written.</li><li>Risks and next actions.</li></ol>
+</section>
+<section id="install">
+  <div class="section-head">
+    <h2>Install</h2>
+    <a class="source" href="README.md">source</a>
+  </div>
+  <h3 id="install-60-second-start">60-second start</h3>
+<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs init
+node scripts/mapkeeper.mjs doctor
+open project-map/obsidian-vault</code></pre>
+<p>Then, after changes:</p>
+<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs sync
+node scripts/mapkeeper.mjs audit</code></pre>
+<p>No install step, no API key, no network access. Node 20+.</p>
+<h3 id="install-what-you-get">What you get</h3>
+<pre data-copy><code class="lang-text">project-map/
+├── graph.json                 # schema v2: nodes, edges, derivation, provenance
+├── map-ledger.json            # coverage units + run history
+├── architecture-overview.md   # human view
+├── architecture-overview.json # machine view
+├── architecture-overview.html # standalone, no CDN
+├── sync-summary.md            # latest run, gaps, warnings, history
+└── obsidian-vault/            # open directly in Obsidian
+    ├── 00-Home.md
+    ├── 01-Index.md
+    ├── 02-LLM-Context.md      # ≤1500 tokens, the first file an agent reads
+    └── 10-Architecture/ … 90-Meta/</code></pre>
+<p>Generated regions are wrapped in <code>&lt;!-- mapkeeper:begin id=... --&gt;</code> blocks. Text outside the blocks is yours and survives every run.</p>
+<h3 id="install-install-as-a-skill">Install as a skill</h3>
+<p>Agent-neutral (SKILL.md layout):</p>
+<pre data-copy><code class="lang-bash">npx skills add &lt;this-repo-url&gt; --skill mapkeeper   # replace with the repository URL</code></pre>
+<p>Kilo, user-level:</p>
+<pre data-copy><code class="lang-bash">cp -R . ~/.config/kilo/skills/mapkeeper</code></pre>
+<p>Kilo, project-level:</p>
+<pre data-copy><code class="lang-bash">mkdir -p .kilo/skills
+cp -R . .kilo/skills/mapkeeper</code></pre>
+<p>Other agents: copy the directory into the agent's skills folder; <code>SKILL.md</code> is the entry point and <code>references/</code> is progressive disclosure.</p>
+<h3 id="install-install-as-a-spec-kit-extension">Install as a spec-kit extension</h3>
+<pre data-copy><code class="lang-bash">specify extension add --dev &quot;$(pwd)/spec-kit-extension&quot;</code></pre>
+<p>Adds <code>/speckit-mapkeeper-init</code>, <code>/speckit-mapkeeper-sync</code>, <code>/speckit-mapkeeper-audit</code>, plus optional <code>after_tasks</code> and <code>after_implement</code> hooks. It reads <code>.specify/</code> and never writes to it.</p>
+<h3 id="install-prefer-prompts">Prefer prompts?</h3>
+<p><code>Mapkeeper_Prompt.md</code> is generated and deprecated. It is a bounded compatibility shim for environments with no CLI or skill. Regenerate with <code>npm run build:prompt</code>.</p>
+<h3 id="install-commands">Commands</h3>
+<table><thead><tr><th>Command</th><th>Purpose</th></tr></thead><tbody><tr><td><code>init</code></td><td>first map (graph, ledger, vault, exports, summary, context)</td></tr><tr><td><code>sync</code></td><td>incremental update of changed units only</td></tr><tr><td><code>audit</code></td><td>validate artifacts, report coverage and traceability gaps, exit 1 on failure</td></tr><tr><td><code>full</code></td><td>rebuild derived artifacts, keep human text</td></tr><tr><td><code>export</code></td><td>regenerate architecture docs and vault</td></tr><tr><td><code>context</code></td><td>regenerate <code>02-LLM-Context.md</code> only</td></tr><tr><td><code>graph</code></td><td>regenerate <code>graph.json</code> only</td></tr><tr><td><code>specs</code></td><td>ingest <code>.specify/</code> and report requirement coverage</td></tr><tr><td><code>security &lt;run&gt;</code></td><td>ingest a security-audit run directory</td></tr><tr><td><code>query &quot;&lt;q&gt;&quot;</code> / <code>query path a b</code> / <code>query explain x</code></td><td>delegate to graphify, else traverse the graph</td></tr><tr><td><code>doctor</code></td><td>checks: schemas, blocks, links, coverage, adapters</td></tr><tr><td><code>migrate</code></td><td>v1 <code>project-map/</code> → schema v2, with backup</td></tr></tbody></table>
+<p>Legacy <code>MAPPER INIT|SYNC|AUDIT|FULL|EXPORT ONLY|CONTEXT ONLY|GRAPHIFY ONLY</code> verbs still work.</p>
+<h3 id="install-adapters">Adapters</h3>
+<p><strong>Graphify</strong> — detects <code>graphify</code> and <code>graphify-out/graph.json</code>, runs <code>graphify update</code> only when a cache exists and you allow it (<code>--run-tool</code>), projects nodes and relations 1:1, and never invents a relation. Without it, a deterministic file/import scan keeps the map useful and labels itself <code>llm-manual</code> or <code>graphify-fallback</code>.</p>
+<p><strong>spec-kit</strong> — reads <code>constitution.md</code>, <code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>; creates requirement, task, goal, component, decision, and constraint nodes with stable ids (<code>FR-001</code>, <code>T012</code>); adds <code>satisfies_requirement</code> edges; reports requirements without tasks and tasks referencing missing files.</p>
+<p><strong>security-audit</strong> — reads <code>run-metadata.json</code>, <code>architecture.md</code>, and <code>findings.json</code>; preserves verdicts (<code>confirmed</code>, <code>needs_validation</code>, <code>rejected</code>), never assigns severity to <code>needs_validation</code>, never publishes rejected candidates, and never re-runs an audit.</p>
+<h3 id="install-validation">Validation</h3>
+<pre data-copy><code class="lang-bash">npm test                                   # schemas, adapters, managed blocks
+npm run check                              # tests + generated files are current
+node scripts/validate-graph.mjs project-map/graph.json
+node scripts/validate-ledger.mjs project-map/map-ledger.json
+node scripts/validate-context.mjs project-map/obsidian-vault/02-LLM-Context.md
+node scripts/check-managed-blocks.mjs project-map</code></pre>
+<h3 id="install-repository-layout">Repository layout</h3>
+<pre data-copy><code class="lang-text">SKILL.md                 # agent entry point
+Mapkeeper_Prompt.md         # generated legacy shim
+index.html               # generated single-file guide
+references/              # progressive disclosure for modes, adapters, schema, troubleshooting
+schema/                  # JSON Schemas (draft 2020-12)
+scripts/                 # zero-dependency CLI, validators, guide builder
+spec-kit-extension/      # optional extension manifest and commands
+tests/                   # node:test suites and fixtures</code></pre>
+<h3 id="install-background">Background</h3>
+<p>A living project map for any repository: a validated knowledge graph, a coverage ledger, an Obsidian vault, and architecture exports.</p>
+<p>The original version was a 1,300-line prompt that asked an agent to produce JSON it could not validate and to call Graphify tools that did not exist. This version is a skill plus a zero-dependency CLI. Every artifact has a schema, the coverage claim is falsifiable, and Graphify, spec-kit, and security-audit are optional adapters rather than assumptions.</p>
+<h3 id="install-development">Development</h3>
+<pre data-copy><code class="lang-bash">npm test
+npm run build:guide
+npm run build:prompt
+npm run check</code></pre>
+<p><code>npm run check</code> fails if <code>index.html</code> or <code>Mapkeeper_Prompt.md</code> is stale.</p>
+<h3 id="install-license">License</h3>
+<p>Apache-2.0. See <code>NOTICE</code> for inspiration and attribution.</p>
+<p>The process patterns (schema-validated artifacts, coverage ledger, independently verified records) are inspired by <a href="https://github.com/cloudflare/security-audit-skill">cloudflare/security-audit-skill</a> and <a href="https://github.com/github/spec-kit">github/spec-kit</a>, both MIT. Graphify is an external optional tool, not bundled.</p>
+</section>
+<section id="commands">
+  <div class="section-head">
+    <h2>Commands</h2>
+    <a class="source" href="references/commands.md">source</a>
+  </div>
+  <p>Run from the repository root. The CLI is zero-dependency (<code>node &gt;= 20</code>).</p>
+<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs &lt;command&gt; [options]</code></pre>
+<h3 id="commands-commands">Commands</h3>
+<table><thead><tr><th>Command</th><th>Writes</th><th>Purpose</th></tr></thead><tbody><tr><td><code>init</code></td><td>everything</td><td>first map, or rebuild after a reset</td></tr><tr><td><code>sync</code></td><td>stale units + summary + context</td><td>incremental update</td></tr><tr><td><code>audit</code></td><td>summary only</td><td>validate and report gaps; exit 1 on failure</td></tr><tr><td><code>full</code></td><td>everything</td><td>rebuild derived artifacts, keep human text</td></tr><tr><td><code>export</code></td><td>architecture + vault</td><td>regenerate docs from an existing graph</td></tr><tr><td><code>context</code></td><td><code>02-LLM-Context.md</code></td><td>compact context only</td></tr><tr><td><code>graph</code></td><td><code>graph.json</code> (+ ledger)</td><td>graph only</td></tr><tr><td><code>specs</code></td><td>spec nodes merged</td><td>ingest <code>.specify/</code></td></tr><tr><td><code>security &lt;run&gt;</code></td><td>security nodes merged</td><td>ingest a security-audit run</td></tr><tr><td><code>query &quot;&lt;q&gt;&quot;</code></td><td>nothing</td><td>graphify query, else graph traversal</td></tr><tr><td><code>query path &lt;a&gt; &lt;b&gt;</code></td><td>nothing</td><td>shortest path</td></tr><tr><td><code>query explain &lt;node&gt;</code></td><td>nothing</td><td>dump one node</td></tr><tr><td><code>doctor</code></td><td>nothing</td><td>environment/artifact checks; <code>--migrate</code> upgrades v1 first</td></tr><tr><td><code>migrate</code></td><td>graph, ledger, exports, vault, summary</td><td>v1 → v2 with <code>project-map/.backup-v1/</code> backup</td></tr></tbody></table>
+<h3 id="commands-options">Options</h3>
+<table><thead><tr><th>Flag</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>--dir &lt;path&gt;</code></td><td>cwd</td><td>project root</td></tr><tr><td><code>--out &lt;path&gt;</code></td><td><code>project-map</code></td><td>output directory</td></tr><tr><td>`--phase BEFORE\</td><td>DURING\</td><td>END`</td><td>previous or <code>DURING</code></td><td></td></tr><tr><td><code>--name &lt;project&gt;</code></td><td>package.json or dir</td><td></td></tr><tr><td>`--graphify auto\</td><td>manual\</td><td>disabled`</td><td><code>auto</code></td><td><code>manual</code>/<code>disabled</code> force the fallback</td></tr><tr><td><code>--run-tool</code></td><td>off</td><td>allow <code>graphify update</code> when a cache exists</td></tr><tr><td><code>--security-run &lt;dir&gt;</code></td><td>none</td><td>ingest this run</td></tr><tr><td><code>--no-specs</code></td><td>off</td><td>skip <code>.specify/</code></td></tr><tr><td><code>--budget &lt;tokens&gt;</code></td><td>1500</td><td>context note target</td></tr><tr><td><code>--prune</code></td><td>off</td><td>delete orphaned mapkeeper-managed notes</td></tr><tr><td><code>--soft</code></td><td>off</td><td>audit exits 0 despite failures</td></tr><tr><td><code>--strict</code></td><td>off</td><td>non-zero exit on warnings</td></tr><tr><td><code>--json</code></td><td>off</td><td>machine-readable <code>doctor</code> output</td></tr><tr><td><code>--debug</code></td><td>off</td><td>stack traces</td></tr></tbody></table>
+<h3 id="commands-legacy-aliases">Legacy aliases</h3>
+<p>The old prompt verbs map to the same handlers:</p>
+<pre data-copy><code class="lang-text">MAPPER INIT            → init
+MAPPER SYNC            → sync
+MAPPER AUDIT           → audit
+MAPPER FULL            → full
+MAPPER EXPORT ONLY     → export
+MAPPER CONTEXT ONLY    → context
+MAPPER GRAPHIFY ONLY   → graph</code></pre>
+<h3 id="commands-typical-sequences">Typical sequences</h3>
+<pre data-copy><code class="lang-bash"># first map, with graphify cache and a security run
+node scripts/mapkeeper.mjs init --security-run ../audits/run-1
 
-  <footer>
-    Guide generated for <strong>Mapper_Prompt.md</strong>. Required structure: <strong>project-map/</strong> at the repository root.
-  </footer>
+# after a code change
+node scripts/mapkeeper.mjs sync
 
-  <script>
-    (() => {
-      const root = document.documentElement;
-      const themeToggle = document.getElementById("themeToggle");
-      const storedTheme = localStorage.getItem("mapperGuideTheme");
+# before a release
+node scripts/mapkeeper.mjs audit
 
-      if (storedTheme) {
-        root.setAttribute("data-theme", storedTheme);
+# after /speckit-tasks
+node scripts/mapkeeper.mjs specs
+
+# from a security audit output directory
+node scripts/mapkeeper.mjs security ~/security-audit-skill/app/run-2
+
+# handover
+node scripts/mapkeeper.mjs full --phase END
+node scripts/mapkeeper.mjs export</code></pre>
+<h3 id="commands-spec-kit-extension-commands">Spec-kit extension commands</h3>
+<p>After <code>specify extension add --dev spec-kit-extension</code>:</p>
+<pre data-copy><code class="lang-text">/speckit-mapkeeper-init
+/speckit-mapkeeper-sync
+/speckit-mapkeeper-audit</code></pre>
+<p>Optional hooks: <code>after_tasks</code> and <code>after_implement</code> ask whether to sync the map.</p>
+<h3 id="commands-exit-codes">Exit codes</h3>
+<table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td>0</td><td>success</td></tr><tr><td>1</td><td>validation/audit failure or warnings under <code>--strict</code></td></tr><tr><td>2</td><td>missing inputs or usage error</td></tr></tbody></table>
+<h3 id="commands-environment">Environment</h3>
+<p>No secrets are read. The CLI never needs an API key. Graphify may use its own configuration; this tool only calls <code>graphify --version</code>, <code>graphify update</code>, and <code>graphify query|path|explain</code>.</p>
+</section>
+<section id="contract">
+  <div class="section-head">
+    <h2>Contract</h2>
+    <a class="source" href="references/contract.md">source</a>
+  </div>
+  <p>This file is the single source of truth for what Mapkeeper writes. <code>SKILL.md</code>, <code>Mapkeeper_Prompt.md</code>, and the HTML guide are generated from or must agree with this file.</p>
+<h3 id="contract-output-layout-inside-the-users-repository">Output layout (inside the user's repository)</h3>
+<pre data-copy><code class="lang-text">your-project/
+├── Mapkeeper_Prompt.md              # optional legacy shim, generated, deprecated
+└── project-map/
+    ├── graph.json                # schema v2 projection: machine truth
+    ├── map-ledger.json           # coverage units + run history
+    ├── architecture-overview.md
+    ├── architecture-overview.json
+    ├── architecture-overview.html
+    ├── sync-summary.md
+    └── obsidian-vault/
+        ├── 00-Home.md
+        ├── 01-Index.md
+        ├── 02-LLM-Context.md
+        ├── 10-Architecture/
+        └── &lt;kind folders&gt;/</code></pre>
+<p><code>.DS_Store</code>, <code>graphify-out/</code>, and <code>project-map/.cache/</code> are never mapped.</p>
+<h3 id="contract-mandatory-rules">Mandatory rules</h3>
+<ol><li><code>project-map/</code> is the only output directory. Do not use <code>docs/project-map/</code>, <code>.project-map/</code>, <code>knowledge/</code>, <code>architecture-map/</code>, or <code>maps/</code>.</li><li><code>project-map/graph.json</code> is the only graph of record. <code>graphify-out/graph.json</code> is a tool cache; it is never edited by hand and never committed as truth.</li><li><code>project-map/map-ledger.json</code> is the coverage record. A run that does not update it has not been audited.</li><li>Never place generated artifacts outside <code>project-map/</code>, except the optional <code>Mapkeeper_Prompt.md</code> shim and the repository's own docs.</li><li>Never write into <code>.specify/</code> or into a security audit run directory. Both are read-only inputs.</li><li>Never expose secrets, tokens, credentials, connection strings, or private keys in any artifact. Redact to <code>&lt;redacted&gt;</code> and add an <code>unknown</code> entry explaining what was removed.</li></ol>
+<h3 id="contract-write-rules-bind-to-these-not-to-prose">Write rules (bind to these, not to prose)</h3>
+<p>Every generated Markdown region is wrapped in a managed block:</p>
+<pre data-copy><code class="lang-markdown">&lt;!-- mapkeeper:begin id=&lt;stable-id&gt; --&gt;
+generated content
+&lt;!-- mapkeeper:end id=&lt;stable-id&gt; --&gt;</code></pre>
+<ul><li>Writers replace <strong>only</strong> the block body. Text outside blocks is human-owned and must survive every run.</li><li>A missing block is appended; an existing block is replaced; a new file is created with a heading, then the block.</li><li><code>scripts/check-managed-blocks.mjs</code> fails on an unclosed or duplicate block id.</li><li>Per-node notes carry YAML frontmatter that is regenerated on every run. Human notes go under a <code>## Notes</code> heading outside managed blocks.</li></ul>
+<p><code>02-LLM-Context.md</code> is fully generated and budget-enforced: target ≤ 1,500 tokens, hard fail &gt; 2,000 (<code>scripts/validate-context.mjs</code>).</p>
+<h3 id="contract-evidence-rules">Evidence rules</h3>
+<table><thead><tr><th>Situation</th><th>Required evidence</th></tr></thead><tbody><tr><td>Node derived from graphify</td><td><code>source_refs: [&quot;&lt;file&gt;#&lt;loc&gt;&quot;]</code> or <code>source_refs: [&quot;&lt;file&gt;&quot;]</code> copied from <code>source_file</code></td></tr><tr><td>Node derived from spec-kit</td><td><code>spec_refs: [&quot;&lt;spec path&gt;#&lt;FR/T/US id&gt;&quot;]</code></td></tr><tr><td>Node derived from a security run</td><td><code>source_refs: [&quot;&lt;file&gt;:&lt;line&gt;&quot;]</code> and <code>verdict</code></td></tr><tr><td>Node inferred by the model</td><td><code>confidence</code> (low/medium/high) and listed under *Unverified* in <code>sync-summary.md</code></td></tr><tr><td>Edge</td><td><code>source</code>, <code>target</code>, <code>relation</code>, <code>confidence</code>; <code>confidence_score</code> is required unless <code>EXTRACTED</code></td></tr></tbody></table>
+<p>Ids are stable. Never rename an id because a label changed. Ids must match <code>^[A-Za-z0-9][A-Za-z0-9_.:-]*$</code>. Namespaced prefixes: <code>spec_&lt;feature&gt;_...</code> for spec-kit, <code>sec_&lt;run&gt;_...</code> for security, <code>decision_adr_...</code> for decisions.</p>
+<h3 id="contract-mode-contract">Mode contract</h3>
+<table><thead><tr><th>Mode</th><th>Writes</th><th>Reads</th></tr></thead><tbody><tr><td><code>INIT</code></td><td>graph, ledger, vault, exports, summary, context</td><td>source tree, graphify, <code>.specify/</code>, optional security run</td></tr><tr><td><code>SYNC</code></td><td>only stale/mapped units + summary + context</td><td>changed files plus prior ledger</td></tr><tr><td><code>AUDIT</code></td><td>summary findings only; no graph regeneration</td><td>graph, ledger, source tree</td></tr><tr><td><code>FULL</code></td><td>everything, rebuilt</td><td>full source tree</td></tr><tr><td><code>EXPORT</code></td><td>architecture exports + vault</td><td>existing graph</td></tr><tr><td><code>CONTEXT</code></td><td><code>02-LLM-Context.md</code></td><td>existing graph + ledger</td></tr><tr><td><code>GRAPH</code></td><td>graph.json</td><td>graphify cache or source scan</td></tr><tr><td><code>SPECS</code></td><td>spec nodes merge</td><td><code>.specify/</code></td></tr><tr><td><code>SECURITY</code></td><td>security nodes merge</td><td>a security run directory</td></tr></tbody></table>
+<h3 id="contract-failure-rules">Failure rules</h3>
+<ul><li>A tool is never reported as used unless it ran and its output parsed. Record <code>meta.graphify.available</code> honestly.</li><li>Graphify unavailable → deterministic source scan (files + import edges) + spec/security ingestion. Mark <code>derivation: &quot;llm&quot;</code> only for model-authored content.</li><li>Graphify failed mid-run → keep the previous graph, add a <code>sync-summary.md</code> warning with the exact error, and exit non-zero in <code>--strict</code> mode.</li><li>Validation failure → do not overwrite the previous valid graph; write to <code>project-map/.cache/graph.candidate.json</code>, report the error, exit 1.</li></ul>
+</section>
+<section id="modes">
+  <div class="section-head">
+    <h2>Modes and phases</h2>
+    <a class="source" href="references/modes.md">source</a>
+  </div>
+  <h3 id="modes-mode-decision-table">Mode decision table</h3>
+<p>Pick the first match:</p>
+<table><thead><tr><th>Condition</th><th>Mode</th></tr></thead><tbody><tr><td><code>project-map/graph.json</code> missing</td><td><code>INIT</code></td></tr><tr><td>User asks for review / validation / consistency / gaps</td><td><code>AUDIT</code></td></tr><tr><td>User asks for full rebuild, handover, closure, or as-built export</td><td><code>FULL</code></td></tr><tr><td>Only exports are requested</td><td><code>EXPORT</code></td></tr><tr><td>Only the LLM context note is requested</td><td><code>CONTEXT</code></td></tr><tr><td>Only the graph is requested</td><td><code>GRAPH</code></td></tr><tr><td><code>.specify/</code> changed and no code changed</td><td><code>SPECS</code></td></tr><tr><td>A security run directory is supplied</td><td><code>SECURITY</code></td></tr><tr><td>Anything else with an existing map</td><td><code>SYNC</code></td></tr></tbody></table>
+<p>An explicit flag wins: <code>--mode init|sync|audit|full|export|context|graph|specs|security</code>.</p>
+<h3 id="modes-init">INIT</h3>
+<ol><li>Resolve project name (arg → <code>package.json</code>/<code>pyproject.toml</code>/directory name).</li><li>Detect <code>.specify/</code> and an existing security run directory; ingest if present.</li><li>Detect graphify: binary on <code>PATH</code>, <code>graphify --version</code>, and <code>graphify-out/graph.json</code>. Run <code>graphify update</code> only when a cache already exists; never start a long extraction unasked.</li><li>Project whatever graph data exists into <code>project-map/graph.json</code>.</li><li>Seed <code>map-ledger.json</code> from tracked files, one unit per top-level tree plus root files.</li><li>Write the vault, architecture exports, sync summary, and context note.</li><li>Validate everything, then print the summary.</li></ol>
+<h3 id="modes-sync-incremental">SYNC (incremental)</h3>
+<ol><li>Load ledger. Compute changed files from git (<code>git status --porcelain</code> plus the diff from <code>ledger.source_revision</code> when available).</li><li>Mark only affected units <code>stale</code>. Units whose scope did not match remain untouched.</li><li>Re-extract only stale units: graphify <code>--update</code> if a cache exists; otherwise rescan only those paths.</li><li>Merge: new extraction replaces nodes for the rescanned paths; spec-kit and security nodes are preserved until re-ingested.</li><li>Update the ledger and summary. Output only: changed units, added/removed/updated node ids, new gaps, warnings.</li></ol>
+<p>Never regenerate the whole vault. Rewrite only notes whose node ids changed or disappeared; delete notes for removed nodes only when they carry no human text outside managed blocks.</p>
+<h3 id="modes-audit">AUDIT</h3>
+<p>Read-only with respect to the graph. Produce a report and set the exit code:</p>
+<ul><li>Validate <code>graph.json</code>, <code>map-ledger.json</code>, <code>02-LLM-Context.md</code> budget, and managed blocks.</li><li>Every tracked path must appear in the ledger as <code>mapped</code>, <code>unmapped</code>, or <code>out_of_scope</code>; a path missing from the ledger is a failure.</li><li>Every <code>mapped</code> unit's evidence file must exist.</li><li>Every requirement unit must have at least one <code>satisfies_requirement</code> edge or be reported missing coverage.</li><li>Report stale units, orphaned Obsidian links, nodes without refs, and findings marked <code>stale</code>.</li><li>Exit <code>0</code> when clean, <code>1</code> when any failure is found, <code>2</code> when inputs are missing. <code>--soft</code> forces exit 0 for exploratory use.</li></ul>
+<p>An audit never claims completeness beyond the ledger. State the coverage counts explicitly.</p>
+<h3 id="modes-full">FULL</h3>
+<p>Same pipeline as <code>INIT</code>, but discard cached derivations for graphify- and scan-derived nodes and rebuild them. Preserve human text, spec-kit nodes, and security nodes unless <code>--reset-specs</code> / <code>--reset-security</code> is given. Write <code>project-map/.backup-v1/</code> first when migrating a v1 tree.</p>
+<h3 id="modes-export">EXPORT</h3>
+<p>Regenerate <code>architecture-overview.{md,json,html}</code> and the vault from <code>graph.json</code>. Fail if the graph is missing or invalid. Never modify <code>graph.json</code>.</p>
+<h3 id="modes-context">CONTEXT</h3>
+<p>Regenerate <code>02-LLM-Context.md</code> only. Must satisfy the context schema and the token budget.</p>
+<h3 id="modes-graph">GRAPH</h3>
+<p>Rebuild <code>graph.json</code> only. Includes spec-kit and security ingestion unless <code>--no-specs</code> / <code>--no-security</code> is set.</p>
+<h3 id="modes-specs">SPECS</h3>
+<p>Ingest <code>.specify/</code> artifacts, merge into the graph, update requirement/task units, and write the traceability report.</p>
+<h3 id="modes-security">SECURITY</h3>
+<p>Ingest one security run directory. Never run the audit itself unless the user explicitly asked for an audit; in that case delegate to the installed <code>security-audit</code> skill and state its output directory.</p>
+<h3 id="modes-phase-handling">Phase handling</h3>
+<table><thead><tr><th>Phase</th><th>Emphasis</th><th>Status vocabulary</th></tr></thead><tbody><tr><td><code>BEFORE</code></td><td>goals, scope, requirements, constraints, stakeholders, planned architecture</td><td><code>planned</code>, <code>unknown</code></td></tr><tr><td><code>DURING</code></td><td>implementation, decisions, task state, drift between docs and code</td><td><code>implemented</code>, <code>planned</code>, <code>unknown</code></td></tr><tr><td><code>END</code></td><td>as-built, deviations, debt, operational notes, handover</td><td><code>implemented</code>, <code>deprecated</code>, <code>unknown</code></td></tr></tbody></table>
+<p>Never present planned work as implemented. Anything inferred rather than read is labeled.</p>
+<h3 id="modes-token-rules">Token rules</h3>
+<p>The rules below are enforced or made mechanical, not requested:</p>
+<ol><li><code>SYNC</code> prints only deltas (from the ledger diff).</li><li><code>02-LLM-Context.md</code> is the first context source for later questions; <code>SKILL.md</code> says so and the validator enforces its size.</li><li><code>query</code> delegates to <code>graphify query|path|explain</code>; the fallback traversal reads <code>graph.json</code> only, never the repository.</li><li>Under a low context budget, read <code>02-LLM-Context.md</code> and the affected node notes only.</li><li>No artifact is duplicated across files: contract text exists once, in <code>references/contract.md</code>.</li></ol>
+<h3 id="modes-final-response-format">Final response format</h3>
+<ol><li>Mode and phase.</li><li>Generation source: <code>graphify</code>, <code>graphify+llm</code>, <code>llm-manual</code>, <code>graphify-fallback</code>, plus spec-kit/security ingestion flags.</li><li>What changed (or audit findings).</li><li>Coverage: <code>mapped / stale / unmapped / out_of_scope</code>.</li><li>Assumptions and unknowns.</li><li>Artifacts written.</li><li>Risks and next actions.</li></ol>
+</section>
+<section id="graphify">
+  <div class="section-head">
+    <h2>Graphify adapter</h2>
+    <a class="source" href="references/graphify-adapter.md">source</a>
+  </div>
+  <p>Graphify is an optional external tool. It is never required; Mapkeeper always has a deterministic fallback.</p>
+<h3 id="graphify-detection-honest-in-this-order">Detection (honest, in this order)</h3>
+<ol><li><code>graphify --version</code> on <code>PATH</code> → record the version. A missing binary is not an error.</li><li><code>graphify-out/graph.json</code> exists → a usable cache. Record <code>graph_path</code>.</li><li><code>.specify/</code> and security runs are independent inputs; they do not imply graphify.</li></ol>
+<p>Set <code>meta.graphify</code> accordingly:</p>
+<pre data-copy><code class="lang-json">{ &quot;available&quot;: true, &quot;version&quot;: &quot;0.9.x&quot;, &quot;graph_path&quot;: &quot;graphify-out/graph.json&quot;, &quot;used_cache&quot;: true }</code></pre>
+<p><code>available</code> means graph data was consumed. <code>used_cache: false</code> means the CLI was invoked this run.</p>
+<h3 id="graphify-invocation-rules">Invocation rules</h3>
+<table><thead><tr><th>Situation</th><th>Action</th></tr></thead><tbody><tr><td>Cache exists, user passes <code>--run-tool</code></td><td>Run <code>graphify update</code> in the project root, 10-minute timeout</td></tr><tr><td>Cache exists, no <code>--run-tool</code></td><td>Consume the cache; note it in <code>sync-summary.md</code></td></tr><tr><td>Cache exists, <code>init</code> mode</td><td><code>graphify update</code> is allowed (default behavior)</td></tr><tr><td>No cache, binary present</td><td>Do <strong>not</strong> start a full extraction unprompted; use the fallback and say why</td></tr><tr><td><code>--graphify manual</code> or <code>disabled</code></td><td>Never invoke; use the deterministic fallback</td></tr><tr><td>Update fails</td><td>Keep the previous graph, record the exact stderr, continue with the fallback if no cache</td></tr></tbody></table>
+<p>Never run <code>graphify</code> with <code>--mcp</code> automatically. MCP is for query-time delegation.</p>
+<h3 id="graphify-projection-graphify-graphjson">Projection (graphify → graph.json)</h3>
+<p>Node mapping:</p>
+<table><thead><tr><th>graphify <code>file_type</code></th><th>Mapkeeper <code>kind</code></th></tr></thead><tbody><tr><td><code>code</code></td><td><code>file</code></td></tr><tr><td><code>document</code>, <code>paper</code>, <code>image</code></td><td><code>document</code></td></tr><tr><td><code>rationale</code></td><td><code>decision</code></td></tr><tr><td><code>concept</code></td><td><code>data_entity</code></td></tr><tr><td>missing/unknown</td><td><code>file</code></td></tr></tbody></table>
+<p>Preserve, verbatim:</p>
+<ul><li><code>id</code> (never rename, never add chunk suffixes)</li><li><code>label</code></li><li><code>source_file</code> (relativized to the project root when it is absolute and inside it)</li><li><code>source_location</code></li><li><code>community</code> (into <code>provenance.community</code> and <code>tags</code>)</li></ul>
+<p>Set <code>derivation: &quot;graphify&quot;</code>, <code>confidence: &quot;high&quot;</code> for code and <code>&quot;medium&quot;</code> otherwise, <code>status: &quot;implemented&quot;</code> for code and <code>&quot;unknown&quot;</code> otherwise, <code>provenance.relation_source: &quot;EXTRACTED&quot;</code>.</p>
+<p>Edge mapping is 1:1 and only for these relations:</p>
+<pre data-copy><code class="lang-text">calls, implements, references, cites,
+conceptually_related_to, shares_data_with,
+semantically_similar_to, rationale_for</code></pre>
+<p>If graphify emits any other relation, skip the edge and add a warning naming it. Never translate an unknown relation into <code>relates_to</code>.</p>
+<p>Keep <code>confidence</code> and <code>confidence_score</code> unchanged. Hyperedges are not projected in v2; count them in the warning list if present.</p>
+<h3 id="graphify-deterministic-fallback-llm-manual-graphify-fallback">Deterministic fallback (<code>llm-manual</code> / <code>graphify-fallback</code>)</h3>
+<p>When no graph is available, the scan is intentionally simple and reproducible:</p>
+<ol><li>One <code>project</code> node (<code>project_root</code>) and one <code>file</code> node per tracked text file, ids <code>file_&lt;sanitized-path-without-extension&gt;</code>.</li><li><code>component</code> nodes for top-level folders with 3+ files, edges <code>contains</code>.</li><li>Import edges <code>references</code> (<code>EXTRACTED</code>, score 1.0) resolved from relative JS/TS <code>import</code>/<code>require</code> and Python <code>import</code>/<code>from</code>. Unresolvable imports are dropped silently; cross-language edges are never created.</li><li><code>dependency</code> nodes from <code>package.json</code> with <code>depends_on</code> edges from the project node.</li><li>Ignored: <code>project-map/</code>, <code>graphify-out/</code>, <code>node_modules/</code>, <code>.git/</code>, <code>.specify/</code>, lockfiles, binary/media files.</li></ol>
+<p>The fallback does not invent call graphs, services, or data flows. If the user needs those, they must install graphify or provide a graph.</p>
+<h3 id="graphify-incremental-behavior">Incremental behavior</h3>
+<ul><li><code>sync</code> without a cache rescans only changed files (git status plus the diff from <code>ledger.source_revision</code>).</li><li>Units whose scope matched a changed file become <code>stale</code> before rescanning.</li><li>Nodes whose <code>source_refs</code> point at a changed file are replaced; untouched nodes are kept.</li><li>Non-git directories fall back to a full rescan; say so in the summary.</li></ul>
+<h3 id="graphify-query-delegation">Query delegation</h3>
+<p><code>mapkeeper query &quot;&lt;question&gt;&quot;</code> runs <code>graphify query &quot;&lt;question&gt;&quot;</code> when both the binary and the cache exist. <code>mapkeeper query path a b</code> and <code>mapkeeper query explain node</code> delegate to the same CLI. On failure, Mapkeeper prints the graphify error and traverses <code>project-map/graph.json</code> instead — it never falls back to reading the repository.</p>
+<h3 id="graphify-failure-modes-to-report-not-hide">Failure modes to report, not hide</h3>
+<table><thead><tr><th>Symptom</th><th>Message</th></tr></thead><tbody><tr><td>binary absent</td><td><code>graphify binary not found on PATH</code></td></tr><tr><td>binary present, cache absent</td><td><code>graphify binary present but graphify-out/graph.json is missing</code></td></tr><tr><td>update timeout</td><td><code>graphify update failed: &lt;stderr&gt;</code></td></tr><tr><td>schema mismatch</td><td><code>skipped graphify edge with unmapped relation &quot;&lt;x&gt;&quot;</code></td></tr><tr><td>refused shrink</td><td>surface graphify's own refusal text; do not delete the existing graph</td></tr></tbody></table>
+</section>
+<section id="schema">
+  <div class="section-head">
+    <h2>Graph and ledger schema</h2>
+    <a class="source" href="references/schema.md">source</a>
+  </div>
+  <p>Machine-readable sources: <code>schema/graph.schema.json</code>, <code>schema/ledger.schema.json</code>, <code>schema/context.schema.json</code>. Validators: <code>scripts/validate-*.mjs</code>. If prose and schema disagree, the schema wins.</p>
+<h3 id="schema-graphjson">graph.json</h3>
+<pre data-copy><code class="lang-json">{
+  &quot;schema_version&quot;: 2,
+  &quot;meta&quot;: {
+    &quot;project_name&quot;: &quot;string&quot;,
+    &quot;phase&quot;: &quot;BEFORE | DURING | END&quot;,
+    &quot;update_mode&quot;: &quot;INIT | SYNC | AUDIT | FULL&quot;,
+    &quot;generated_at&quot;: &quot;ISO-8601&quot;,
+    &quot;source_revision&quot;: &quot;git sha, sha-dirty, worktree, or migrated&quot;,
+    &quot;graphify&quot;: { &quot;available&quot;: false, &quot;version&quot;: null, &quot;graph_path&quot;: null, &quot;used_cache&quot;: false },
+    &quot;generator&quot;: &quot;graphify | graphify+llm | llm-manual | graphify-fallback&quot;,
+    &quot;counts&quot;: { &quot;nodes&quot;: 0, &quot;edges&quot;: 0, &quot;by_derivation&quot;: {} },
+    &quot;assumptions&quot;: [],
+    &quot;unknowns&quot;: []
+  },
+  &quot;nodes&quot;: [],
+  &quot;edges&quot;: [],
+  &quot;hyperedges&quot;: [],
+  &quot;coverage&quot;: { &quot;units_total&quot;: 0, &quot;mapped&quot;: 0, &quot;stale&quot;: 0, &quot;unmapped&quot;: 0, &quot;out_of_scope&quot;: 0 }
+}</code></pre>
+<h3 id="schema-node">Node</h3>
+<table><thead><tr><th>Field</th><th>Required</th><th>Notes</th></tr></thead><tbody><tr><td><code>id</code></td><td>yes</td><td><code>^[A-Za-z0-9][A-Za-z0-9_.:-]*$</code>, stable forever, unique</td></tr><tr><td><code>kind</code></td><td>yes</td><td>one of the 31 kinds in the schema (component, requirement, finding, trust_boundary, …)</td></tr><tr><td><code>label</code></td><td>yes</td><td>human name, ≤ 160 chars in practice</td></tr><tr><td><code>status</code></td><td>yes</td><td><code>planned</code>, <code>implemented</code>, <code>unknown</code>, <code>deprecated</code>, <code>confirmed</code>, <code>needs_validation</code></td></tr><tr><td><code>derivation</code></td><td>yes</td><td><code>graphify</code>, <code>speckit</code>, <code>security</code>, <code>llm</code>, <code>merged</code></td></tr><tr><td><code>summary</code></td><td>no</td><td>one or two sentences, no secrets</td></tr><tr><td><code>phase</code></td><td>no</td><td><code>BEFORE</code>, <code>DURING</code>, <code>END</code></td></tr><tr><td><code>confidence</code></td><td>no</td><td><code>low</code>, <code>medium</code>, <code>high</code>; required for inferred nodes</td></tr><tr><td><code>provenance</code></td><td>no</td><td>`{source_file, source_location, relation_source: EXTRACTED</td><td>INFERRED</td><td>AMBIGUOUS, run_dir?, community?}`</td></tr><tr><td><code>spec_refs</code></td><td>no</td><td><code>path/to/spec.md#FR-001</code></td></tr><tr><td><code>source_refs</code></td><td>no</td><td><code>path#L10</code>, <code>path:42</code></td></tr><tr><td><code>tags</code></td><td>no</td><td>free-form</td></tr><tr><td><code>severity</code></td><td>only confirmed findings</td><td><code>critical</code>, <code>high</code>, <code>medium</code>, <code>low</code>, <code>informational</code></td></tr><tr><td><code>verdict</code></td><td>findings</td><td><code>confirmed</code>, <code>needs_validation</code> (never <code>rejected</code>)</td></tr><tr><td><code>last_verified</code></td><td>no</td><td><code>{revision, date}</code></td></tr></tbody></table>
+<p>Rules enforced by <code>validate-graph.mjs</code>:</p>
+<ol><li>Node ids are unique.</li><li>A node whose <code>provenance.relation_source</code> is not <code>INFERRED</code> needs <code>source_refs</code> or <code>spec_refs</code>.</li><li>An inferred node needs <code>confidence</code>.</li><li><code>verdict: &quot;rejected&quot;</code> must never appear.</li><li><code>status: &quot;needs_validation&quot;</code> must not carry <code>severity</code>; <code>severity</code> requires <code>status: &quot;confirmed&quot;</code>.</li><li>Edge endpoints exist and are not self-edges.</li><li><code>meta.counts.nodes/edges</code> equal array lengths.</li></ol>
+<h3 id="schema-edge">Edge</h3>
+<pre data-copy><code class="lang-json">{
+  &quot;source&quot;: &quot;node-id&quot;,
+  &quot;target&quot;: &quot;node-id&quot;,
+  &quot;relation&quot;: &quot;calls | implements | references | cites | conceptually_related_to | shares_data_with | semantically_similar_to | rationale_for | depends_on | produces | consumes | manages | decides | blocks | supports | documents | tests | deploys_to | satisfies_requirement | affects | violates | mitigated_by | relates_to | contains&quot;,
+  &quot;confidence&quot;: &quot;EXTRACTED | INFERRED | AMBIGUOUS&quot;,
+  &quot;confidence_score&quot;: 1.0,
+  &quot;derivation&quot;: &quot;graphify | speckit | security | llm | merged&quot;,
+  &quot;source_refs&quot;: [&quot;path#L10&quot;],
+  &quot;last_updated&quot;: &quot;YYYY-MM-DD&quot;
+}</code></pre>
+<p><code>confidence_score</code> is required unless <code>EXTRACTED</code>. Never invent a relation: skip the edge and warn.</p>
+<h3 id="schema-id-rules">Id rules</h3>
+<table><thead><tr><th>Source</th><th>Pattern</th><th>Example</th></tr></thead><tbody><tr><td>graphify</td><td>verbatim from graphify</td><td><code>src_auth_session_validatetoken</code></td></tr><tr><td>deterministic scan</td><td><code>file_&lt;sanitized path without extension&gt;</code></td><td><code>file_src_auth_session</code></td></tr><tr><td>spec-kit</td><td><code>spec_&lt;feature&gt;_&lt;artifact&gt;</code></td><td><code>spec_001-auth_fr-001</code>, <code>spec_001-auth_t001</code></td></tr><tr><td>security</td><td><code>sec_&lt;run&gt;_&lt;fingerprint&gt;</code></td><td><code>sec_run-1_aaaa1111</code></td></tr><tr><td>trust boundary</td><td><code>sec_&lt;run&gt;_tb_&lt;slug&gt;</code></td><td><code>sec_run-1_tb_http_edge_to_app</code></td></tr><tr><td>decision</td><td><code>decision_adr_&lt;n&gt;</code></td><td><code>decision_adr_0001</code></td></tr></tbody></table>
+<h3 id="schema-map-ledgerjson">map-ledger.json</h3>
+<pre data-copy><code class="lang-json">{
+  &quot;schema_version&quot;: 1,
+  &quot;source_revision&quot;: &quot;abc123&quot;,
+  &quot;units&quot;: [
+    {
+      &quot;id&quot;: &quot;path_src&quot;,
+      &quot;kind&quot;: &quot;path | requirement | component&quot;,
+      &quot;scope&quot;: &quot;src/**  |  &lt;root&gt;  |  specs/x/spec.md#FR-001&quot;,
+      &quot;status&quot;: &quot;mapped | stale | unmapped | out_of_scope&quot;,
+      &quot;node_ids&quot;: [&quot;file_src_index&quot;],
+      &quot;evidence&quot;: [&quot;project-map/graph.json#nodes&quot;],
+      &quot;last_verified_revision&quot;: &quot;abc123&quot;,
+      &quot;last_verified_date&quot;: &quot;YYYY-MM-DD&quot;
+    }
+  ],
+  &quot;runs&quot;: [
+    {
+      &quot;mode&quot;: &quot;INIT&quot;,
+      &quot;revision&quot;: &quot;abc123&quot;,
+      &quot;started_at&quot;: &quot;ISO-8601&quot;,
+      &quot;finished_at&quot;: &quot;ISO-8601&quot;,
+      &quot;counts&quot;: { &quot;mapped&quot;: 4 },
+      &quot;artifacts&quot;: [&quot;project-map/graph.json&quot;]
+    }
+  ]
+}</code></pre>
+<p>Unit semantics:</p>
+<ul><li><code>path</code> units come from tracked files, grouped by top-level tree plus one <code>&lt;root&gt;</code> unit.</li><li><code>requirement</code> units come from spec-kit ids and must have a <code>satisfies_requirement</code> edge to be considered covered.</li><li><code>mapped</code> requires at least one node id and non-empty evidence.</li><li><code>out_of_scope</code> is an explicit human decision, never an automatic escape for unsupported files.</li><li><code>runs</code> keeps the last 50 entries and drives the <code>sync-summary.md</code> history block.</li></ul>
+<h3 id="schema-context-note">context note</h3>
+<p><code>project-map/obsidian-vault/02-LLM-Context.md</code> frontmatter must include <code>project</code>, <code>phase</code>, <code>status</code>, <code>source_revision</code>, <code>generated_at</code>, <code>budget_tokens</code> (100–2000). Body: one top-level heading, ≤ 2000 tokens by <code>chars/4</code>, target 1500. Detail belongs in linked notes, not here.</p>
+</section>
+<section id="obsidian">
+  <div class="section-head">
+    <h2>Obsidian vault</h2>
+    <a class="source" href="references/obsidian.md">source</a>
+  </div>
+  <p>The vault is a normal Obsidian vault: open <code>project-map/obsidian-vault/</code> directly.</p>
+<h3 id="obsidian-layout">Layout</h3>
+<pre data-copy><code class="lang-text">obsidian-vault/
+├── 00-Home.md                 # generated hubs (managed blocks)
+├── 01-Index.md                # every node grouped by kind
+├── 02-LLM-Context.md          # ≤1500 tokens, regenerated whole
+├── 10-Architecture/overview.md
+├── 20-Components/             # component, module, service, feature
+├── 30-Requirements/
+├── 40-Decisions/
+├── 50-Tasks/                  # task, milestone
+├── 60-Risks-Issues/           # risk, issue, finding, trust_boundary, control
+├── 70-Data/                   # database, data_entity, api, workflow
+├── 80-Resources/              # file, document, dependency
+└── 90-Meta/                   # project, goal, stakeholder, constraint, ...</code></pre>
+<h3 id="obsidian-note-contract">Note contract</h3>
+<p>Filename = node id with <code>:</code> and <code>/</code> replaced by <code>-</code>. Wikilinks therefore resolve without aliases: <code>file_src_auth_session</code>.</p>
+<p>Each node note is:</p>
+<pre data-copy><code class="lang-markdown">---
+id: &quot;file_src_auth_session&quot;
+kind: &quot;file&quot;
+label: &quot;session.js&quot;
+status: &quot;implemented&quot;
+phase: &quot;DURING&quot;
+confidence: &quot;high&quot;
+derivation: &quot;graphify&quot;
+severity: &quot;high&quot;          # confirmed findings only
+verdict: &quot;confirmed&quot;      # findings only
+managed_by: &quot;mapkeeper&quot;
+tags: [&quot;security&quot;]
+source_refs: [&quot;src/auth/session.js&quot;]
+spec_refs: []
+last_verified: &quot;2026-11-11 abc123&quot;
+---
+
+# session.js
+
+&lt;!-- mapkeeper:begin id=summary --&gt;
+...
+&lt;!-- mapkeeper:end id=summary --&gt;
+
+&lt;!-- mapkeeper:begin id=relationships --&gt;
+**Outgoing**
+- affects → [[file_src_index|index.js]]
+&lt;!-- mapkeeper:end id=relationships --&gt;
+
+&lt;!-- mapkeeper:begin id=evidence --&gt;
+- `src/auth/session.js`
+&lt;!-- mapkeeper:end id=evidence --&gt;
+
+## Notes
+
+_Add human notes here; Mapkeeper never edits this section._</code></pre>
+<p>Rules:</p>
+<ul><li>Managed blocks are replaced on every run; text outside them, including <code>## Notes</code>, is preserved.</li><li>Mapkeeper keeps <code>## Notes</code> as the last section so generated content never buries human writing.</li><li>Never delete a note with human notes. <code>--prune</code> only removes mapkeeper-managed notes whose outside-block content is empty.</li><li>Frontmatter is regenerated; do not store human data there (put it in <code>## Notes</code>).</li></ul>
+<h3 id="obsidian-hub-notes">Hub notes</h3>
+<ul><li><code>00-Home.md</code>: overview, key components, risks/findings, coverage counts. Blocks: <code>overview</code>, <code>components</code>, <code>risks</code>, <code>coverage</code>.</li><li><code>01-Index.md</code>: block <code>index</code>, grouped by kind with status.</li><li><code>10-Architecture/overview.md</code>: blocks <code>summary</code>, <code>diagram</code> (Mermaid, top 30 nodes, <code>contains</code> edges omitted).</li></ul>
+<p>Add human sections freely outside blocks. Do not rename block ids; the writer will append duplicates.</p>
+<h3 id="obsidian-context-note">Context note</h3>
+<p><code>02-LLM-Context.md</code> is fully generated and budget-enforced. It is the first file any later agent should read. If it exceeds the budget, move detail into a component note and link it — do not trim the frontmatter.</p>
+<h3 id="obsidian-orphan-and-link-hygiene">Orphan and link hygiene</h3>
+<ul><li><code>mapkeeper doctor</code> reports unresolved wikilinks and coverage gaps.</li><li>Deleting a node from the graph does not delete its note immediately; run <code>init|sync --prune</code> to remove orphaned mapkeeper-managed notes.</li><li>Never point wikilinks at files outside the vault.</li><li>For large vaults, keep node notes short; the graph is the index, notes are for humans.</li></ul>
+</section>
+<section id="exports">
+  <div class="section-head">
+    <h2>Architecture exports</h2>
+    <a class="source" href="references/architecture-exports.md">source</a>
+  </div>
+  <p>Three files, one source of truth:</p>
+<table><thead><tr><th>File</th><th>Audience</th><th>Rule</th></tr></thead><tbody><tr><td><code>architecture-overview.md</code></td><td>humans, PRs, Obsidian exports</td><td>readable, tables, wikilinks</td></tr><tr><td><code>architecture-overview.json</code></td><td>automation, dashboards</td><td>mirrors the Markdown content, no HTML</td></tr><tr><td><code>architecture-overview.html</code></td><td>no-install viewing</td><td>standalone, inline CSS, no CDN, no JS required</td></tr></tbody></table>
+<p>All three derive from <code>buildArchitecture({graph, ledger, gaps, security})</code> in <code>scripts/lib/exports.mjs</code>. Never hand-edit one format without regenerating the others.</p>
+<h3 id="exports-shared-content-model">Shared content model</h3>
+<pre data-copy><code class="lang-json">{
+  &quot;schema_version&quot;: 1,
+  &quot;project&quot;: &quot;&quot;, &quot;phase&quot;: &quot;DURING&quot;, &quot;revision&quot;: &quot;&quot;,
+  &quot;generated_at&quot;: &quot;&quot;,
+  &quot;derivation&quot;: { &quot;available&quot;: false },
+  &quot;summary&quot;: { &quot;nodes&quot;: 0, &quot;edges&quot;: 0, &quot;components&quot;: 0, &quot;requirements&quot;: 0, &quot;findings_confirmed&quot;: 0 },
+  &quot;coverage&quot;: {},
+  &quot;components&quot;: [], &quot;requirements&quot;: [], &quot;findings&quot;: [], &quot;needs_validation&quot;: [],
+  &quot;risks&quot;: [], &quot;decisions&quot;: [], &quot;dependencies&quot;: [],
+  &quot;assumptions&quot;: [], &quot;unknowns&quot;: [], &quot;gaps&quot;: [], &quot;next_actions&quot;: []
+}</code></pre>
+<h3 id="exports-markdown-sections">Markdown sections</h3>
+<ol><li>Title with project and revision.</li><li>Summary counts.</li><li>Coverage table.</li><li>Components table with wikilinks.</li><li>Requirements traceability with <code>(gap)</code> markers.</li><li>Security findings: <strong>confirmed</strong> table with severity; <strong>needs validation</strong> table with no severity column.</li><li>Risks/issues, decisions, dependencies.</li><li>Assumptions and unknowns.</li><li>Gaps.</li><li>Recommended next actions.</li></ol>
+<p>Wikilinks use <code>&lt;label&gt;</code> (the pipe is escaped in Markdown tables).</p>
+<h3 id="exports-json">JSON</h3>
+<p>Same data, no presentation strings. Stable key order, 2-space indent, trailing newline. Suitable for CI diffing: only <code>generated_at</code>, coverage counts, and changed nodes should move.</p>
+<h3 id="exports-html">HTML</h3>
+<ul><li>One file, <code>&lt;style&gt;</code> inline, no network requests, no JavaScript.</li><li>Reads in light and dark mode via <code>prefers-color-scheme</code>.</li><li>Tables for components, traceability, and findings.</li><li>Mermaid is <strong>not</strong> executed in the HTML export; the Mermaid source remains in the vault note and the Markdown file. Add a renderer later only if it stays dependency-free.</li><li>All values HTML-escaped. No <code>innerHTML</code>-style injection paths.</li><li>Same content as Markdown; if a section is omitted for layout reasons, that is a bug.</li></ul>
+<h3 id="exports-mermaid">Mermaid</h3>
+<pre data-copy><code class="lang-mermaid">graph TD
+  n_component_api[&quot;API&quot;]
+  n_component_api --&gt;|depends_on| n_database_main[&quot;main&quot;]</code></pre>
+<ul><li>Node ids are prefixed <code>n_</code> and sanitized; labels are truncated to 60 chars.</li><li>Top 30 nodes by degree; <code>contains</code> edges are omitted to keep diagrams readable.</li><li>Broken Mermaid must fail the export, not silently render text.</li></ul>
+<h3 id="exports-when-to-regenerate">When to regenerate</h3>
+<table><thead><tr><th>Change</th><th>Regenerate</th></tr></thead><tbody><tr><td><code>graph.json</code> changed</td><td><code>export</code></td></tr><tr><td>Only context requested</td><td><code>context</code></td></tr><tr><td>Hand-edited notes</td><td>never (outside managed blocks)</td></tr><tr><td>Ledger-only audit</td><td><code>audit</code> writes the summary, not the exports</td></tr></tbody></table>
+<p><code>export</code> refuses to run without a valid <code>graph.json</code>; <code>mapkeeper doctor</code> verifies all four artifacts exist.</p>
+</section>
+<section id="speckit">
+  <div class="section-head">
+    <h2>Spec-kit adapter</h2>
+    <a class="source" href="references/speckit-adapter.md">source</a>
+  </div>
+  <p>Read-only integration with <a href="https://github.com/github/spec-kit">github/spec-kit</a>. Spec-kit is optional; Mapkeeper works without <code>.specify/</code>.</p>
+<h3 id="speckit-detection">Detection</h3>
+<ol><li><code>.specify/</code> exists → spec-kit project.</li><li>Active feature directory from <code>.specify/feature.json</code> (keys <code>feature_directory</code>, <code>feature_dir</code>, <code>directory</code>, <code>path</code>, <code>feature</code>); fall back to the newest <code>specs/*/</code> containing <code>spec.md</code>.</li><li>Read <code>.specify/memory/constitution.md</code> when present.</li></ol>
+<p>Never create, edit, or delete anything under <code>.specify/</code>. Mapkeeper only reads it.</p>
+<h3 id="speckit-artifact-mapping">Artifact mapping</h3>
+<table><thead><tr><th>Artifact</th><th>Node kind</th><th>Id</th></tr></thead><tbody><tr><td><code>constitution.md</code> headings</td><td><code>constraint</code></td><td><code>spec_&lt;feature&gt;_constraint_&lt;slug&gt;</code></td></tr><tr><td><code>spec.md</code> <code>FR-###</code>, <code>NFR-###</code>, <code>SR-###</code>, <code>CR-###</code></td><td><code>requirement</code></td><td><code>spec_&lt;feature&gt;_fr-001</code></td></tr><tr><td><code>spec.md</code> <code>### User Story N</code></td><td><code>goal</code></td><td><code>spec_&lt;feature&gt;_goal_N</code></td></tr><tr><td><code>plan.md</code> <code>###</code> headings under Project Structure</td><td><code>component</code></td><td><code>spec_&lt;feature&gt;_component_&lt;slug&gt;</code></td></tr><tr><td><code>plan.md</code> <code><strong>Decision</strong>:</code> lines</td><td><code>decision</code></td><td><code>spec_&lt;feature&gt;_decision_&lt;slug&gt;</code></td></tr><tr><td><code>tasks.md</code> <code>- [ ] T###</code></td><td><code>task</code></td><td><code>spec_&lt;feature&gt;_t001</code></td></tr></tbody></table>
+<p>Edges:</p>
+<table><thead><tr><th>From</th><th>Relation</th><th>To</th><th>Evidence</th></tr></thead><tbody><tr><td>task</td><td><code>satisfies_requirement</code></td><td>requirement mentioned in the task line</td><td><code>tasks.md#T001</code></td></tr><tr><td>task</td><td><code>implements</code></td><td>file path mentioned and existing</td><td><code>tasks.md#T001</code></td></tr></tbody></table>
+<p>Every spec-kit node carries <code>derivation: &quot;speckit&quot;</code> and <code>spec_refs: [&quot;&lt;path&gt;#&lt;id&gt;&quot;]</code>. Source refs stay empty unless a task names a real file.</p>
+<h3 id="speckit-traceability-report">Traceability report</h3>
+<p><code>mapkeeper specs</code> and every <code>init|sync</code> write these gaps into <code>sync-summary.md</code> and <code>architecture-overview.md</code>:</p>
+<ol><li>Requirement with no task referencing it.</li><li>Task referencing a file path that does not exist.</li><li>Requirement with a task but no <code>implements</code> edge to code (when a file is named).</li><li>Checklist items left unchecked (reported, not enforced).</li></ol>
+<p>Gap text must name ids, not vague areas: <code>FR-002 has no task referencing it</code>.</p>
+<h3 id="speckit-requirement-units">Requirement units</h3>
+<p>Each requirement also becomes a <code>map-ledger.json</code> unit:</p>
+<pre data-copy><code class="lang-json">{
+  &quot;id&quot;: &quot;req_001-auth_fr-001&quot;,
+  &quot;kind&quot;: &quot;requirement&quot;,
+  &quot;scope&quot;: &quot;specs/001-auth/spec.md#FR-001&quot;,
+  &quot;status&quot;: &quot;mapped&quot;,
+  &quot;node_ids&quot;: [&quot;spec_001-auth_fr-001&quot;],
+  &quot;evidence&quot;: [&quot;project-map/graph.json#nodes&quot;]
+}</code></pre>
+<p><code>audit</code> fails when a requirement unit has no satisfying task or code edge. This is Mapkeeper's equivalent of <code>/speckit-analyze</code>, but evidence-based.</p>
+<h3 id="speckit-extension-packaging">Extension packaging</h3>
+<p><code>spec-kit-extension/</code> is an optional installable extension:</p>
+<pre data-copy><code class="lang-bash">specify extension add --dev /path/to/Mapkeeper/spec-kit-extension</code></pre>
+<p>Manifest highlights (<code>extension.yml</code>, schema_version <code>1.0</code>):</p>
+<ul><li>id <code>mapkeeper</code>; commands <code>speckit.mapkeeper.init</code>, <code>speckit.mapkeeper.sync</code>, <code>speckit.mapkeeper.audit</code>; files in <code>commands/</code>.</li><li>hooks <code>after_tasks</code> and <code>after_implement</code>, <code>optional: true</code>, so users opt in after <code>/speckit-tasks</code> and <code>/speckit-implement</code>.</li><li>no <code>requires.tools</code>; graphify and security-audit stay optional.</li></ul>
+<p>The commands call the repository-local CLI (<code>node scripts/mapkeeper.mjs …</code>) when Mapkeeper is vendored, or instruct the agent to run the skill when it is installed globally. They never edit spec-kit artifacts.</p>
+<h3 id="speckit-failure-handling">Failure handling</h3>
+<table><thead><tr><th>Symptom</th><th>Behavior</th></tr></thead><tbody><tr><td><code>.specify/feature.json</code> invalid</td><td>fall back to newest <code>specs/*</code>, warn</td></tr><tr><td>No spec.md/plan.md/tasks.md</td><td>warn; no nodes invented</td></tr><tr><td>Duplicate requirement ids</td><td>first occurrence wins, warn</td></tr><tr><td>Task references a missing file</td><td>gap, not a node</td></tr><tr><td><code>.specify/</code> unreadable</td><td>continue without spec-kit, record in warnings</td></tr></tbody></table>
+</section>
+<section id="security">
+  <div class="section-head">
+    <h2>Security-audit adapter</h2>
+    <a class="source" href="references/security-adapter.md">source</a>
+  </div>
+  <p>Read-only integration with <a href="https://github.com/cloudflare/security-audit-skill">cloudflare/security-audit-skill</a>. Mapkeeper consumes finished audit artifacts; it does not reimplement the audit methodology.</p>
+<h3 id="security-locating-the-skill-and-a-run">Locating the skill and a run</h3>
+<p>Skill search order (first hit wins):</p>
+<pre data-copy><code class="lang-text">&lt;project&gt;/.kilo/skills/security-audit/SKILL.md
+&lt;project&gt;/.agents/skills/security-audit/SKILL.md
+&lt;project&gt;/.github/skills/security-audit/SKILL.md
+&lt;project&gt;/.claude/skills/security-audit/SKILL.md
+~/.config/kilo/skills/security-audit/SKILL.md
+~/.agents/skills/security-audit/SKILL.md
+~/.claude/skills/security-audit/SKILL.md</code></pre>
+<p>Run directory: supplied with <code>--security-run &lt;dir&gt;</code> (relative to the project) or as <code>mapkeeper security &lt;dir&gt;</code>. A run contains <code>run-metadata.json</code>, <code>architecture.md</code>, <code>coverage-ledger.json</code>, <code>findings.json</code>, <code>REPORT.md</code>, <code>FINDINGS-DETAIL.md</code>, <code>NEEDS-VALIDATION.md</code>.</p>
+<p>If the skill is not installed, print the install command and stop the audit path:</p>
+<pre data-copy><code class="lang-bash">npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit</code></pre>
+<p>Never invent findings, severities, or trust boundaries when the skill or run is missing.</p>
+<h3 id="security-invoking-an-audit">Invoking an audit</h3>
+<p>Only when the user explicitly asks to audit or pen-test:</p>
+<ol><li>Confirm the target and an output directory <strong>outside</strong> the repository (the upstream default is <code>~/security-audit-skill/&lt;repo&gt;/run-&lt;N&gt;</code>).</li><li>Delegate: ask the installed <code>security-audit</code> skill to run its full-audit mode against the target.</li><li>Ingest the resulting run directory with <code>mapkeeper security &lt;dir&gt;</code>.</li></ol>
+<p>Do not run all six phases yourself, do not copy its <code>SKILL.md</code>/companion docs into this repository, and do not relax its sandbox requirements.</p>
+<h3 id="security-ingestion-mapping">Ingestion mapping</h3>
+<table><thead><tr><th>Input</th><th>Mapkeeper output</th></tr></thead><tbody><tr><td><code>architecture.md</code> → <code>## Trust Boundaries</code> bullets</td><td><code>trust_boundary</code> nodes <code>sec_&lt;run&gt;_tb_&lt;slug&gt;</code></td></tr><tr><td><code>findings.json</code> record <code>verdict: confirmed</code></td><td><code>finding</code> node, <code>status: confirmed</code>, <code>severity</code> from the record</td></tr><tr><td><code>findings.json</code> record <code>verdict: needs_validation</code></td><td><code>finding</code> node, <code>status: needs_validation</code>, <strong>no severity</strong></td></tr><tr><td><code>findings.json</code> record <code>verdict: rejected</code></td><td>counted only (<code>counts.rejected</code>), never published</td></tr><tr><td>record <code>file</code> + <code>line</code></td><td><code>source_refs: [&quot;&lt;file&gt;:&lt;line&gt;&quot;]</code></td></tr><tr><td>record <code>trust_boundary</code></td><td>edge <code>violates</code> → boundary node</td></tr><tr><td>record file matching a graph node</td><td>edge <code>affects</code> → that node</td></tr><tr><td>record <code>requirements: [&quot;FR-001&quot;]</code></td><td>edge <code>affects</code> → the matching requirement node</td></tr><tr><td><code>run-metadata.json</code> <code>source_ref</code></td><td><code>last_verified.revision</code>; stale marker when the repo moved</td></tr></tbody></table>
+<p>Ids: <code>sec_&lt;run-id&gt;_&lt;fingerprint&gt;</code>; fingerprints are preserved verbatim when present. If a record has no fingerprint or id, hash a sanitized title.</p>
+<p>Tolerated <code>findings.json</code> shapes: a top-level array, or an object with <code>findings</code>, <code>records</code>, <code>results</code>, or <code>items</code>. Unknown shapes produce a warning and zero nodes.</p>
+<h3 id="security-severity-and-verdict-rules-non-negotiable">Severity and verdict rules (non-negotiable)</h3>
+<ul><li>Severity exists only for <code>confirmed</code>. <code>needs_validation</code> has zero severity and is displayed in its own table.</li><li><code>rejected</code> never appears in <code>graph.json</code>, the vault, or the architecture export.</li><li>A confirmed finding without a concrete file/line still publishes, but with <code>source_refs</code> pointing at <code>findings.json</code> and a warning.</li><li>A finding whose run revision is older than a changed affected file is marked <code>provenance.stale_source: true</code> and reported in <code>sync-summary.md</code>.</li></ul>
+<h3 id="security-what-mapkeeper-adds">What Mapkeeper adds</h3>
+<ul><li>Traceability: findings tied to components and requirements.</li><li>Coverage: a finding's file must also be mapped by a ledger unit; <code>audit</code> reports findings in unmapped paths.</li><li>Handover: confirmed and needs-validation findings appear in the architecture overview and the vault, with their original evidence links.</li></ul>
+<h3 id="security-what-mapkeeper-must-not-do">What Mapkeeper must not do</h3>
+<ul><li>Re-run exploit steps, reproduce candidates, or &quot;verify&quot; a finding itself.</li><li>Merge <code>needs_validation</code> into confirmed lists to make a report look complete.</li><li>Copy the upstream six-phase workflow, attack classes, or validators into this repository.</li><li>Write into the audit run directory.</li></ul>
+</section>
+<section id="troubleshooting">
+  <div class="section-head">
+    <h2>Troubleshooting</h2>
+    <a class="source" href="references/troubleshooting.md">source</a>
+  </div>
+  <p>Start here:</p>
+<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs doctor</code></pre>
+<table><thead><tr><th>Check</th><th>Meaning</th><th>Fix</th></tr></thead><tbody><tr><td><code>graph</code> fail</td><td><code>graph.json</code> missing or schema-invalid</td><td>run <code>init</code>, or fix the reported field</td></tr><tr><td><code>ledger</code> fail</td><td>a mapped unit lost its evidence, or ids collide</td><td>run <code>sync</code>; set a unit <code>out_of_scope</code> if it should not be mapped</td></tr><tr><td><code>context</code> fail</td><td>frontmatter invalid or over 2000 tokens</td><td>shorten the body; move detail to node notes</td></tr><tr><td><code>blocks</code> fail</td><td>unclosed/duplicate managed block</td><td>restore the matching <code>&lt;!-- mapkeeper:end id=... --&gt;</code></td></tr><tr><td><code>links</code> warn</td><td>a wikilink points at a missing note</td><td>run <code>export</code>; check for a renamed id</td></tr><tr><td><code>graphify</code> warn</td><td>binary or cache absent</td><td>optional: install graphify, or accept the deterministic scan</td></tr><tr><td><code>speckit</code> warn</td><td>no <code>.specify/</code></td><td>optional: only needed for spec traceability</td></tr><tr><td><code>security-skill</code> warn</td><td>no installed skill</td><td>optional; <code>npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit</code></td></tr><tr><td><code>coverage</code> warn</td><td>stale/unmapped units</td><td><code>sync</code>, or mark intentional exclusions <code>out_of_scope</code></td></tr><tr><td><code>artifacts</code> fail</td><td>an export is missing</td><td><code>export</code></td></tr></tbody></table>
+<h3 id="troubleshooting-graph-validation-failed">&quot;graph validation failed&quot;</h3>
+<p>The previous valid <code>graph.json</code> is untouched; the rejected candidate is at <code>project-map/.cache/graph.candidate.json</code>.</p>
+<ol><li>Read the first five errors — they are path-addressed (<code>$.nodes[12].id</code>).</li><li>Common causes: duplicate id; inferred node without <code>confidence</code>; edge pointing at a missing node; <code>severity</code> on a <code>needs_validation</code> finding; counts out of date.</li><li>Fix the input (usually an ingestion bug), rerun. Do not hand-edit <code>graph.json</code> to silence the validator.</li></ol>
+<h3 id="troubleshooting-context-note-is-over-budget">Context note is over budget</h3>
+<p><code>02-LLM-Context.md</code> is meant to be a pointer file. Move detail into component/requirement notes and link them:</p>
+<pre data-copy><code class="lang-markdown">- [[20-Components/component_api|API]]</code></pre>
+<p>Then <code>mapkeeper context</code> regenerates it. Never raise the budget to hide bloat; the hard limit is 2000 tokens.</p>
+<h3 id="troubleshooting-units-are-unmapped">Units are unmapped</h3>
+<ul><li>A new directory appeared: <code>sync</code> reseeds path units automatically.</li><li>The files are binary/lockfiles: they are ignored by design; they should not be units.</li><li>The area is intentionally out of scope: set the unit to <code>out_of_scope</code> with a one-line reason in <code>sync-summary.md</code> human text. Do not delete the unit; <code>audit</code> treats a missing path as a failure.</li></ul>
+<h3 id="troubleshooting-graphify-says-no-cache">Graphify says &quot;no cache&quot;</h3>
+<p><code>graphify</code> binary present but no <code>graphify-out/graph.json</code>. Options:</p>
+<ol><li>Accept <code>graphify-fallback</code> (file/import graph) and say so.</li><li>Run graphify yourself, then <code>mapkeeper graph</code>.</li><li>Run <code>mapkeeper init --run-tool</code> if you want Mapkeeper to call <code>graphify update</code> (only with an existing cache).</li></ol>
+<p>Never claim graphify was used when only the fallback ran.</p>
+<h3 id="troubleshooting-a-spec-requirement-has-no-task">A spec requirement has no task</h3>
+<p>This is a real finding, not a Mapkeeper bug. Fix the spec/tasks, or accept the gap in the summary. <code>audit</code> exits 1 until a <code>satisfies_requirement</code> edge exists.</p>
+<h3 id="troubleshooting-security-findings-are-stale">Security findings are stale</h3>
+<p>The run's <code>source_ref</code> no longer matches the repository and an affected file changed. Re-run the audit, or accept <code>stale_source: true</code> knowingly. Never upgrade <code>needs_validation</code> to <code>confirmed</code> by hand.</p>
+<h3 id="troubleshooting-non-git-directory">Non-git directory</h3>
+<p><code>source_revision</code> is <code>worktree</code>; <code>sync</code> cannot diff, so it rescans all files and marks every path unit <code>stale</code> before remapping. That is expected. Reports will show the coverage after remap, not a delta.</p>
+<h3 id="troubleshooting-migrating-an-old-map">Migrating an old map</h3>
+<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs migrate
+node scripts/mapkeeper.mjs doctor</code></pre>
+<p><code>migrate</code> copies the five artifacts into <code>project-map/.backup-v1/</code>, maps legacy <code>type</code>/<code>relationship_type</code>, skips unknown relations with warnings, writes schema v2, seeds the ledger, and regenerates the vault and exports. <code>doctor --migrate</code> does the same when a v1 tree is detected. Old <code>Mapkeeper_Prompt.md</code> users: the prompt is a deprecated wrapper over this skill; keep it if you like, but the CLI is authoritative.</p>
+<h3 id="troubleshooting-notes-were-deleted-unexpectedly">Notes were deleted unexpectedly</h3>
+<p>Only <code>--prune</code> deletes notes, and only mapkeeper-managed notes whose content outside managed blocks is empty. If human notes were lost, restore from version control; Mapkeeper never writes outside blocks.</p>
+<h3 id="troubleshooting-nothing-happens-on-sync">Nothing happens on <code>sync</code></h3>
+<p>No changed files and no stale units. Check <code>--dir</code> points at the repository root, and that files are tracked (or the directory is not a git repo — then a full rescan runs).</p>
+</section>
+    <section id="prompt">
+      <div class="section-head">
+        <h2>Legacy prompt</h2>
+        <a class="source" href="Mapkeeper_Prompt.md">source</a>
+      </div>
+      <p><code>Mapkeeper_Prompt.md</code> is generated from these same files and kept for one deprecation cycle. The skill and CLI are authoritative.</p>
+      <p><a href="Mapkeeper_Prompt.md">Open the generated prompt</a></p>
+      <pre data-copy><code>You are Mapkeeper. Map the repository into project-map/ with the exact layout,
+validate every artifact, and never claim a tool ran unless it did.
+
+  node scripts/mapkeeper.mjs init
+  node scripts/mapkeeper.mjs doctor
+  node scripts/mapkeeper.mjs sync
+  node scripts/mapkeeper.mjs audit</code></pre>
+    </section>
+  </main>
+</div>
+<footer>
+  <div class="foot">
+    <span>Generated from <code>SKILL.md</code> and <code>references/</code>. Edit those, then run <code>npm run build:guide</code>.</span>
+    <span>Apache-2.0 · <a href="NOTICE">notice</a></span>
+  </div>
+</footer>
+<script>
+(function(){
+  document.querySelectorAll('pre[data-copy]').forEach(function(pre){
+    var btn=document.createElement('button');
+    btn.className='copy';btn.type='button';btn.textContent='copy';
+    btn.setAttribute('aria-label','Copy code');
+    btn.addEventListener('click',function(){
+      var code=pre.querySelector('code');
+      var text=code?code.textContent:'';
+      var done=function(){btn.textContent='copied';setTimeout(function(){btn.textContent='copy'},1200);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done,function(){btn.textContent='failed';});
+      } else {
+        var range=document.createRange();range.selectNodeContents(code);
+        var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+        btn.textContent='selected';
       }
-
-      const setThemeLabel = () => {
-        themeToggle.textContent = root.getAttribute("data-theme") === "dark" ? "☀️ Light" : "🌙 Dark";
-      };
-
-      setThemeLabel();
-
-      themeToggle.addEventListener("click", () => {
-        const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        root.setAttribute("data-theme", next);
-        localStorage.setItem("mapperGuideTheme", next);
-        setThemeLabel();
-      });
-
-      const menuButton = document.getElementById("menuButton");
-      const overlay = document.getElementById("overlay");
-
-      const setSidebar = (open) => {
-        document.body.classList.toggle("sidebar-open", open);
-        menuButton.setAttribute("aria-expanded", String(open));
-      };
-
-      menuButton.addEventListener("click", () => {
-        setSidebar(!document.body.classList.contains("sidebar-open"));
-      });
-
-      overlay.addEventListener("click", () => {
-        setSidebar(false);
-      });
-
-      const progressBar = document.getElementById("progressBar");
-
-      const updateProgress = () => {
-        const doc = document.documentElement;
-        const max = doc.scrollHeight - doc.clientHeight;
-        progressBar.style.width = max > 0 ? `${(doc.scrollTop / max) * 100}%` : "0%";
-      };
-
-      window.addEventListener("scroll", updateProgress, { passive: true });
-      updateProgress();
-
-      const navLinks = Array.from(document.querySelectorAll(".sidebar-link"));
-      const sections = Array.from(document.querySelectorAll("main section[id]"));
-
-      const setActive = (id) => {
-        navLinks.forEach((link) => {
-          link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
-        });
-      };
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActive(entry.target.id);
-            }
-          });
-        },
-        {
-          rootMargin: "-30% 0px -60% 0px"
-        }
-      );
-
-      sections.forEach((section) => observer.observe(section));
-
-      const searchInput = document.getElementById("searchInput");
-      const searchableSections = Array.from(document.querySelectorAll("section[data-searchable]"));
-      const noResults = document.getElementById("noResults");
-
-      const applySearch = () => {
-        const query = searchInput.value.trim().toLowerCase();
-        let visibleCount = 0;
-
-        searchableSections.forEach((section) => {
-          const text = section.textContent.toLowerCase();
-          const match = !query || text.includes(query);
-          section.hidden = !match;
-
-          if (match) {
-            visibleCount += 1;
-          }
-        });
-
-        noResults.hidden = visibleCount > 0;
-      };
-
-      searchInput.addEventListener("input", applySearch);
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "/" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-          event.preventDefault();
-          searchInput.focus();
-        }
-      });
-
-      navLinks.forEach((link) => {
-        link.addEventListener("click", () => {
-          if (searchInput.value) {
-            searchInput.value = "";
-            applySearch();
-          }
-
-          setSidebar(false);
-        });
-      });
-
-      document.querySelectorAll("pre[data-copy]").forEach((pre) => {
-        const code = pre.querySelector("code");
-        const text = (code || pre).innerText;
-
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "copy-btn";
-        button.textContent = "Copy";
-
-        button.addEventListener("click", async () => {
-          try {
-            await navigator.clipboard.writeText(text);
-            button.textContent = "Copied";
-          } catch (error) {
-            const area = document.createElement("textarea");
-            area.value = text;
-            area.style.position = "fixed";
-            area.style.opacity = "0";
-            document.body.appendChild(area);
-            area.select();
-            document.execCommand("copy");
-            area.remove();
-            button.textContent = "Copied";
-          }
-
-          setTimeout(() => {
-            button.textContent = "Copy";
-          }, 1600);
-        });
-
-        pre.appendChild(button);
-      });
-
-      document.querySelectorAll(".accordion-trigger").forEach((trigger) => {
-        trigger.addEventListener("click", () => {
-          const expanded = trigger.getAttribute("aria-expanded") === "true";
-          trigger.setAttribute("aria-expanded", String(!expanded));
-
-          const panel = document.getElementById(trigger.getAttribute("aria-controls"));
-          panel.hidden = expanded;
-        });
-      });
-
-      document.querySelectorAll(".print-button").forEach((button) => {
-        button.addEventListener("click", () => {
-          window.print();
-        });
-      });
-
-      const checkboxes = Array.from(document.querySelectorAll(".task-checkbox"));
-      const checklistProgress = document.getElementById("checklistProgress");
-      const checklistFill = document.getElementById("checklistFill");
-
-      let savedChecks = {};
-
-      try {
-        savedChecks = JSON.parse(localStorage.getItem("mapperGuideChecklist") || "{}");
-      } catch (error) {
-        savedChecks = {};
-      }
-
-      const updateChecklist = () => {
-        const done = checkboxes.filter((box) => box.checked).length;
-        checklistProgress.textContent = `${done}/${checkboxes.length} completed`;
-        checklistFill.style.width = checkboxes.length ? `${(done / checkboxes.length) * 100}%` : "0%";
-      };
-
-      checkboxes.forEach((box) => {
-        if (savedChecks[box.id]) {
-          box.checked = true;
-        }
-
-        box.addEventListener("change", () => {
-          savedChecks[box.id] = box.checked;
-          localStorage.setItem("mapperGuideChecklist", JSON.stringify(savedChecks));
-          updateChecklist();
-        });
-      });
-
-      updateChecklist();
-      applySearch();
-    })();
-  </script>
+    });
+    pre.appendChild(btn);
+  });
+})();
+</script>
 </body>
 </html>

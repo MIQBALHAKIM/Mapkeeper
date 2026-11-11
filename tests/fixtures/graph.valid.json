@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "meta": {
+    "project_name": "Fixture",
+    "phase": "DURING",
+    "update_mode": "INIT",
+    "generated_at": "2026-01-01T00:00:00.000Z",
+    "source_revision": "abc123",
+    "graphify": { "available": true, "version": "0.9.0", "graph_path": "graphify-out/graph.json" },
+    "counts": { "nodes": 2, "edges": 1, "by_derivation": { "graphify": 1, "speckit": 1 } },
+    "assumptions": [],
+    "unknowns": []
+  },
+  "nodes": [
+    {
+      "id": "src_auth_session_validatetoken",
+      "kind": "file",
+      "label": "ValidateToken",
+      "status": "implemented",
+      "derivation": "graphify",
+      "confidence": "high",
+      "provenance": { "source_file": "src/auth/session.py", "relation_source": "EXTRACTED" },
+      "source_refs": ["src/auth/session.py#L10"],
+      "tags": [],
+      "last_verified": { "revision": "abc123", "date": "2026-01-01" }
+    },
+    {
+      "id": "spec_auth_fr_001",
+      "kind": "requirement",
+      "label": "FR-001 Login",
+      "status": "planned",
+      "derivation": "speckit",
+      "spec_refs": ["specs/auth/spec.md#FR-001"],
+      "tags": ["requirement"]
+    }
+  ],
+  "edges": [
+    {
+      "source": "src_auth_session_validatetoken",
+      "target": "spec_auth_fr_001",
+      "relation": "satisfies_requirement",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "derivation": "speckit",
+      "source_refs": ["specs/auth/tasks.md#T012"]
+    }
+  ],
+  "hyperedges": [],
+  "coverage": { "units_total": 2, "mapped": 1, "stale": 0, "unmapped": 1, "out_of_scope": 0 }
+}

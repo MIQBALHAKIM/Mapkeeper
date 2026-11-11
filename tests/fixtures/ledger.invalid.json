@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "source_revision": "abc123",
+  "units": [
+    {
+      "id": "bad",
+      "kind": "path",
+      "scope": "src/**",
+      "status": "mapped",
+      "node_ids": ["src_auth"],
+      "evidence": []
+    },
+    {
+      "id": "bad",
+      "kind": "component",
+      "scope": "src",
+      "status": "unmapped",
+      "node_ids": []
+    }
+  ],
+  "runs": []
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "fingerprint": "f1",
+    "verdict": "confirmed",
+    "title": "SQL injection in search",
+    "severity": "high",
+    "file": "src/search.py",
+    "line": 42,
+    "trust_boundary": "App to database"
+  },
+  {
+    "fingerprint": "f2",
+    "verdict": "needs_validation",
+    "title": "Cache key may omit tenant",
+    "file": "src/cache.py",
+    "line": 7
+  },
+  {
+    "fingerprint": "f3",
+    "verdict": "rejected",
+    "title": "False positive",
+    "file": "src/search.py"
+  }
+]

@@ -1,0 +1,9 @@
+tests/
+examples/
+.github/
+node_modules/
+index.html
+Mapkeeper_Prompt.md
+Token Efficiency Architecture Report/
+.gitignore
+package-lock.json
