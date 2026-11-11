@@ -8,131 +8,245 @@
 <title>Mapkeeper — the living project map</title>
 <style>
 :root{
-  --paper:#fcfcfa;--ink:#161616;--muted:#6a6a66;--rule:#e5e3dc;
-  --accent:#1c6b4e;--wash:#f3f2ed;
-  --measure:44rem;--sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --primary:#4f378b;--on-primary:#ffffff;--primary-container:#eaddff;--on-primary-container:#21005d;
+  --secondary-container:#e8def8;--on-secondary-container:#1d192b;
+  --tertiary:#7d5260;--tertiary-container:#ffd8e4;--on-tertiary-container:#31111d;
+  --surface:#fef7ff;--surface-container-lowest:#ffffff;--surface-container-low:#f7f2fa;
+  --surface-container:#f3edf7;--surface-container-high:#ece6f0;
+  --on-surface:#1d1b20;--on-surface-variant:#49454f;--outline:#79747e;--outline-variant:#cac4d0;
+  --code-bg:#1d1b20;--code-fg:#f5eff7;--code-muted:#cfc6da;
+  --sans:"Google Sans Text","Google Sans",Roboto,"Helvetica Neue",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --radius-xl:36px;--radius-lg:28px;--radius-md:20px;--radius-sm:14px;
+  --appbar:4.25rem;--page:74rem;--read:46rem;
+  --shadow-1:0 1px 2px rgba(29,27,32,.08),0 1px 3px 1px rgba(29,27,32,.06);
+  --shadow-2:0 2px 6px rgba(29,27,32,.1),0 8px 24px rgba(29,27,32,.08);
 }
 @media (prefers-color-scheme:dark){
-  :root{--paper:#0e100f;--ink:#e9e7e1;--muted:#9a9d96;--rule:#252925;
-    --accent:#7fd3a8;--wash:#161a18;}
+  :root{
+    --primary:#d0bcff;--on-primary:#381e72;--primary-container:#4f378b;--on-primary-container:#eaddff;
+    --secondary-container:#4a4458;--on-secondary-container:#e8def8;
+    --tertiary:#efb8c8;--tertiary-container:#633b48;--on-tertiary-container:#ffd8e4;
+    --surface:#141218;--surface-container-lowest:#0f0d13;--surface-container-low:#1d1b20;
+    --surface-container:#211f26;--surface-container-high:#2b2930;
+    --on-surface:#e6e0e9;--on-surface-variant:#cac4d0;--outline:#938f99;--outline-variant:#49454f;
+    --code-bg:#0f0d13;--code-fg:#e6e0e9;--code-muted:#b9b1c6;
+    --shadow-1:0 1px 2px rgba(0,0,0,.4),0 1px 3px 1px rgba(0,0,0,.25);
+    --shadow-2:0 4px 12px rgba(0,0,0,.45),0 12px 32px rgba(0,0,0,.35);
+  }
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:6rem}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-a{color:var(--accent);text-decoration:none;text-underline-offset:.18em}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--appbar) + 4.5rem);overflow-x:clip}
+body{margin:0;max-width:100%;overflow-x:clip;background:var(--surface);color:var(--on-surface);font:16px/1.68 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;-webkit-text-size-adjust:100%}
+a{color:var(--primary);text-decoration:none;text-underline-offset:.2em}
 a:hover{text-decoration:underline}
-a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:.2rem}
-.skip{position:absolute;left:-999px;top:0;background:var(--paper);color:var(--ink);padding:.6rem .9rem;border:1px solid var(--rule);z-index:99}
-.skip:focus{left:1rem;top:1rem}
-.site{position:sticky;top:0;z-index:20;display:flex;align-items:baseline;gap:.9rem;padding:.85rem clamp(1rem,4vw,2.2rem);border-bottom:1px solid var(--rule);background:var(--paper)}
-.wordmark{font-size:1rem;font-weight:650;letter-spacing:-.01em;margin:0}
-.wordmark a{color:var(--ink)}
-.tagline{color:var(--muted);font-size:.85rem}
-.meta{margin-left:auto;color:var(--muted);font-size:.72rem;letter-spacing:.02em;white-space:nowrap}
-.wrap{display:grid;grid-template-columns:12.5rem minmax(0,1fr);gap:clamp(1.5rem,6vw,5rem);max-width:70rem;margin:0 auto;padding:2.8rem clamp(1rem,4vw,2.2rem) 4rem}
-.toc{position:sticky;top:4.6rem;align-self:start;font-size:.85rem}
-.toc p{margin:0 0 .6rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:.1rem}
-.toc a{display:block;padding:.34rem .55rem;border-left:2px solid transparent;color:var(--ink)}
-.toc a:hover{color:var(--accent);border-left-color:var(--accent);text-decoration:none}
-main{min-width:0;max-width:var(--measure)}
-section{padding:2.6rem 0;border-top:1px solid var(--rule)}
-section:first-of-type{border-top:0;padding-top:0}
-.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin:0 0 1rem}
-section h2{font-size:1.4rem;line-height:1.25;letter-spacing:-.015em;margin:0}
-.source{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-.source:hover{color:var(--accent)}
-h3{font-size:1.08rem;line-height:1.35;margin:2rem 0 .45rem;letter-spacing:-.005em}
-h4{font-size:.95rem;line-height:1.4;margin:1.5rem 0 .35rem}
-p{margin:.75rem 0}
-#overview > p:first-of-type{font-size:1.1rem;line-height:1.62;max-width:38rem}
-ul,ol{margin:.6rem 0;padding-left:1.15rem}
-li{margin:.18rem 0}
-li>p{margin:.2rem 0}
-code{font-family:var(--mono);font-size:.86em;background:var(--wash);padding:.08em .34em;border-radius:.25rem}
-pre{position:relative;margin:1rem 0;padding:1rem 1.1rem;background:var(--wash);border:1px solid var(--rule);border-radius:.55rem;overflow-x:auto;font-size:.83rem;line-height:1.62}
-pre code{background:none;padding:0;font-size:inherit;color:var(--ink)}
-pre .copy{position:absolute;top:.45rem;right:.45rem;border:1px solid var(--rule);background:var(--paper);color:var(--muted);border-radius:.35rem;padding:.2rem .45rem;font:600 .68rem/1.4 var(--sans);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;opacity:.85}
-pre .copy:hover{color:var(--ink);border-color:var(--muted);opacity:1}
-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
-thead th{font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;white-space:nowrap}
-th,td{padding:.5rem .55rem;border-bottom:1px solid var(--rule);vertical-align:top}
-tbody tr:last-child td{border-bottom:0}
-strong{font-weight:650}
-hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
-footer{border-top:1px solid var(--rule);padding:1.4rem clamp(1rem,4vw,2.2rem) 3rem;color:var(--muted);font-size:.8rem}
-.foot{max-width:70rem;margin:0 auto;display:flex;gap:1rem;justify-content:space-between;align-items:baseline;flex-wrap:wrap}
-footer code{font-size:.9em;background:none;padding:0;color:var(--ink)}
-@media (max-width:820px){
-  html{scroll-padding-top:7rem}
-  .site{padding:.7rem 1rem}
-  .tagline,.meta{display:none}
-  .wrap{display:block;padding:0 1rem 3rem;max-width:none}
-  .toc{position:sticky;top:3.15rem;z-index:15;margin:0 -1rem 1.4rem;padding:.55rem 1rem;background:var(--paper);border-bottom:1px solid var(--rule);overflow-x:auto;scrollbar-width:none;font-size:.8rem}
-  .toc::-webkit-scrollbar{display:none}
-  .toc p{display:none}
-  .toc ol{display:flex;gap:.4rem;white-space:nowrap;width:max-content}
-  .toc a{padding:.4rem .7rem;border:1px solid var(--rule);border-radius:999px;line-height:1.2}
-  .toc a:hover{border-color:var(--accent)}
-  main{max-width:none}
-  section{padding:2rem 0}
-  section h2{font-size:1.25rem}
-  #overview > p:first-of-type{font-size:1.02rem}
-  pre{font-size:.78rem;padding:.9rem}
-  th,td{padding:.45rem .5rem}
+a:focus-visible,button:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+h1,h2,h3,h4{letter-spacing:-.02em}
+.skip{position:absolute;left:-999px;top:0;background:var(--primary-container);color:var(--on-primary-container);padding:.75rem 1rem;border-radius:0 0 var(--radius-sm) 0;z-index:100;font-weight:600}
+.skip:focus{left:0}
+.appbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:1rem;min-height:var(--appbar);padding:.6rem clamp(1rem,3.5vw,2rem);background:var(--surface);background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--outline-variant)}
+.brand{display:flex;align-items:center;gap:.8rem;min-width:0}
+.logo{display:grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--tertiary));color:#fff;font-weight:800;font-size:1.1rem;letter-spacing:-.02em;box-shadow:var(--shadow-1);flex:none}
+.brand-text{min-width:0}
+.brand h1{margin:0;font-size:1.02rem;line-height:1.2;font-weight:650}
+.brand p{margin:.1rem 0 0;color:var(--on-surface-variant);font-size:.76rem;line-height:1.2}
+.icon-btn{display:grid;place-items:center;width:2.6rem;height:2.6rem;border-radius:50%;color:var(--on-surface-variant);margin-left:auto;position:relative;overflow:hidden}
+.icon-btn:hover{background:var(--surface-container-high);color:var(--on-surface);text-decoration:none}
+.page{max-width:var(--page);margin:0 auto;padding:1.2rem clamp(1rem,3.5vw,2rem) 3rem}
+.hero{position:relative;overflow:hidden;border-radius:var(--radius-xl);padding:clamp(1.6rem,4.5vw,3.2rem);background:linear-gradient(135deg,#eaddff 0%,#f2e9ff 42%,#ffd8e4 100%);color:var(--on-primary-container);box-shadow:var(--shadow-2);isolation:isolate}
+.glow{position:absolute;border-radius:50%;filter:blur(46px);opacity:.55;z-index:-1;pointer-events:none}
+.glow-a{width:22rem;height:22rem;background:#b69dff;top:-9rem;right:-6rem}
+.glow-b{width:16rem;height:16rem;background:#ffb1c8;bottom:-8rem;left:18%}
+.hero-art{position:absolute;right:3%;top:50%;transform:translateY(-50%);width:min(32%,400px);height:auto;pointer-events:none;color:var(--on-primary-container);opacity:.9}
+@media (max-width:1100px){.hero-art{display:none}}
+.eyebrow{margin:0 0 .7rem;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.72}
+.hero h2{margin:0;font-size:clamp(2.1rem,6vw,3.6rem);line-height:1.03;font-weight:750;letter-spacing:-.045em;max-width:15ch;text-wrap:balance}
+.hero-copy{margin:1rem 0 0;max-width:34rem;font-size:clamp(1rem,2.2vw,1.14rem);line-height:1.55;opacity:.86}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-height:2.9rem;padding:.6rem 1.35rem;border-radius:999px;font-size:.92rem;font-weight:650;line-height:1.2;transition:transform .18s cubic-bezier(.2,0,0,1),box-shadow .18s,background .18s}
+.btn:hover{text-decoration:none;transform:translateY(-1px);box-shadow:var(--shadow-1)}
+.btn:active{transform:scale(.97)}
+.btn.filled{background:var(--primary);color:var(--on-primary)}
+.btn.tonal{background:var(--secondary-container);color:var(--on-secondary-container)}
+.facts{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1.6rem}
+.fact{padding:.34rem .72rem;border-radius:999px;background:rgba(255,255,255,.55);border:1px solid rgba(33,0,93,.14);font-size:.75rem;font-weight:600;letter-spacing:.01em;color:#2b0a5e}
+@media (prefers-color-scheme:dark){
+  .hero{background:linear-gradient(135deg,#2b2140 0%,#3a2430 55%,#1f2a3a 100%);color:#eaddff}
+  .glow-a{background:#7a5af8}
+  .glow-b{background:#e4698a}
+  .fact{background:rgba(255,255,255,.1);border-color:rgba(234,221,255,.18);color:#eaddff}
 }
-@media print{
-  .site,.toc,.copy,.skip,footer{display:none}
-  body{background:#fff;color:#000}
-  .wrap{display:block;max-width:none;padding:0}
-  main{max-width:none}
-  section{break-inside:auto;padding:1.2rem 0;border-top:1px solid #ddd}
-  pre{background:#f5f5f5;border:1px solid #ddd;white-space:pre-wrap}
-  a{color:#000;text-decoration:underline}
+.chipbar{position:sticky;top:var(--appbar);z-index:20;margin:.35rem calc(-1 * clamp(1rem,3.5vw,2rem)) 0;padding:.7rem clamp(1rem,3.5vw,2rem);background:var(--surface);background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(14px)}
+.chips{display:flex;gap:.45rem;overflow-x:auto;scrollbar-width:none;white-space:nowrap;padding-bottom:.1rem}
+.chips::-webkit-scrollbar{display:none}
+.chip{position:relative;overflow:hidden;flex:none;padding:.52rem .95rem;border-radius:999px;border:1px solid var(--outline-variant);background:transparent;color:var(--on-surface-variant);font-size:.82rem;font-weight:600;line-height:1.2;transition:background .18s,color .18s,border-color .18s,transform .18s}
+.chip:hover{background:var(--surface-container-high);color:var(--on-surface);text-decoration:none}
+.chip.active{background:var(--secondary-container);border-color:transparent;color:var(--on-secondary-container)}
+.chip:active{transform:scale(.97)}
+.sections{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;margin-top:1rem}
+.card{min-width:0;max-width:100%;background:var(--surface-container-low);border:1px solid var(--outline-variant);border-radius:var(--radius-lg);padding:clamp(1.25rem,3.2vw,2.2rem);box-shadow:var(--shadow-1);scroll-margin-top:calc(var(--appbar) + 4.5rem)}
+.card:nth-child(4n+2){background:var(--surface-container)}
+.section-head{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.index{display:inline-grid;place-items:center;min-width:2.2rem;height:2.2rem;padding:0 .55rem;border-radius:999px;background:var(--primary-container);color:var(--on-primary-container);font-size:.78rem;font-weight:750;letter-spacing:.06em}
+.section-head h2{margin:0;font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.2;font-weight:700}
+.source{display:inline-flex;align-items:center;gap:.35rem;margin-left:auto;padding:.42rem .85rem;border-radius:999px;border:1px solid var(--outline-variant);color:var(--primary);font-size:.76rem;font-weight:650;position:relative;overflow:hidden;transition:background .18s}
+.source:hover{background:var(--primary-container);color:var(--on-primary-container);text-decoration:none}
+.source svg{flex:none;opacity:.8}
+.card > p:first-of-type{font-size:1.03rem;color:var(--on-surface)}
+.card p,.card li{max-width:70ch}
+.card p,.card li,.card td,.card th,.card h2,.card h3,.card h4{overflow-wrap:break-word}
+.card code{overflow-wrap:anywhere}
+.table-wrap code{overflow-wrap:normal}
+h3{font-size:1.16rem;line-height:1.35;margin:1.9rem 0 .5rem;font-weight:700}
+h4{font-size:1rem;line-height:1.4;margin:1.4rem 0 .35rem;font-weight:700}
+p{margin:.75rem 0}
+ul,ol{margin:.65rem 0;padding-left:1.2rem}
+li{margin:.22rem 0}
+li>p{margin:.2rem 0}
+strong{font-weight:700}
+code{font-family:var(--mono);font-size:.86em;background:var(--surface-container-high);padding:.1em .38em;border-radius:.45rem}
+pre{position:relative;max-width:100%;margin:1.1rem 0;padding:1.1rem 1.2rem;background:var(--code-bg);color:var(--code-fg);border-radius:var(--radius-md);overflow-x:auto;font-size:.84rem;line-height:1.62;box-shadow:var(--shadow-1)}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+pre .copy{position:absolute;top:.55rem;right:.55rem;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.1);color:#f3edf7;border-radius:999px;padding:.3rem .7rem;font:650 .7rem/1.2 var(--sans);letter-spacing:.03em;cursor:pointer;overflow:hidden;transition:background .15s}
+pre .copy:hover{background:rgba(255,255,255,.2)}
+.table-wrap{margin:1.1rem 0;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius-sm)}
+table{width:100%;min-width:34rem;border-collapse:collapse;font-size:.9rem}
+thead th{text-align:left;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--on-surface-variant);font-weight:700;white-space:nowrap;background:var(--surface-container-high);padding:.6rem .7rem}
+tbody td{padding:.62rem .7rem;border-top:1px solid var(--outline-variant);vertical-align:top}
+tbody tr:last-child td{padding-bottom:.7rem}
+hr{border:0;border-top:1px solid var(--outline-variant);margin:2rem 0}
+.prompt-card{background:var(--tertiary-container);color:var(--on-tertiary-container);border-color:transparent}
+.prompt-card .index{background:rgba(255,255,255,.55);color:var(--on-tertiary-container)}
+.prompt-card .source{color:var(--on-tertiary-container);border-color:rgba(49,17,29,.22)}
+.prompt-card .source:hover{background:rgba(255,255,255,.45)}
+.prompt-card .btn.tonal{background:rgba(255,255,255,.55);color:var(--on-tertiary-container)}
+.prompt-card > p:first-of-type{color:inherit}
+.fab{position:fixed;right:1.1rem;bottom:1.1rem;z-index:40;display:grid;place-items:center;width:3.5rem;height:3.5rem;border:0;border-radius:20px;background:var(--primary-container);color:var(--on-primary-container);box-shadow:var(--shadow-2);cursor:pointer;overflow:hidden;transition:transform .18s,box-shadow .18s}
+.fab:hover{transform:translateY(-2px)}
+.fab:active{transform:scale(.94)}
+.fab[hidden]{display:none}
+.footer{max-width:var(--page);margin:0 auto;padding:1.2rem clamp(1rem,3.5vw,2rem) 4rem;color:var(--on-surface-variant);font-size:.8rem;text-align:center}
+.footer p{margin:.3rem 0}
+.footer code{background:none;padding:0;color:var(--on-surface)}
+.ripple{position:absolute;border-radius:50%;background:currentColor;opacity:.24;transform:scale(0);pointer-events:none;animation:ripple .55s cubic-bezier(.2,0,0,1) forwards}
+@keyframes ripple{to{transform:scale(1);opacity:0}}
+@media (max-width:720px){
+  :root{--appbar:3.9rem}
+  .brand p{display:none}
+  .hero{border-radius:var(--radius-lg);padding:1.35rem}
+  .hero h2{max-width:none}
+  .hero-copy{font-size:.98rem}
+  .card{border-radius:24px;padding:1.15rem}
+  .section-head{gap:.55rem}
+  .index{min-width:2rem;height:2rem;font-size:.72rem}
+  .source{margin-left:0;padding:.38rem .7rem}
+  .chipbar{margin-left:-1rem;margin-right:-1rem;padding-left:1rem;padding-right:1rem}
+  .page{padding-left:1rem;padding-right:1rem}
+  pre{font-size:.78rem;padding:.95rem;border-radius:var(--radius-sm)}
+  table{min-width:0;font-size:.84rem}
+  .table-wrap{overflow-x:visible}
+  .table-wrap code{overflow-wrap:anywhere}
+  .fab{right:.9rem;bottom:.9rem}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+@media print{
+  .appbar,.chipbar,.fab,.skip,.hero,.footer{display:none}
+  body{background:#fff;color:#000}
+  .page{max-width:none;padding:0}
+  .card{border:0;box-shadow:none;border-radius:0;padding:1rem 0;background:#fff}
+  pre{background:#f4f4f4;color:#111;box-shadow:none;white-space:pre-wrap}
+  .source{display:none}
+  a{color:#000;text-decoration:underline}
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site">
-  <h1 class="wordmark"><a href="#top">Mapkeeper</a></h1>
-  <span class="tagline">the living project map</span>
-  <span class="meta">v2.0.0 · schema v2 · node ≥20</span>
+<header class="appbar">
+  <div class="brand">
+    <span class="logo" aria-hidden="true">M</span>
+    <div class="brand-text">
+      <h1>Mapkeeper</h1>
+      <p>the living project map</p>
+    </div>
+  </div>
+  <a class="icon-btn ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper" target="_blank" rel="noopener" aria-label="Open Mapkeeper on GitHub"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z" fill="currentColor"/></svg></a>
 </header>
-<div class="wrap" id="top">
-  <nav class="toc" aria-label="Contents">
-    <p>Contents</p>
-    <ol>
-      <li><a href="#overview">Overview</a></li>
-      <li><a href="#install">Install</a></li>
-      <li><a href="#commands">Commands</a></li>
-      <li><a href="#contract">Contract</a></li>
-      <li><a href="#modes">Modes</a></li>
-      <li><a href="#graphify">Graphify</a></li>
-      <li><a href="#schema">Schema</a></li>
-      <li><a href="#obsidian">Vault</a></li>
-      <li><a href="#exports">Exports</a></li>
-      <li><a href="#speckit">Spec-kit</a></li>
-      <li><a href="#security">Security</a></li>
-      <li><a href="#troubleshooting">Troubleshooting</a></li>
-      <li><a href="#prompt">Prompt</a></li>
-    </ol>
+
+<main id="main" class="page">
+  <section class="hero">
+    <div class="glow glow-a" aria-hidden="true"></div>
+    <div class="glow glow-b" aria-hidden="true"></div>
+    <svg class="hero-art" viewBox="0 0 440 340" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="currentColor" stroke-opacity=".2" stroke-width="1.5">
+        <path d="M70 96 196 46 336 104 372 236 246 296 92 246Z"/>
+        <path d="M196 46 246 296M70 96 336 104M92 246 372 236"/>
+      </g>
+      <g fill="currentColor" fill-opacity=".06" stroke="currentColor" stroke-opacity=".26" stroke-width="1.5">
+        <rect x="34" y="54" width="208" height="132" rx="26"/>
+        <rect x="206" y="184" width="196" height="98" rx="24"/>
+      </g>
+      <g fill="currentColor" fill-opacity=".5">
+        <circle cx="70" cy="96" r="6"/><circle cx="196" cy="46" r="6"/><circle cx="336" cy="104" r="6"/>
+        <circle cx="372" cy="236" r="6"/><circle cx="246" cy="296" r="6"/><circle cx="92" cy="246" r="6"/>
+      </g>
+      <g stroke="currentColor" stroke-opacity=".26" stroke-width="2.5" stroke-linecap="round">
+        <path d="M62 96h96M62 118h60M62 140h118"/>
+        <path d="M232 224h124M232 246h88M232 268h136"/>
+      </g>
+      <g fill="currentColor" fill-opacity=".3">
+        <rect x="264" y="62" width="54" height="8" rx="4"/>
+        <rect x="264" y="80" width="86" height="8" rx="4"/>
+        <rect x="264" y="98" width="40" height="8" rx="4"/>
+      </g>
+    </svg>
+    <p class="eyebrow">Living project map · v2.0.0</p>
+    <h2>Map any repo.<br>Prove what is real.</h2>
+    <p class="hero-copy">A validated knowledge graph, coverage ledger, Obsidian vault, and architecture exports — built from evidence, not guesses.</p>
+    <div class="hero-actions">
+      <a class="btn filled ripple-target" href="#install">Get started</a>
+      <a class="btn tonal ripple-target" href="#overview">Browse docs</a>
+    </div>
+    <div class="facts" aria-label="At a glance">
+      <span class="fact">Schema v2</span>
+      <span class="fact">Zero dependencies</span>
+      <span class="fact">Node ≥ 20</span>
+    </div>
+  </section>
+
+  <nav class="chipbar" aria-label="Contents">
+    <div class="chips">
+      <a class="chip ripple-target" href="#overview">Overview</a>
+      <a class="chip ripple-target" href="#install">Install</a>
+      <a class="chip ripple-target" href="#commands">Commands</a>
+      <a class="chip ripple-target" href="#contract">Contract</a>
+      <a class="chip ripple-target" href="#modes">Modes</a>
+      <a class="chip ripple-target" href="#graphify">Graphify</a>
+      <a class="chip ripple-target" href="#schema">Schema</a>
+      <a class="chip ripple-target" href="#obsidian">Vault</a>
+      <a class="chip ripple-target" href="#exports">Exports</a>
+      <a class="chip ripple-target" href="#speckit">Spec-kit</a>
+      <a class="chip ripple-target" href="#security">Security</a>
+      <a class="chip ripple-target" href="#troubleshooting">Troubleshooting</a>
+      <a class="chip ripple-target" href="#prompt">Prompt</a>
+    </div>
   </nav>
-  <main id="main">
-    <section id="overview">
+
+  <div class="sections">
+    <section id="overview" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">01</span>
     <h2>Overview</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/SKILL.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/SKILL.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>Turn any repository into a living, validated project map. The map is a projection of evidence, not a novel.</p>
 <h3 id="overview-read-this-first">Read this first</h3>
 <p>Before writing any artifact, read <code>references/contract.md</code>. It is the only place that defines paths, managed blocks, evidence rules, and failure behavior. Do not restate its rules from memory.</p>
 <p>Then read the one reference for the work at hand:</p>
-<table><thead><tr><th>Need</th><th>Read</th></tr></thead><tbody><tr><td>Modes, phases, token/output discipline</td><td><code>references/modes.md</code></td></tr><tr><td>Graphify detection, projection, fallback</td><td><code>references/graphify-adapter.md</code></td></tr><tr><td>Graph and ledger fields</td><td><code>references/schema.md</code></td></tr><tr><td>Vault layout and note format</td><td><code>references/obsidian.md</code></td></tr><tr><td>Markdown/JSON/HTML exports</td><td><code>references/architecture-exports.md</code></td></tr><tr><td>Spec-kit specs, plans, tasks, traceability</td><td><code>references/speckit-adapter.md</code></td></tr><tr><td>Security audit findings ingestion</td><td><code>references/security-adapter.md</code></td></tr><tr><td>Commands, flags, legacy aliases</td><td><code>references/commands.md</code></td></tr><tr><td>Broken run, failed validation, migration</td><td><code>references/troubleshooting.md</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Need</th><th>Read</th></tr></thead><tbody><tr><td>Modes, phases, token/output discipline</td><td><code>references/modes.md</code></td></tr><tr><td>Graphify detection, projection, fallback</td><td><code>references/graphify-adapter.md</code></td></tr><tr><td>Graph and ledger fields</td><td><code>references/schema.md</code></td></tr><tr><td>Vault layout and note format</td><td><code>references/obsidian.md</code></td></tr><tr><td>Markdown/JSON/HTML exports</td><td><code>references/architecture-exports.md</code></td></tr><tr><td>Spec-kit specs, plans, tasks, traceability</td><td><code>references/speckit-adapter.md</code></td></tr><tr><td>Security audit findings ingestion</td><td><code>references/security-adapter.md</code></td></tr><tr><td>Commands, flags, legacy aliases</td><td><code>references/commands.md</code></td></tr><tr><td>Broken run, failed validation, migration</td><td><code>references/troubleshooting.md</code></td></tr></tbody></table></div>
 <h3 id="overview-output-contract-short-form">Output contract (short form)</h3>
 <pre data-copy><code class="lang-text">project-map/
 ├── graph.json                 # schema v2, machine truth
@@ -146,7 +260,7 @@ footer code{font-size:.9em;background:none;padding:0;color:var(--ink)}
     └── ...</code></pre>
 <p><code>graphify-out/graph.json</code> is a tool cache. <code>project-map/graph.json</code> is the graph of record. Never place artifacts outside <code>project-map/</code> except the optional legacy <code>Mapkeeper_Prompt.md</code>.</p>
 <h3 id="overview-choose-the-mode">Choose the mode</h3>
-<table><thead><tr><th>Situation</th><th>Mode</th></tr></thead><tbody><tr><td>No <code>project-map/graph.json</code></td><td><code>init</code></td></tr><tr><td>Existing map, user describes a change</td><td><code>sync</code></td></tr><tr><td>Review / consistency / gaps requested</td><td><code>audit</code></td></tr><tr><td>Full rebuild, handover, as-built</td><td><code>full</code></td></tr><tr><td>Only docs requested</td><td><code>export</code></td></tr><tr><td>Only the compact context note requested</td><td><code>context</code></td></tr><tr><td>Only the graph requested</td><td><code>graph</code></td></tr><tr><td><code>.specify/</code> changed</td><td><code>specs</code></td></tr><tr><td>A security run directory is supplied</td><td><code>security</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Mode</th></tr></thead><tbody><tr><td>No <code>project-map/graph.json</code></td><td><code>init</code></td></tr><tr><td>Existing map, user describes a change</td><td><code>sync</code></td></tr><tr><td>Review / consistency / gaps requested</td><td><code>audit</code></td></tr><tr><td>Full rebuild, handover, as-built</td><td><code>full</code></td></tr><tr><td>Only docs requested</td><td><code>export</code></td></tr><tr><td>Only the compact context note requested</td><td><code>context</code></td></tr><tr><td>Only the graph requested</td><td><code>graph</code></td></tr><tr><td><code>.specify/</code> changed</td><td><code>specs</code></td></tr><tr><td>A security run directory is supplied</td><td><code>security</code></td></tr></tbody></table></div>
 <p>An explicit <code>--mode</code> or a legacy verb wins.</p>
 <h3 id="overview-procedure">Procedure</h3>
 <ol><li><strong>Resolve the project</strong>: <code>--dir</code> (default cwd), project name from <code>--name</code>, then <code>package.json</code>, then the directory name.</li><li><strong>Gather evidence</strong>: graphify cache or deterministic scan; <code>.specify/</code> if present; a security run if supplied.</li><li><strong>Project, never invent</strong>: map graphify nodes and relations 1:1, keep ids stable, tag <code>derivation</code> (<code>graphify</code>, <code>speckit</code>, <code>security</code>, <code>llm</code>). A skipped relation is a warning, not a guess.</li><li><strong>Write through the CLI</strong>, not by hand:</li></ol>
@@ -170,10 +284,11 @@ node scripts/mapkeeper.mjs doctor</code></pre>
 <h3 id="overview-final-response">Final response</h3>
 <ol><li>Mode and phase.</li><li>Generation source (<code>graphify</code>, <code>graphify+llm</code>, <code>llm-manual</code>, <code>graphify-fallback</code>).</li><li>What changed or what the audit found.</li><li>Coverage: mapped / stale / unmapped / out_of_scope.</li><li>Assumptions and unknowns.</li><li>Artifacts written.</li><li>Risks and next actions.</li></ol>
 </section>
-<section id="install">
+<section id="install" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">02</span>
     <h2>Install</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/README.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/README.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p><a href="https://miqbalhakim.github.io/Mapkeeper/">Read the guide</a> · <a href="https://github.com/MIQBALHAKIM/Mapkeeper">Source</a></p>
 <h3 id="install-60-second-start">60-second start</h3>
@@ -213,7 +328,7 @@ cp -R . .kilo/skills/mapkeeper</code></pre>
 <h3 id="install-prefer-prompts">Prefer prompts?</h3>
 <p><code>Mapkeeper_Prompt.md</code> is generated and deprecated. It is a bounded compatibility shim for environments with no CLI or skill. Regenerate with <code>npm run build:prompt</code>.</p>
 <h3 id="install-commands">Commands</h3>
-<table><thead><tr><th>Command</th><th>Purpose</th></tr></thead><tbody><tr><td><code>init</code></td><td>first map (graph, ledger, vault, exports, summary, context)</td></tr><tr><td><code>sync</code></td><td>incremental update of changed units only</td></tr><tr><td><code>audit</code></td><td>validate artifacts, report coverage and traceability gaps, exit 1 on failure</td></tr><tr><td><code>full</code></td><td>rebuild derived artifacts, keep human text</td></tr><tr><td><code>export</code></td><td>regenerate architecture docs and vault</td></tr><tr><td><code>context</code></td><td>regenerate <code>02-LLM-Context.md</code> only</td></tr><tr><td><code>graph</code></td><td>regenerate <code>graph.json</code> only</td></tr><tr><td><code>specs</code></td><td>ingest <code>.specify/</code> and report requirement coverage</td></tr><tr><td><code>security &lt;run&gt;</code></td><td>ingest a security-audit run directory</td></tr><tr><td><code>query &quot;&lt;q&gt;&quot;</code> / <code>query path a b</code> / <code>query explain x</code></td><td>delegate to graphify, else traverse the graph</td></tr><tr><td><code>doctor</code></td><td>checks: schemas, blocks, links, coverage, adapters</td></tr><tr><td><code>migrate</code></td><td>v1 <code>project-map/</code> → schema v2, with backup</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>Purpose</th></tr></thead><tbody><tr><td><code>init</code></td><td>first map (graph, ledger, vault, exports, summary, context)</td></tr><tr><td><code>sync</code></td><td>incremental update of changed units only</td></tr><tr><td><code>audit</code></td><td>validate artifacts, report coverage and traceability gaps, exit 1 on failure</td></tr><tr><td><code>full</code></td><td>rebuild derived artifacts, keep human text</td></tr><tr><td><code>export</code></td><td>regenerate architecture docs and vault</td></tr><tr><td><code>context</code></td><td>regenerate <code>02-LLM-Context.md</code> only</td></tr><tr><td><code>graph</code></td><td>regenerate <code>graph.json</code> only</td></tr><tr><td><code>specs</code></td><td>ingest <code>.specify/</code> and report requirement coverage</td></tr><tr><td><code>security &lt;run&gt;</code></td><td>ingest a security-audit run directory</td></tr><tr><td><code>query &quot;&lt;q&gt;&quot;</code> / <code>query path a b</code> / <code>query explain x</code></td><td>delegate to graphify, else traverse the graph</td></tr><tr><td><code>doctor</code></td><td>checks: schemas, blocks, links, coverage, adapters</td></tr><tr><td><code>migrate</code></td><td>v1 <code>project-map/</code> → schema v2, with backup</td></tr></tbody></table></div>
 <p>Legacy <code>MAPPER INIT|SYNC|AUDIT|FULL|EXPORT ONLY|CONTEXT ONLY|GRAPHIFY ONLY</code> verbs still work.</p>
 <h3 id="install-adapters">Adapters</h3>
 <p><strong>Graphify</strong> — detects <code>graphify</code> and <code>graphify-out/graph.json</code>, runs <code>graphify update</code> only when a cache exists and you allow it (<code>--run-tool</code>), projects nodes and relations 1:1, and never invents a relation. Without it, a deterministic file/import scan keeps the map useful and labels itself <code>llm-manual</code> or <code>graphify-fallback</code>.</p>
@@ -248,17 +363,18 @@ npm run check</code></pre>
 <p>Apache-2.0. See <code>NOTICE</code> for inspiration and attribution.</p>
 <p>The process patterns (schema-validated artifacts, coverage ledger, independently verified records) are inspired by <a href="https://github.com/cloudflare/security-audit-skill">cloudflare/security-audit-skill</a> and <a href="https://github.com/github/spec-kit">github/spec-kit</a>, both MIT. Graphify is an external optional tool, not bundled.</p>
 </section>
-<section id="commands">
+<section id="commands" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">03</span>
     <h2>Commands</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/commands.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/commands.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>Run from the repository root. The CLI is zero-dependency (<code>node &gt;= 20</code>).</p>
 <pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs &lt;command&gt; [options]</code></pre>
 <h3 id="commands-commands">Commands</h3>
-<table><thead><tr><th>Command</th><th>Writes</th><th>Purpose</th></tr></thead><tbody><tr><td><code>init</code></td><td>everything</td><td>first map, or rebuild after a reset</td></tr><tr><td><code>sync</code></td><td>stale units + summary + context</td><td>incremental update</td></tr><tr><td><code>audit</code></td><td>summary only</td><td>validate and report gaps; exit 1 on failure</td></tr><tr><td><code>full</code></td><td>everything</td><td>rebuild derived artifacts, keep human text</td></tr><tr><td><code>export</code></td><td>architecture + vault</td><td>regenerate docs from an existing graph</td></tr><tr><td><code>context</code></td><td><code>02-LLM-Context.md</code></td><td>compact context only</td></tr><tr><td><code>graph</code></td><td><code>graph.json</code> (+ ledger)</td><td>graph only</td></tr><tr><td><code>specs</code></td><td>spec nodes merged</td><td>ingest <code>.specify/</code></td></tr><tr><td><code>security &lt;run&gt;</code></td><td>security nodes merged</td><td>ingest a security-audit run</td></tr><tr><td><code>query &quot;&lt;q&gt;&quot;</code></td><td>nothing</td><td>graphify query, else graph traversal</td></tr><tr><td><code>query path &lt;a&gt; &lt;b&gt;</code></td><td>nothing</td><td>shortest path</td></tr><tr><td><code>query explain &lt;node&gt;</code></td><td>nothing</td><td>dump one node</td></tr><tr><td><code>doctor</code></td><td>nothing</td><td>environment/artifact checks; <code>--migrate</code> upgrades v1 first</td></tr><tr><td><code>migrate</code></td><td>graph, ledger, exports, vault, summary</td><td>v1 → v2 with <code>project-map/.backup-v1/</code> backup</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>Writes</th><th>Purpose</th></tr></thead><tbody><tr><td><code>init</code></td><td>everything</td><td>first map, or rebuild after a reset</td></tr><tr><td><code>sync</code></td><td>stale units + summary + context</td><td>incremental update</td></tr><tr><td><code>audit</code></td><td>summary only</td><td>validate and report gaps; exit 1 on failure</td></tr><tr><td><code>full</code></td><td>everything</td><td>rebuild derived artifacts, keep human text</td></tr><tr><td><code>export</code></td><td>architecture + vault</td><td>regenerate docs from an existing graph</td></tr><tr><td><code>context</code></td><td><code>02-LLM-Context.md</code></td><td>compact context only</td></tr><tr><td><code>graph</code></td><td><code>graph.json</code> (+ ledger)</td><td>graph only</td></tr><tr><td><code>specs</code></td><td>spec nodes merged</td><td>ingest <code>.specify/</code></td></tr><tr><td><code>security &lt;run&gt;</code></td><td>security nodes merged</td><td>ingest a security-audit run</td></tr><tr><td><code>query &quot;&lt;q&gt;&quot;</code></td><td>nothing</td><td>graphify query, else graph traversal</td></tr><tr><td><code>query path &lt;a&gt; &lt;b&gt;</code></td><td>nothing</td><td>shortest path</td></tr><tr><td><code>query explain &lt;node&gt;</code></td><td>nothing</td><td>dump one node</td></tr><tr><td><code>doctor</code></td><td>nothing</td><td>environment/artifact checks; <code>--migrate</code> upgrades v1 first</td></tr><tr><td><code>migrate</code></td><td>graph, ledger, exports, vault, summary</td><td>v1 → v2 with <code>project-map/.backup-v1/</code> backup</td></tr></tbody></table></div>
 <h3 id="commands-options">Options</h3>
-<table><thead><tr><th>Flag</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>--dir &lt;path&gt;</code></td><td>cwd</td><td>project root</td></tr><tr><td><code>--out &lt;path&gt;</code></td><td><code>project-map</code></td><td>output directory</td></tr><tr><td>`--phase BEFORE\</td><td>DURING\</td><td>END`</td><td>previous or <code>DURING</code></td><td></td></tr><tr><td><code>--name &lt;project&gt;</code></td><td>package.json or dir</td><td></td></tr><tr><td>`--graphify auto\</td><td>manual\</td><td>disabled`</td><td><code>auto</code></td><td><code>manual</code>/<code>disabled</code> force the fallback</td></tr><tr><td><code>--run-tool</code></td><td>off</td><td>allow <code>graphify update</code> when a cache exists</td></tr><tr><td><code>--security-run &lt;dir&gt;</code></td><td>none</td><td>ingest this run</td></tr><tr><td><code>--no-specs</code></td><td>off</td><td>skip <code>.specify/</code></td></tr><tr><td><code>--budget &lt;tokens&gt;</code></td><td>1500</td><td>context note target</td></tr><tr><td><code>--prune</code></td><td>off</td><td>delete orphaned mapkeeper-managed notes</td></tr><tr><td><code>--soft</code></td><td>off</td><td>audit exits 0 despite failures</td></tr><tr><td><code>--strict</code></td><td>off</td><td>non-zero exit on warnings</td></tr><tr><td><code>--json</code></td><td>off</td><td>machine-readable <code>doctor</code> output</td></tr><tr><td><code>--debug</code></td><td>off</td><td>stack traces</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Flag</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>--dir &lt;path&gt;</code></td><td>cwd</td><td>project root</td></tr><tr><td><code>--out &lt;path&gt;</code></td><td><code>project-map</code></td><td>output directory</td></tr><tr><td>`--phase BEFORE\</td><td>DURING\</td><td>END`</td><td>previous or <code>DURING</code></td><td></td></tr><tr><td><code>--name &lt;project&gt;</code></td><td>package.json or dir</td><td></td></tr><tr><td>`--graphify auto\</td><td>manual\</td><td>disabled`</td><td><code>auto</code></td><td><code>manual</code>/<code>disabled</code> force the fallback</td></tr><tr><td><code>--run-tool</code></td><td>off</td><td>allow <code>graphify update</code> when a cache exists</td></tr><tr><td><code>--security-run &lt;dir&gt;</code></td><td>none</td><td>ingest this run</td></tr><tr><td><code>--no-specs</code></td><td>off</td><td>skip <code>.specify/</code></td></tr><tr><td><code>--budget &lt;tokens&gt;</code></td><td>1500</td><td>context note target</td></tr><tr><td><code>--prune</code></td><td>off</td><td>delete orphaned mapkeeper-managed notes</td></tr><tr><td><code>--soft</code></td><td>off</td><td>audit exits 0 despite failures</td></tr><tr><td><code>--strict</code></td><td>off</td><td>non-zero exit on warnings</td></tr><tr><td><code>--json</code></td><td>off</td><td>machine-readable <code>doctor</code> output</td></tr><tr><td><code>--debug</code></td><td>off</td><td>stack traces</td></tr></tbody></table></div>
 <h3 id="commands-legacy-aliases">Legacy aliases</h3>
 <p>The old prompt verbs map to the same handlers:</p>
 <pre data-copy><code class="lang-text">MAPPER INIT            → init
@@ -294,14 +410,15 @@ node scripts/mapkeeper.mjs export</code></pre>
 /speckit-mapkeeper-audit</code></pre>
 <p>Optional hooks: <code>after_tasks</code> and <code>after_implement</code> ask whether to sync the map.</p>
 <h3 id="commands-exit-codes">Exit codes</h3>
-<table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td>0</td><td>success</td></tr><tr><td>1</td><td>validation/audit failure or warnings under <code>--strict</code></td></tr><tr><td>2</td><td>missing inputs or usage error</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td>0</td><td>success</td></tr><tr><td>1</td><td>validation/audit failure or warnings under <code>--strict</code></td></tr><tr><td>2</td><td>missing inputs or usage error</td></tr></tbody></table></div>
 <h3 id="commands-environment">Environment</h3>
 <p>No secrets are read. The CLI never needs an API key. Graphify may use its own configuration; this tool only calls <code>graphify --version</code>, <code>graphify update</code>, and <code>graphify query|path|explain</code>.</p>
 </section>
-<section id="contract">
+<section id="contract" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">04</span>
     <h2>Contract</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/contract.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/contract.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>This file is the single source of truth for what Mapkeeper writes. <code>SKILL.md</code>, <code>Mapkeeper_Prompt.md</code>, and the HTML guide are generated from or must agree with this file.</p>
 <h3 id="contract-output-layout-inside-the-users-repository">Output layout (inside the user's repository)</h3>
@@ -331,21 +448,22 @@ generated content
 <ul><li>Writers replace <strong>only</strong> the block body. Text outside blocks is human-owned and must survive every run.</li><li>A missing block is appended; an existing block is replaced; a new file is created with a heading, then the block.</li><li><code>scripts/check-managed-blocks.mjs</code> fails on an unclosed or duplicate block id.</li><li>Per-node notes carry YAML frontmatter that is regenerated on every run. Human notes go under a <code>## Notes</code> heading outside managed blocks.</li></ul>
 <p><code>02-LLM-Context.md</code> is fully generated and budget-enforced: target ≤ 1,500 tokens, hard fail &gt; 2,000 (<code>scripts/validate-context.mjs</code>).</p>
 <h3 id="contract-evidence-rules">Evidence rules</h3>
-<table><thead><tr><th>Situation</th><th>Required evidence</th></tr></thead><tbody><tr><td>Node derived from graphify</td><td><code>source_refs: [&quot;&lt;file&gt;#&lt;loc&gt;&quot;]</code> or <code>source_refs: [&quot;&lt;file&gt;&quot;]</code> copied from <code>source_file</code></td></tr><tr><td>Node derived from spec-kit</td><td><code>spec_refs: [&quot;&lt;spec path&gt;#&lt;FR/T/US id&gt;&quot;]</code></td></tr><tr><td>Node derived from a security run</td><td><code>source_refs: [&quot;&lt;file&gt;:&lt;line&gt;&quot;]</code> and <code>verdict</code></td></tr><tr><td>Node inferred by the model</td><td><code>confidence</code> (low/medium/high) and listed under *Unverified* in <code>sync-summary.md</code></td></tr><tr><td>Edge</td><td><code>source</code>, <code>target</code>, <code>relation</code>, <code>confidence</code>; <code>confidence_score</code> is required unless <code>EXTRACTED</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Required evidence</th></tr></thead><tbody><tr><td>Node derived from graphify</td><td><code>source_refs: [&quot;&lt;file&gt;#&lt;loc&gt;&quot;]</code> or <code>source_refs: [&quot;&lt;file&gt;&quot;]</code> copied from <code>source_file</code></td></tr><tr><td>Node derived from spec-kit</td><td><code>spec_refs: [&quot;&lt;spec path&gt;#&lt;FR/T/US id&gt;&quot;]</code></td></tr><tr><td>Node derived from a security run</td><td><code>source_refs: [&quot;&lt;file&gt;:&lt;line&gt;&quot;]</code> and <code>verdict</code></td></tr><tr><td>Node inferred by the model</td><td><code>confidence</code> (low/medium/high) and listed under *Unverified* in <code>sync-summary.md</code></td></tr><tr><td>Edge</td><td><code>source</code>, <code>target</code>, <code>relation</code>, <code>confidence</code>; <code>confidence_score</code> is required unless <code>EXTRACTED</code></td></tr></tbody></table></div>
 <p>Ids are stable. Never rename an id because a label changed. Ids must match <code>^[A-Za-z0-9][A-Za-z0-9_.:-]*$</code>. Namespaced prefixes: <code>spec_&lt;feature&gt;_...</code> for spec-kit, <code>sec_&lt;run&gt;_...</code> for security, <code>decision_adr_...</code> for decisions.</p>
 <h3 id="contract-mode-contract">Mode contract</h3>
-<table><thead><tr><th>Mode</th><th>Writes</th><th>Reads</th></tr></thead><tbody><tr><td><code>INIT</code></td><td>graph, ledger, vault, exports, summary, context</td><td>source tree, graphify, <code>.specify/</code>, optional security run</td></tr><tr><td><code>SYNC</code></td><td>only stale/mapped units + summary + context</td><td>changed files plus prior ledger</td></tr><tr><td><code>AUDIT</code></td><td>summary findings only; no graph regeneration</td><td>graph, ledger, source tree</td></tr><tr><td><code>FULL</code></td><td>everything, rebuilt</td><td>full source tree</td></tr><tr><td><code>EXPORT</code></td><td>architecture exports + vault</td><td>existing graph</td></tr><tr><td><code>CONTEXT</code></td><td><code>02-LLM-Context.md</code></td><td>existing graph + ledger</td></tr><tr><td><code>GRAPH</code></td><td>graph.json</td><td>graphify cache or source scan</td></tr><tr><td><code>SPECS</code></td><td>spec nodes merge</td><td><code>.specify/</code></td></tr><tr><td><code>SECURITY</code></td><td>security nodes merge</td><td>a security run directory</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Mode</th><th>Writes</th><th>Reads</th></tr></thead><tbody><tr><td><code>INIT</code></td><td>graph, ledger, vault, exports, summary, context</td><td>source tree, graphify, <code>.specify/</code>, optional security run</td></tr><tr><td><code>SYNC</code></td><td>only stale/mapped units + summary + context</td><td>changed files plus prior ledger</td></tr><tr><td><code>AUDIT</code></td><td>summary findings only; no graph regeneration</td><td>graph, ledger, source tree</td></tr><tr><td><code>FULL</code></td><td>everything, rebuilt</td><td>full source tree</td></tr><tr><td><code>EXPORT</code></td><td>architecture exports + vault</td><td>existing graph</td></tr><tr><td><code>CONTEXT</code></td><td><code>02-LLM-Context.md</code></td><td>existing graph + ledger</td></tr><tr><td><code>GRAPH</code></td><td>graph.json</td><td>graphify cache or source scan</td></tr><tr><td><code>SPECS</code></td><td>spec nodes merge</td><td><code>.specify/</code></td></tr><tr><td><code>SECURITY</code></td><td>security nodes merge</td><td>a security run directory</td></tr></tbody></table></div>
 <h3 id="contract-failure-rules">Failure rules</h3>
 <ul><li>A tool is never reported as used unless it ran and its output parsed. Record <code>meta.graphify.available</code> honestly.</li><li>Graphify unavailable → deterministic source scan (files + import edges) + spec/security ingestion. Mark <code>derivation: &quot;llm&quot;</code> only for model-authored content.</li><li>Graphify failed mid-run → keep the previous graph, add a <code>sync-summary.md</code> warning with the exact error, and exit non-zero in <code>--strict</code> mode.</li><li>Validation failure → do not overwrite the previous valid graph; write to <code>project-map/.cache/graph.candidate.json</code>, report the error, exit 1.</li></ul>
 </section>
-<section id="modes">
+<section id="modes" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">05</span>
     <h2>Modes and phases</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/modes.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/modes.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <h3 id="modes-mode-decision-table">Mode decision table</h3>
 <p>Pick the first match:</p>
-<table><thead><tr><th>Condition</th><th>Mode</th></tr></thead><tbody><tr><td><code>project-map/graph.json</code> missing</td><td><code>INIT</code></td></tr><tr><td>User asks for review / validation / consistency / gaps</td><td><code>AUDIT</code></td></tr><tr><td>User asks for full rebuild, handover, closure, or as-built export</td><td><code>FULL</code></td></tr><tr><td>Only exports are requested</td><td><code>EXPORT</code></td></tr><tr><td>Only the LLM context note is requested</td><td><code>CONTEXT</code></td></tr><tr><td>Only the graph is requested</td><td><code>GRAPH</code></td></tr><tr><td><code>.specify/</code> changed and no code changed</td><td><code>SPECS</code></td></tr><tr><td>A security run directory is supplied</td><td><code>SECURITY</code></td></tr><tr><td>Anything else with an existing map</td><td><code>SYNC</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Condition</th><th>Mode</th></tr></thead><tbody><tr><td><code>project-map/graph.json</code> missing</td><td><code>INIT</code></td></tr><tr><td>User asks for review / validation / consistency / gaps</td><td><code>AUDIT</code></td></tr><tr><td>User asks for full rebuild, handover, closure, or as-built export</td><td><code>FULL</code></td></tr><tr><td>Only exports are requested</td><td><code>EXPORT</code></td></tr><tr><td>Only the LLM context note is requested</td><td><code>CONTEXT</code></td></tr><tr><td>Only the graph is requested</td><td><code>GRAPH</code></td></tr><tr><td><code>.specify/</code> changed and no code changed</td><td><code>SPECS</code></td></tr><tr><td>A security run directory is supplied</td><td><code>SECURITY</code></td></tr><tr><td>Anything else with an existing map</td><td><code>SYNC</code></td></tr></tbody></table></div>
 <p>An explicit flag wins: <code>--mode init|sync|audit|full|export|context|graph|specs|security</code>.</p>
 <h3 id="modes-init">INIT</h3>
 <ol><li>Resolve project name (arg → <code>package.json</code>/<code>pyproject.toml</code>/directory name).</li><li>Detect <code>.specify/</code> and an existing security run directory; ingest if present.</li><li>Detect graphify: binary on <code>PATH</code>, <code>graphify --version</code>, and <code>graphify-out/graph.json</code>. Run <code>graphify update</code> only when a cache already exists; never start a long extraction unasked.</li><li>Project whatever graph data exists into <code>project-map/graph.json</code>.</li><li>Seed <code>map-ledger.json</code> from tracked files, one unit per top-level tree plus root files.</li><li>Write the vault, architecture exports, sync summary, and context note.</li><li>Validate everything, then print the summary.</li></ol>
@@ -369,7 +487,7 @@ generated content
 <h3 id="modes-security">SECURITY</h3>
 <p>Ingest one security run directory. Never run the audit itself unless the user explicitly asked for an audit; in that case delegate to the installed <code>security-audit</code> skill and state its output directory.</p>
 <h3 id="modes-phase-handling">Phase handling</h3>
-<table><thead><tr><th>Phase</th><th>Emphasis</th><th>Status vocabulary</th></tr></thead><tbody><tr><td><code>BEFORE</code></td><td>goals, scope, requirements, constraints, stakeholders, planned architecture</td><td><code>planned</code>, <code>unknown</code></td></tr><tr><td><code>DURING</code></td><td>implementation, decisions, task state, drift between docs and code</td><td><code>implemented</code>, <code>planned</code>, <code>unknown</code></td></tr><tr><td><code>END</code></td><td>as-built, deviations, debt, operational notes, handover</td><td><code>implemented</code>, <code>deprecated</code>, <code>unknown</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Phase</th><th>Emphasis</th><th>Status vocabulary</th></tr></thead><tbody><tr><td><code>BEFORE</code></td><td>goals, scope, requirements, constraints, stakeholders, planned architecture</td><td><code>planned</code>, <code>unknown</code></td></tr><tr><td><code>DURING</code></td><td>implementation, decisions, task state, drift between docs and code</td><td><code>implemented</code>, <code>planned</code>, <code>unknown</code></td></tr><tr><td><code>END</code></td><td>as-built, deviations, debt, operational notes, handover</td><td><code>implemented</code>, <code>deprecated</code>, <code>unknown</code></td></tr></tbody></table></div>
 <p>Never present planned work as implemented. Anything inferred rather than read is labeled.</p>
 <h3 id="modes-token-rules">Token rules</h3>
 <p>The rules below are enforced or made mechanical, not requested:</p>
@@ -377,10 +495,11 @@ generated content
 <h3 id="modes-final-response-format">Final response format</h3>
 <ol><li>Mode and phase.</li><li>Generation source: <code>graphify</code>, <code>graphify+llm</code>, <code>llm-manual</code>, <code>graphify-fallback</code>, plus spec-kit/security ingestion flags.</li><li>What changed (or audit findings).</li><li>Coverage: <code>mapped / stale / unmapped / out_of_scope</code>.</li><li>Assumptions and unknowns.</li><li>Artifacts written.</li><li>Risks and next actions.</li></ol>
 </section>
-<section id="graphify">
+<section id="graphify" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">06</span>
     <h2>Graphify adapter</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/graphify-adapter.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/graphify-adapter.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>Graphify is an optional external tool. It is never required; Mapkeeper always has a deterministic fallback.</p>
 <h3 id="graphify-detection-honest-in-this-order">Detection (honest, in this order)</h3>
@@ -389,11 +508,11 @@ generated content
 <pre data-copy><code class="lang-json">{ &quot;available&quot;: true, &quot;version&quot;: &quot;0.9.x&quot;, &quot;graph_path&quot;: &quot;graphify-out/graph.json&quot;, &quot;used_cache&quot;: true }</code></pre>
 <p><code>available</code> means graph data was consumed. <code>used_cache: false</code> means the CLI was invoked this run.</p>
 <h3 id="graphify-invocation-rules">Invocation rules</h3>
-<table><thead><tr><th>Situation</th><th>Action</th></tr></thead><tbody><tr><td>Cache exists, user passes <code>--run-tool</code></td><td>Run <code>graphify update</code> in the project root, 10-minute timeout</td></tr><tr><td>Cache exists, no <code>--run-tool</code></td><td>Consume the cache; note it in <code>sync-summary.md</code></td></tr><tr><td>Cache exists, <code>init</code> mode</td><td><code>graphify update</code> is allowed (default behavior)</td></tr><tr><td>No cache, binary present</td><td>Do <strong>not</strong> start a full extraction unprompted; use the fallback and say why</td></tr><tr><td><code>--graphify manual</code> or <code>disabled</code></td><td>Never invoke; use the deterministic fallback</td></tr><tr><td>Update fails</td><td>Keep the previous graph, record the exact stderr, continue with the fallback if no cache</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Action</th></tr></thead><tbody><tr><td>Cache exists, user passes <code>--run-tool</code></td><td>Run <code>graphify update</code> in the project root, 10-minute timeout</td></tr><tr><td>Cache exists, no <code>--run-tool</code></td><td>Consume the cache; note it in <code>sync-summary.md</code></td></tr><tr><td>Cache exists, <code>init</code> mode</td><td><code>graphify update</code> is allowed (default behavior)</td></tr><tr><td>No cache, binary present</td><td>Do <strong>not</strong> start a full extraction unprompted; use the fallback and say why</td></tr><tr><td><code>--graphify manual</code> or <code>disabled</code></td><td>Never invoke; use the deterministic fallback</td></tr><tr><td>Update fails</td><td>Keep the previous graph, record the exact stderr, continue with the fallback if no cache</td></tr></tbody></table></div>
 <p>Never run <code>graphify</code> with <code>--mcp</code> automatically. MCP is for query-time delegation.</p>
 <h3 id="graphify-projection-graphify-graphjson">Projection (graphify → graph.json)</h3>
 <p>Node mapping:</p>
-<table><thead><tr><th>graphify <code>file_type</code></th><th>Mapkeeper <code>kind</code></th></tr></thead><tbody><tr><td><code>code</code></td><td><code>file</code></td></tr><tr><td><code>document</code>, <code>paper</code>, <code>image</code></td><td><code>document</code></td></tr><tr><td><code>rationale</code></td><td><code>decision</code></td></tr><tr><td><code>concept</code></td><td><code>data_entity</code></td></tr><tr><td>missing/unknown</td><td><code>file</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>graphify <code>file_type</code></th><th>Mapkeeper <code>kind</code></th></tr></thead><tbody><tr><td><code>code</code></td><td><code>file</code></td></tr><tr><td><code>document</code>, <code>paper</code>, <code>image</code></td><td><code>document</code></td></tr><tr><td><code>rationale</code></td><td><code>decision</code></td></tr><tr><td><code>concept</code></td><td><code>data_entity</code></td></tr><tr><td>missing/unknown</td><td><code>file</code></td></tr></tbody></table></div>
 <p>Preserve, verbatim:</p>
 <ul><li><code>id</code> (never rename, never add chunk suffixes)</li><li><code>label</code></li><li><code>source_file</code> (relativized to the project root when it is absolute and inside it)</li><li><code>source_location</code></li><li><code>community</code> (into <code>provenance.community</code> and <code>tags</code>)</li></ul>
 <p>Set <code>derivation: &quot;graphify&quot;</code>, <code>confidence: &quot;high&quot;</code> for code and <code>&quot;medium&quot;</code> otherwise, <code>status: &quot;implemented&quot;</code> for code and <code>&quot;unknown&quot;</code> otherwise, <code>provenance.relation_source: &quot;EXTRACTED&quot;</code>.</p>
@@ -412,12 +531,13 @@ semantically_similar_to, rationale_for</code></pre>
 <h3 id="graphify-query-delegation">Query delegation</h3>
 <p><code>mapkeeper query &quot;&lt;question&gt;&quot;</code> runs <code>graphify query &quot;&lt;question&gt;&quot;</code> when both the binary and the cache exist. <code>mapkeeper query path a b</code> and <code>mapkeeper query explain node</code> delegate to the same CLI. On failure, Mapkeeper prints the graphify error and traverses <code>project-map/graph.json</code> instead — it never falls back to reading the repository.</p>
 <h3 id="graphify-failure-modes-to-report-not-hide">Failure modes to report, not hide</h3>
-<table><thead><tr><th>Symptom</th><th>Message</th></tr></thead><tbody><tr><td>binary absent</td><td><code>graphify binary not found on PATH</code></td></tr><tr><td>binary present, cache absent</td><td><code>graphify binary present but graphify-out/graph.json is missing</code></td></tr><tr><td>update timeout</td><td><code>graphify update failed: &lt;stderr&gt;</code></td></tr><tr><td>schema mismatch</td><td><code>skipped graphify edge with unmapped relation &quot;&lt;x&gt;&quot;</code></td></tr><tr><td>refused shrink</td><td>surface graphify's own refusal text; do not delete the existing graph</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Message</th></tr></thead><tbody><tr><td>binary absent</td><td><code>graphify binary not found on PATH</code></td></tr><tr><td>binary present, cache absent</td><td><code>graphify binary present but graphify-out/graph.json is missing</code></td></tr><tr><td>update timeout</td><td><code>graphify update failed: &lt;stderr&gt;</code></td></tr><tr><td>schema mismatch</td><td><code>skipped graphify edge with unmapped relation &quot;&lt;x&gt;&quot;</code></td></tr><tr><td>refused shrink</td><td>surface graphify's own refusal text; do not delete the existing graph</td></tr></tbody></table></div>
 </section>
-<section id="schema">
+<section id="schema" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">07</span>
     <h2>Graph and ledger schema</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/schema.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/schema.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>Machine-readable sources: <code>schema/graph.schema.json</code>, <code>schema/ledger.schema.json</code>, <code>schema/context.schema.json</code>. Validators: <code>scripts/validate-*.mjs</code>. If prose and schema disagree, the schema wins.</p>
 <h3 id="schema-graphjson">graph.json</h3>
@@ -441,7 +561,7 @@ semantically_similar_to, rationale_for</code></pre>
   &quot;coverage&quot;: { &quot;units_total&quot;: 0, &quot;mapped&quot;: 0, &quot;stale&quot;: 0, &quot;unmapped&quot;: 0, &quot;out_of_scope&quot;: 0 }
 }</code></pre>
 <h3 id="schema-node">Node</h3>
-<table><thead><tr><th>Field</th><th>Required</th><th>Notes</th></tr></thead><tbody><tr><td><code>id</code></td><td>yes</td><td><code>^[A-Za-z0-9][A-Za-z0-9_.:-]*$</code>, stable forever, unique</td></tr><tr><td><code>kind</code></td><td>yes</td><td>one of the 31 kinds in the schema (component, requirement, finding, trust_boundary, …)</td></tr><tr><td><code>label</code></td><td>yes</td><td>human name, ≤ 160 chars in practice</td></tr><tr><td><code>status</code></td><td>yes</td><td><code>planned</code>, <code>implemented</code>, <code>unknown</code>, <code>deprecated</code>, <code>confirmed</code>, <code>needs_validation</code></td></tr><tr><td><code>derivation</code></td><td>yes</td><td><code>graphify</code>, <code>speckit</code>, <code>security</code>, <code>llm</code>, <code>merged</code></td></tr><tr><td><code>summary</code></td><td>no</td><td>one or two sentences, no secrets</td></tr><tr><td><code>phase</code></td><td>no</td><td><code>BEFORE</code>, <code>DURING</code>, <code>END</code></td></tr><tr><td><code>confidence</code></td><td>no</td><td><code>low</code>, <code>medium</code>, <code>high</code>; required for inferred nodes</td></tr><tr><td><code>provenance</code></td><td>no</td><td>`{source_file, source_location, relation_source: EXTRACTED</td><td>INFERRED</td><td>AMBIGUOUS, run_dir?, community?}`</td></tr><tr><td><code>spec_refs</code></td><td>no</td><td><code>path/to/spec.md#FR-001</code></td></tr><tr><td><code>source_refs</code></td><td>no</td><td><code>path#L10</code>, <code>path:42</code></td></tr><tr><td><code>tags</code></td><td>no</td><td>free-form</td></tr><tr><td><code>severity</code></td><td>only confirmed findings</td><td><code>critical</code>, <code>high</code>, <code>medium</code>, <code>low</code>, <code>informational</code></td></tr><tr><td><code>verdict</code></td><td>findings</td><td><code>confirmed</code>, <code>needs_validation</code> (never <code>rejected</code>)</td></tr><tr><td><code>last_verified</code></td><td>no</td><td><code>{revision, date}</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Field</th><th>Required</th><th>Notes</th></tr></thead><tbody><tr><td><code>id</code></td><td>yes</td><td><code>^[A-Za-z0-9][A-Za-z0-9_.:-]*$</code>, stable forever, unique</td></tr><tr><td><code>kind</code></td><td>yes</td><td>one of the 31 kinds in the schema (component, requirement, finding, trust_boundary, …)</td></tr><tr><td><code>label</code></td><td>yes</td><td>human name, ≤ 160 chars in practice</td></tr><tr><td><code>status</code></td><td>yes</td><td><code>planned</code>, <code>implemented</code>, <code>unknown</code>, <code>deprecated</code>, <code>confirmed</code>, <code>needs_validation</code></td></tr><tr><td><code>derivation</code></td><td>yes</td><td><code>graphify</code>, <code>speckit</code>, <code>security</code>, <code>llm</code>, <code>merged</code></td></tr><tr><td><code>summary</code></td><td>no</td><td>one or two sentences, no secrets</td></tr><tr><td><code>phase</code></td><td>no</td><td><code>BEFORE</code>, <code>DURING</code>, <code>END</code></td></tr><tr><td><code>confidence</code></td><td>no</td><td><code>low</code>, <code>medium</code>, <code>high</code>; required for inferred nodes</td></tr><tr><td><code>provenance</code></td><td>no</td><td>`{source_file, source_location, relation_source: EXTRACTED</td><td>INFERRED</td><td>AMBIGUOUS, run_dir?, community?}`</td></tr><tr><td><code>spec_refs</code></td><td>no</td><td><code>path/to/spec.md#FR-001</code></td></tr><tr><td><code>source_refs</code></td><td>no</td><td><code>path#L10</code>, <code>path:42</code></td></tr><tr><td><code>tags</code></td><td>no</td><td>free-form</td></tr><tr><td><code>severity</code></td><td>only confirmed findings</td><td><code>critical</code>, <code>high</code>, <code>medium</code>, <code>low</code>, <code>informational</code></td></tr><tr><td><code>verdict</code></td><td>findings</td><td><code>confirmed</code>, <code>needs_validation</code> (never <code>rejected</code>)</td></tr><tr><td><code>last_verified</code></td><td>no</td><td><code>{revision, date}</code></td></tr></tbody></table></div>
 <p>Rules enforced by <code>validate-graph.mjs</code>:</p>
 <ol><li>Node ids are unique.</li><li>A node whose <code>provenance.relation_source</code> is not <code>INFERRED</code> needs <code>source_refs</code> or <code>spec_refs</code>.</li><li>An inferred node needs <code>confidence</code>.</li><li><code>verdict: &quot;rejected&quot;</code> must never appear.</li><li><code>status: &quot;needs_validation&quot;</code> must not carry <code>severity</code>; <code>severity</code> requires <code>status: &quot;confirmed&quot;</code>.</li><li>Edge endpoints exist and are not self-edges.</li><li><code>meta.counts.nodes/edges</code> equal array lengths.</li></ol>
 <h3 id="schema-edge">Edge</h3>
@@ -457,7 +577,7 @@ semantically_similar_to, rationale_for</code></pre>
 }</code></pre>
 <p><code>confidence_score</code> is required unless <code>EXTRACTED</code>. Never invent a relation: skip the edge and warn.</p>
 <h3 id="schema-id-rules">Id rules</h3>
-<table><thead><tr><th>Source</th><th>Pattern</th><th>Example</th></tr></thead><tbody><tr><td>graphify</td><td>verbatim from graphify</td><td><code>src_auth_session_validatetoken</code></td></tr><tr><td>deterministic scan</td><td><code>file_&lt;sanitized path without extension&gt;</code></td><td><code>file_src_auth_session</code></td></tr><tr><td>spec-kit</td><td><code>spec_&lt;feature&gt;_&lt;artifact&gt;</code></td><td><code>spec_001-auth_fr-001</code>, <code>spec_001-auth_t001</code></td></tr><tr><td>security</td><td><code>sec_&lt;run&gt;_&lt;fingerprint&gt;</code></td><td><code>sec_run-1_aaaa1111</code></td></tr><tr><td>trust boundary</td><td><code>sec_&lt;run&gt;_tb_&lt;slug&gt;</code></td><td><code>sec_run-1_tb_http_edge_to_app</code></td></tr><tr><td>decision</td><td><code>decision_adr_&lt;n&gt;</code></td><td><code>decision_adr_0001</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Source</th><th>Pattern</th><th>Example</th></tr></thead><tbody><tr><td>graphify</td><td>verbatim from graphify</td><td><code>src_auth_session_validatetoken</code></td></tr><tr><td>deterministic scan</td><td><code>file_&lt;sanitized path without extension&gt;</code></td><td><code>file_src_auth_session</code></td></tr><tr><td>spec-kit</td><td><code>spec_&lt;feature&gt;_&lt;artifact&gt;</code></td><td><code>spec_001-auth_fr-001</code>, <code>spec_001-auth_t001</code></td></tr><tr><td>security</td><td><code>sec_&lt;run&gt;_&lt;fingerprint&gt;</code></td><td><code>sec_run-1_aaaa1111</code></td></tr><tr><td>trust boundary</td><td><code>sec_&lt;run&gt;_tb_&lt;slug&gt;</code></td><td><code>sec_run-1_tb_http_edge_to_app</code></td></tr><tr><td>decision</td><td><code>decision_adr_&lt;n&gt;</code></td><td><code>decision_adr_0001</code></td></tr></tbody></table></div>
 <h3 id="schema-map-ledgerjson">map-ledger.json</h3>
 <pre data-copy><code class="lang-json">{
   &quot;schema_version&quot;: 1,
@@ -490,10 +610,11 @@ semantically_similar_to, rationale_for</code></pre>
 <h3 id="schema-context-note">context note</h3>
 <p><code>project-map/obsidian-vault/02-LLM-Context.md</code> frontmatter must include <code>project</code>, <code>phase</code>, <code>status</code>, <code>source_revision</code>, <code>generated_at</code>, <code>budget_tokens</code> (100–2000). Body: one top-level heading, ≤ 2000 tokens by <code>chars/4</code>, target 1500. Detail belongs in linked notes, not here.</p>
 </section>
-<section id="obsidian">
+<section id="obsidian" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">08</span>
     <h2>Obsidian vault</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/obsidian.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/obsidian.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>The vault is a normal Obsidian vault: open <code>project-map/obsidian-vault/</code> directly.</p>
 <h3 id="obsidian-layout">Layout</h3>
@@ -558,13 +679,14 @@ _Add human notes here; Mapkeeper never edits this section._</code></pre>
 <h3 id="obsidian-orphan-and-link-hygiene">Orphan and link hygiene</h3>
 <ul><li><code>mapkeeper doctor</code> reports unresolved wikilinks and coverage gaps.</li><li>Deleting a node from the graph does not delete its note immediately; run <code>init|sync --prune</code> to remove orphaned mapkeeper-managed notes.</li><li>Never point wikilinks at files outside the vault.</li><li>For large vaults, keep node notes short; the graph is the index, notes are for humans.</li></ul>
 </section>
-<section id="exports">
+<section id="exports" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">09</span>
     <h2>Architecture exports</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/architecture-exports.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/architecture-exports.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>Three files, one source of truth:</p>
-<table><thead><tr><th>File</th><th>Audience</th><th>Rule</th></tr></thead><tbody><tr><td><code>architecture-overview.md</code></td><td>humans, PRs, Obsidian exports</td><td>readable, tables, wikilinks</td></tr><tr><td><code>architecture-overview.json</code></td><td>automation, dashboards</td><td>mirrors the Markdown content, no HTML</td></tr><tr><td><code>architecture-overview.html</code></td><td>no-install viewing</td><td>standalone, inline CSS, no CDN, no JS required</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>File</th><th>Audience</th><th>Rule</th></tr></thead><tbody><tr><td><code>architecture-overview.md</code></td><td>humans, PRs, Obsidian exports</td><td>readable, tables, wikilinks</td></tr><tr><td><code>architecture-overview.json</code></td><td>automation, dashboards</td><td>mirrors the Markdown content, no HTML</td></tr><tr><td><code>architecture-overview.html</code></td><td>no-install viewing</td><td>standalone, inline CSS, no CDN, no JS required</td></tr></tbody></table></div>
 <p>All three derive from <code>buildArchitecture({graph, ledger, gaps, security})</code> in <code>scripts/lib/exports.mjs</code>. Never hand-edit one format without regenerating the others.</p>
 <h3 id="exports-shared-content-model">Shared content model</h3>
 <pre data-copy><code class="lang-json">{
@@ -591,22 +713,23 @@ _Add human notes here; Mapkeeper never edits this section._</code></pre>
   n_component_api --&gt;|depends_on| n_database_main[&quot;main&quot;]</code></pre>
 <ul><li>Node ids are prefixed <code>n_</code> and sanitized; labels are truncated to 60 chars.</li><li>Top 30 nodes by degree; <code>contains</code> edges are omitted to keep diagrams readable.</li><li>Broken Mermaid must fail the export, not silently render text.</li></ul>
 <h3 id="exports-when-to-regenerate">When to regenerate</h3>
-<table><thead><tr><th>Change</th><th>Regenerate</th></tr></thead><tbody><tr><td><code>graph.json</code> changed</td><td><code>export</code></td></tr><tr><td>Only context requested</td><td><code>context</code></td></tr><tr><td>Hand-edited notes</td><td>never (outside managed blocks)</td></tr><tr><td>Ledger-only audit</td><td><code>audit</code> writes the summary, not the exports</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Change</th><th>Regenerate</th></tr></thead><tbody><tr><td><code>graph.json</code> changed</td><td><code>export</code></td></tr><tr><td>Only context requested</td><td><code>context</code></td></tr><tr><td>Hand-edited notes</td><td>never (outside managed blocks)</td></tr><tr><td>Ledger-only audit</td><td><code>audit</code> writes the summary, not the exports</td></tr></tbody></table></div>
 <p><code>export</code> refuses to run without a valid <code>graph.json</code>; <code>mapkeeper doctor</code> verifies all four artifacts exist.</p>
 </section>
-<section id="speckit">
+<section id="speckit" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">10</span>
     <h2>Spec-kit adapter</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/speckit-adapter.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/speckit-adapter.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>Read-only integration with <a href="https://github.com/github/spec-kit">github/spec-kit</a>. Spec-kit is optional; Mapkeeper works without <code>.specify/</code>.</p>
 <h3 id="speckit-detection">Detection</h3>
 <ol><li><code>.specify/</code> exists → spec-kit project.</li><li>Active feature directory from <code>.specify/feature.json</code> (keys <code>feature_directory</code>, <code>feature_dir</code>, <code>directory</code>, <code>path</code>, <code>feature</code>); fall back to the newest <code>specs/*/</code> containing <code>spec.md</code>.</li><li>Read <code>.specify/memory/constitution.md</code> when present.</li></ol>
 <p>Never create, edit, or delete anything under <code>.specify/</code>. Mapkeeper only reads it.</p>
 <h3 id="speckit-artifact-mapping">Artifact mapping</h3>
-<table><thead><tr><th>Artifact</th><th>Node kind</th><th>Id</th></tr></thead><tbody><tr><td><code>constitution.md</code> headings</td><td><code>constraint</code></td><td><code>spec_&lt;feature&gt;_constraint_&lt;slug&gt;</code></td></tr><tr><td><code>spec.md</code> <code>FR-###</code>, <code>NFR-###</code>, <code>SR-###</code>, <code>CR-###</code></td><td><code>requirement</code></td><td><code>spec_&lt;feature&gt;_fr-001</code></td></tr><tr><td><code>spec.md</code> <code>### User Story N</code></td><td><code>goal</code></td><td><code>spec_&lt;feature&gt;_goal_N</code></td></tr><tr><td><code>plan.md</code> <code>###</code> headings under Project Structure</td><td><code>component</code></td><td><code>spec_&lt;feature&gt;_component_&lt;slug&gt;</code></td></tr><tr><td><code>plan.md</code> <code><strong>Decision</strong>:</code> lines</td><td><code>decision</code></td><td><code>spec_&lt;feature&gt;_decision_&lt;slug&gt;</code></td></tr><tr><td><code>tasks.md</code> <code>- [ ] T###</code></td><td><code>task</code></td><td><code>spec_&lt;feature&gt;_t001</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Artifact</th><th>Node kind</th><th>Id</th></tr></thead><tbody><tr><td><code>constitution.md</code> headings</td><td><code>constraint</code></td><td><code>spec_&lt;feature&gt;_constraint_&lt;slug&gt;</code></td></tr><tr><td><code>spec.md</code> <code>FR-###</code>, <code>NFR-###</code>, <code>SR-###</code>, <code>CR-###</code></td><td><code>requirement</code></td><td><code>spec_&lt;feature&gt;_fr-001</code></td></tr><tr><td><code>spec.md</code> <code>### User Story N</code></td><td><code>goal</code></td><td><code>spec_&lt;feature&gt;_goal_N</code></td></tr><tr><td><code>plan.md</code> <code>###</code> headings under Project Structure</td><td><code>component</code></td><td><code>spec_&lt;feature&gt;_component_&lt;slug&gt;</code></td></tr><tr><td><code>plan.md</code> <code><strong>Decision</strong>:</code> lines</td><td><code>decision</code></td><td><code>spec_&lt;feature&gt;_decision_&lt;slug&gt;</code></td></tr><tr><td><code>tasks.md</code> <code>- [ ] T###</code></td><td><code>task</code></td><td><code>spec_&lt;feature&gt;_t001</code></td></tr></tbody></table></div>
 <p>Edges:</p>
-<table><thead><tr><th>From</th><th>Relation</th><th>To</th><th>Evidence</th></tr></thead><tbody><tr><td>task</td><td><code>satisfies_requirement</code></td><td>requirement mentioned in the task line</td><td><code>tasks.md#T001</code></td></tr><tr><td>task</td><td><code>implements</code></td><td>file path mentioned and existing</td><td><code>tasks.md#T001</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>From</th><th>Relation</th><th>To</th><th>Evidence</th></tr></thead><tbody><tr><td>task</td><td><code>satisfies_requirement</code></td><td>requirement mentioned in the task line</td><td><code>tasks.md#T001</code></td></tr><tr><td>task</td><td><code>implements</code></td><td>file path mentioned and existing</td><td><code>tasks.md#T001</code></td></tr></tbody></table></div>
 <p>Every spec-kit node carries <code>derivation: &quot;speckit&quot;</code> and <code>spec_refs: [&quot;&lt;path&gt;#&lt;id&gt;&quot;]</code>. Source refs stay empty unless a task names a real file.</p>
 <h3 id="speckit-traceability-report">Traceability report</h3>
 <p><code>mapkeeper specs</code> and every <code>init|sync</code> write these gaps into <code>sync-summary.md</code> and <code>architecture-overview.md</code>:</p>
@@ -630,12 +753,13 @@ _Add human notes here; Mapkeeper never edits this section._</code></pre>
 <ul><li>id <code>mapkeeper</code>; commands <code>speckit.mapkeeper.init</code>, <code>speckit.mapkeeper.sync</code>, <code>speckit.mapkeeper.audit</code>; files in <code>commands/</code>.</li><li>hooks <code>after_tasks</code> and <code>after_implement</code>, <code>optional: true</code>, so users opt in after <code>/speckit-tasks</code> and <code>/speckit-implement</code>.</li><li>no <code>requires.tools</code>; graphify and security-audit stay optional.</li></ul>
 <p>The commands call the repository-local CLI (<code>node scripts/mapkeeper.mjs …</code>) when Mapkeeper is vendored, or instruct the agent to run the skill when it is installed globally. They never edit spec-kit artifacts.</p>
 <h3 id="speckit-failure-handling">Failure handling</h3>
-<table><thead><tr><th>Symptom</th><th>Behavior</th></tr></thead><tbody><tr><td><code>.specify/feature.json</code> invalid</td><td>fall back to newest <code>specs/*</code>, warn</td></tr><tr><td>No spec.md/plan.md/tasks.md</td><td>warn; no nodes invented</td></tr><tr><td>Duplicate requirement ids</td><td>first occurrence wins, warn</td></tr><tr><td>Task references a missing file</td><td>gap, not a node</td></tr><tr><td><code>.specify/</code> unreadable</td><td>continue without spec-kit, record in warnings</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Behavior</th></tr></thead><tbody><tr><td><code>.specify/feature.json</code> invalid</td><td>fall back to newest <code>specs/*</code>, warn</td></tr><tr><td>No spec.md/plan.md/tasks.md</td><td>warn; no nodes invented</td></tr><tr><td>Duplicate requirement ids</td><td>first occurrence wins, warn</td></tr><tr><td>Task references a missing file</td><td>gap, not a node</td></tr><tr><td><code>.specify/</code> unreadable</td><td>continue without spec-kit, record in warnings</td></tr></tbody></table></div>
 </section>
-<section id="security">
+<section id="security" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">11</span>
     <h2>Security-audit adapter</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/security-adapter.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/security-adapter.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>Read-only integration with <a href="https://github.com/cloudflare/security-audit-skill">cloudflare/security-audit-skill</a>. Mapkeeper consumes finished audit artifacts; it does not reimplement the audit methodology.</p>
 <h3 id="security-locating-the-skill-and-a-run">Locating the skill and a run</h3>
@@ -656,7 +780,7 @@ _Add human notes here; Mapkeeper never edits this section._</code></pre>
 <ol><li>Confirm the target and an output directory <strong>outside</strong> the repository (the upstream default is <code>~/security-audit-skill/&lt;repo&gt;/run-&lt;N&gt;</code>).</li><li>Delegate: ask the installed <code>security-audit</code> skill to run its full-audit mode against the target.</li><li>Ingest the resulting run directory with <code>mapkeeper security &lt;dir&gt;</code>.</li></ol>
 <p>Do not run all six phases yourself, do not copy its <code>SKILL.md</code>/companion docs into this repository, and do not relax its sandbox requirements.</p>
 <h3 id="security-ingestion-mapping">Ingestion mapping</h3>
-<table><thead><tr><th>Input</th><th>Mapkeeper output</th></tr></thead><tbody><tr><td><code>architecture.md</code> → <code>## Trust Boundaries</code> bullets</td><td><code>trust_boundary</code> nodes <code>sec_&lt;run&gt;_tb_&lt;slug&gt;</code></td></tr><tr><td><code>findings.json</code> record <code>verdict: confirmed</code></td><td><code>finding</code> node, <code>status: confirmed</code>, <code>severity</code> from the record</td></tr><tr><td><code>findings.json</code> record <code>verdict: needs_validation</code></td><td><code>finding</code> node, <code>status: needs_validation</code>, <strong>no severity</strong></td></tr><tr><td><code>findings.json</code> record <code>verdict: rejected</code></td><td>counted only (<code>counts.rejected</code>), never published</td></tr><tr><td>record <code>file</code> + <code>line</code></td><td><code>source_refs: [&quot;&lt;file&gt;:&lt;line&gt;&quot;]</code></td></tr><tr><td>record <code>trust_boundary</code></td><td>edge <code>violates</code> → boundary node</td></tr><tr><td>record file matching a graph node</td><td>edge <code>affects</code> → that node</td></tr><tr><td>record <code>requirements: [&quot;FR-001&quot;]</code></td><td>edge <code>affects</code> → the matching requirement node</td></tr><tr><td><code>run-metadata.json</code> <code>source_ref</code></td><td><code>last_verified.revision</code>; stale marker when the repo moved</td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Input</th><th>Mapkeeper output</th></tr></thead><tbody><tr><td><code>architecture.md</code> → <code>## Trust Boundaries</code> bullets</td><td><code>trust_boundary</code> nodes <code>sec_&lt;run&gt;_tb_&lt;slug&gt;</code></td></tr><tr><td><code>findings.json</code> record <code>verdict: confirmed</code></td><td><code>finding</code> node, <code>status: confirmed</code>, <code>severity</code> from the record</td></tr><tr><td><code>findings.json</code> record <code>verdict: needs_validation</code></td><td><code>finding</code> node, <code>status: needs_validation</code>, <strong>no severity</strong></td></tr><tr><td><code>findings.json</code> record <code>verdict: rejected</code></td><td>counted only (<code>counts.rejected</code>), never published</td></tr><tr><td>record <code>file</code> + <code>line</code></td><td><code>source_refs: [&quot;&lt;file&gt;:&lt;line&gt;&quot;]</code></td></tr><tr><td>record <code>trust_boundary</code></td><td>edge <code>violates</code> → boundary node</td></tr><tr><td>record file matching a graph node</td><td>edge <code>affects</code> → that node</td></tr><tr><td>record <code>requirements: [&quot;FR-001&quot;]</code></td><td>edge <code>affects</code> → the matching requirement node</td></tr><tr><td><code>run-metadata.json</code> <code>source_ref</code></td><td><code>last_verified.revision</code>; stale marker when the repo moved</td></tr></tbody></table></div>
 <p>Ids: <code>sec_&lt;run-id&gt;_&lt;fingerprint&gt;</code>; fingerprints are preserved verbatim when present. If a record has no fingerprint or id, hash a sanitized title.</p>
 <p>Tolerated <code>findings.json</code> shapes: a top-level array, or an object with <code>findings</code>, <code>records</code>, <code>results</code>, or <code>items</code>. Unknown shapes produce a warning and zero nodes.</p>
 <h3 id="security-severity-and-verdict-rules-non-negotiable">Severity and verdict rules (non-negotiable)</h3>
@@ -666,14 +790,15 @@ _Add human notes here; Mapkeeper never edits this section._</code></pre>
 <h3 id="security-what-mapkeeper-must-not-do">What Mapkeeper must not do</h3>
 <ul><li>Re-run exploit steps, reproduce candidates, or &quot;verify&quot; a finding itself.</li><li>Merge <code>needs_validation</code> into confirmed lists to make a report look complete.</li><li>Copy the upstream six-phase workflow, attack classes, or validators into this repository.</li><li>Write into the audit run directory.</li></ul>
 </section>
-<section id="troubleshooting">
+<section id="troubleshooting" class="card">
   <div class="section-head">
+    <span class="index" aria-hidden="true">12</span>
     <h2>Troubleshooting</h2>
-    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/troubleshooting.md" target="_blank" rel="noopener">source</a>
+    <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/troubleshooting.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
   </div>
   <p>Start here:</p>
 <pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs doctor</code></pre>
-<table><thead><tr><th>Check</th><th>Meaning</th><th>Fix</th></tr></thead><tbody><tr><td><code>graph</code> fail</td><td><code>graph.json</code> missing or schema-invalid</td><td>run <code>init</code>, or fix the reported field</td></tr><tr><td><code>ledger</code> fail</td><td>a mapped unit lost its evidence, or ids collide</td><td>run <code>sync</code>; set a unit <code>out_of_scope</code> if it should not be mapped</td></tr><tr><td><code>context</code> fail</td><td>frontmatter invalid or over 2000 tokens</td><td>shorten the body; move detail to node notes</td></tr><tr><td><code>blocks</code> fail</td><td>unclosed/duplicate managed block</td><td>restore the matching <code>&lt;!-- mapkeeper:end id=... --&gt;</code></td></tr><tr><td><code>links</code> warn</td><td>a wikilink points at a missing note</td><td>run <code>export</code>; check for a renamed id</td></tr><tr><td><code>graphify</code> warn</td><td>binary or cache absent</td><td>optional: install graphify, or accept the deterministic scan</td></tr><tr><td><code>speckit</code> warn</td><td>no <code>.specify/</code></td><td>optional: only needed for spec traceability</td></tr><tr><td><code>security-skill</code> warn</td><td>no installed skill</td><td>optional; <code>npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit</code></td></tr><tr><td><code>coverage</code> warn</td><td>stale/unmapped units</td><td><code>sync</code>, or mark intentional exclusions <code>out_of_scope</code></td></tr><tr><td><code>artifacts</code> fail</td><td>an export is missing</td><td><code>export</code></td></tr></tbody></table>
+<div class="table-wrap"><table><thead><tr><th>Check</th><th>Meaning</th><th>Fix</th></tr></thead><tbody><tr><td><code>graph</code> fail</td><td><code>graph.json</code> missing or schema-invalid</td><td>run <code>init</code>, or fix the reported field</td></tr><tr><td><code>ledger</code> fail</td><td>a mapped unit lost its evidence, or ids collide</td><td>run <code>sync</code>; set a unit <code>out_of_scope</code> if it should not be mapped</td></tr><tr><td><code>context</code> fail</td><td>frontmatter invalid or over 2000 tokens</td><td>shorten the body; move detail to node notes</td></tr><tr><td><code>blocks</code> fail</td><td>unclosed/duplicate managed block</td><td>restore the matching <code>&lt;!-- mapkeeper:end id=... --&gt;</code></td></tr><tr><td><code>links</code> warn</td><td>a wikilink points at a missing note</td><td>run <code>export</code>; check for a renamed id</td></tr><tr><td><code>graphify</code> warn</td><td>binary or cache absent</td><td>optional: install graphify, or accept the deterministic scan</td></tr><tr><td><code>speckit</code> warn</td><td>no <code>.specify/</code></td><td>optional: only needed for spec traceability</td></tr><tr><td><code>security-skill</code> warn</td><td>no installed skill</td><td>optional; <code>npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit</code></td></tr><tr><td><code>coverage</code> warn</td><td>stale/unmapped units</td><td><code>sync</code>, or mark intentional exclusions <code>out_of_scope</code></td></tr><tr><td><code>artifacts</code> fail</td><td>an export is missing</td><td><code>export</code></td></tr></tbody></table></div>
 <h3 id="troubleshooting-graph-validation-failed">&quot;graph validation failed&quot;</h3>
 <p>The previous valid <code>graph.json</code> is untouched; the rejected candidate is at <code>project-map/.cache/graph.candidate.json</code>.</p>
 <ol><li>Read the first five errors — they are path-addressed (<code>$.nodes[12].id</code>).</li><li>Common causes: duplicate id; inferred node without <code>confidence</code>; edge pointing at a missing node; <code>severity</code> on a <code>needs_validation</code> finding; counts out of date.</li><li>Fix the input (usually an ingestion bug), rerun. Do not hand-edit <code>graph.json</code> to silence the validator.</li></ol>
@@ -702,13 +827,17 @@ node scripts/mapkeeper.mjs doctor</code></pre>
 <h3 id="troubleshooting-nothing-happens-on-sync">Nothing happens on <code>sync</code></h3>
 <p>No changed files and no stale units. Check <code>--dir</code> points at the repository root, and that files are tracked (or the directory is not a git repo — then a full rescan runs).</p>
 </section>
-    <section id="prompt">
+
+    <section id="prompt" class="card prompt-card">
       <div class="section-head">
+        <span class="index" aria-hidden="true">13</span>
         <h2>Legacy prompt</h2>
-        <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/Mapkeeper_Prompt.md" target="_blank" rel="noopener">source</a>
+        <a class="source ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/Mapkeeper_Prompt.md" target="_blank" rel="noopener">Source <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 3h7v7h-2V6.41l-8.29 8.3-1.42-1.42 8.3-8.29H14V3z" fill="currentColor"/><path d="M5 5h5v2H7v10h10v-3h2v5H5V5z" fill="currentColor"/></svg></a>
       </div>
       <p><code>Mapkeeper_Prompt.md</code> is generated from these same files and kept for one deprecation cycle. The skill and CLI are authoritative.</p>
-      <p><a href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/Mapkeeper_Prompt.md" target="_blank" rel="noopener">Open the generated prompt</a></p>
+      <div class="hero-actions">
+        <a class="btn tonal ripple-target" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/Mapkeeper_Prompt.md" target="_blank" rel="noopener">Open the generated prompt</a>
+      </div>
       <pre data-copy><code>You are Mapkeeper. Map the repository into project-map/ with the exact layout,
 validate every artifact, and never claim a tool ran unless it did.
 
@@ -717,34 +846,91 @@ validate every artifact, and never claim a tool ran unless it did.
   node scripts/mapkeeper.mjs sync
   node scripts/mapkeeper.mjs audit</code></pre>
     </section>
-  </main>
-</div>
-<footer>
-  <div class="foot">
-    <span>Generated from <code>SKILL.md</code> and <code>references/</code>. Edit those, then run <code>npm run build:guide</code>.</span>
-    <span>Apache-2.0 · <a href="https://github.com/MIQBALHAKIM/Mapkeeper" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/NOTICE" target="_blank" rel="noopener">notice</a></span>
   </div>
+</main>
+
+<button class="fab ripple-target" id="totop" aria-label="Back to top" hidden><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M12 5l7 7-1.41 1.41L13 8.83V20h-2V8.83l-4.59 4.58L5 12l7-7z" fill="currentColor"/></svg></button>
+
+<footer class="footer">
+  <p>Generated from <code>SKILL.md</code> and <code>references/</code>. Edit those, then run <code>npm run build:guide</code>.</p>
+  <p>Apache-2.0 · <a href="https://github.com/MIQBALHAKIM/Mapkeeper" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/NOTICE" target="_blank" rel="noopener">Notice</a></p>
 </footer>
+
 <script>
 (function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function ripple(el){
+    el.addEventListener('pointerdown',function(event){
+      if(reduce) return;
+      var rect=el.getBoundingClientRect();
+      var size=Math.max(rect.width,rect.height);
+      var span=document.createElement('span');
+      span.className='ripple';
+      span.style.width=size+'px';
+      span.style.height=size+'px';
+      span.style.left=(event.clientX-rect.left-size/2)+'px';
+      span.style.top=(event.clientY-rect.top-size/2)+'px';
+      el.appendChild(span);
+      span.addEventListener('animationend',function(){span.remove();});
+    });
+  }
+
+  document.querySelectorAll('.ripple-target').forEach(ripple);
+
   document.querySelectorAll('pre[data-copy]').forEach(function(pre){
     var btn=document.createElement('button');
-    btn.className='copy';btn.type='button';btn.textContent='copy';
+    btn.className='copy';btn.type='button';btn.textContent='Copy';
     btn.setAttribute('aria-label','Copy code');
+    ripple(btn);
     btn.addEventListener('click',function(){
       var code=pre.querySelector('code');
       var text=code?code.textContent:'';
-      var done=function(){btn.textContent='copied';setTimeout(function(){btn.textContent='copy'},1200);};
+      var done=function(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy';},1200);};
       if(navigator.clipboard&&navigator.clipboard.writeText){
-        navigator.clipboard.writeText(text).then(done,function(){btn.textContent='failed';});
+        navigator.clipboard.writeText(text).then(done,function(){btn.textContent='Failed';});
       } else {
         var range=document.createRange();range.selectNodeContents(code);
-        var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
-        btn.textContent='selected';
+        var selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
+        btn.textContent='Selected';
       }
     });
     pre.appendChild(btn);
   });
+
+  var chips=[].slice.call(document.querySelectorAll('.chip'));
+  var targets=chips.map(function(chip){return document.querySelector(chip.getAttribute('href'));}).filter(Boolean);
+  if('IntersectionObserver' in window && targets.length){
+    var spy=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(!entry.isIntersecting) return;
+        chips.forEach(function(chip){
+          var active=chip.getAttribute('href')==='#'+entry.target.id;
+          chip.classList.toggle('active',active);
+          if(active){
+            chip.setAttribute('aria-current','true');
+            if(chip.parentElement.scrollWidth>chip.parentElement.clientWidth){
+              var parent=chip.parentElement;
+              parent.scrollTo({left:Math.max(0,chip.offsetLeft-parent.clientWidth/2+chip.clientWidth/2),behavior:reduce?'auto':'smooth'});
+            }
+          } else {
+            chip.removeAttribute('aria-current');
+          }
+        });
+      });
+    },{rootMargin:'-35% 0px -55% 0px',threshold:0});
+    targets.forEach(function(target){spy.observe(target);});
+  }
+
+  var fab=document.getElementById('totop');
+  if(fab){
+    var update=function(){fab.hidden=window.scrollY<640;};
+    update();
+    window.addEventListener('scroll',update,{passive:true});
+    fab.addEventListener('click',function(){
+      window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+    });
+  }
 })();
 </script>
 </body>
