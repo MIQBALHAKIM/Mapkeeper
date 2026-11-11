@@ -8,6 +8,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "index.html");
 const PROMPT = path.join(ROOT, "Mapkeeper_Prompt.md");
 const VERSION = readJson(path.join(ROOT, "package.json")).version;
+const REPO = "https://github.com/MIQBALHAKIM/Mapkeeper";
+const BLOB = `${REPO}/blob/main`;
 
 const SECTIONS = [
   ["overview", "SKILL.md", "Overview", "Overview"],
@@ -81,7 +83,7 @@ function main() {
         (section) => `<section id="${section.id}">
   <div class="section-head">
     <h2>${escape(section.title)}</h2>
-    <a class="source" href="${escape(section.file)}">source</a>
+    <a class="source" href="${BLOB}/${section.file}" target="_blank" rel="noopener">source</a>
   </div>
   ${section.html}
 </section>`,
@@ -90,10 +92,10 @@ function main() {
     <section id="prompt">
       <div class="section-head">
         <h2>Legacy prompt</h2>
-        <a class="source" href="Mapkeeper_Prompt.md">source</a>
+        <a class="source" href="${BLOB}/Mapkeeper_Prompt.md" target="_blank" rel="noopener">source</a>
       </div>
       <p><code>Mapkeeper_Prompt.md</code> is generated from these same files and kept for one deprecation cycle. The skill and CLI are authoritative.</p>
-      <p><a href="Mapkeeper_Prompt.md">Open the generated prompt</a></p>
+      <p><a href="${BLOB}/Mapkeeper_Prompt.md" target="_blank" rel="noopener">Open the generated prompt</a></p>
       <pre data-copy><code>You are Mapkeeper. Map the repository into project-map/ with the exact layout,
 validate every artifact, and never claim a tool ran unless it did.
 
@@ -107,7 +109,7 @@ validate every artifact, and never claim a tool ran unless it did.
 <footer>
   <div class="foot">
     <span>Generated from <code>SKILL.md</code> and <code>references/</code>. Edit those, then run <code>npm run build:guide</code>.</span>
-    <span>Apache-2.0 · <a href="NOTICE">notice</a></span>
+    <span>Apache-2.0 · <a href="${REPO}" target="_blank" rel="noopener">GitHub</a> · <a href="${BLOB}/NOTICE" target="_blank" rel="noopener">notice</a></span>
   </div>
 </footer>
 <script>${JS}</script>

@@ -1,5 +1,7 @@
 # Mapkeeper
 
+[Read the guide](https://miqbalhakim.github.io/Mapkeeper/) · [Source](https://github.com/MIQBALHAKIM/Mapkeeper)
+
 ## 60-second start
 
 ```bash
@@ -41,7 +43,7 @@ Generated regions are wrapped in `<!-- mapkeeper:begin id=... -->` blocks. Text 
 Agent-neutral (SKILL.md layout):
 
 ```bash
-npx skills add <this-repo-url> --skill mapkeeper   # replace with the repository URL
+npx skills add https://github.com/MIQBALHAKIM/Mapkeeper --skill mapkeeper
 ```
 
 Kilo, user-level:

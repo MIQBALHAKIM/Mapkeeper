@@ -126,7 +126,7 @@ footer code{font-size:.9em;background:none;padding:0;color:var(--ink)}
     <section id="overview">
   <div class="section-head">
     <h2>Overview</h2>
-    <a class="source" href="SKILL.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/SKILL.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>Turn any repository into a living, validated project map. The map is a projection of evidence, not a novel.</p>
 <h3 id="overview-read-this-first">Read this first</h3>
@@ -173,9 +173,10 @@ node scripts/mapkeeper.mjs doctor</code></pre>
 <section id="install">
   <div class="section-head">
     <h2>Install</h2>
-    <a class="source" href="README.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/README.md" target="_blank" rel="noopener">source</a>
   </div>
-  <h3 id="install-60-second-start">60-second start</h3>
+  <p><a href="https://miqbalhakim.github.io/Mapkeeper/">Read the guide</a> · <a href="https://github.com/MIQBALHAKIM/Mapkeeper">Source</a></p>
+<h3 id="install-60-second-start">60-second start</h3>
 <pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs init
 node scripts/mapkeeper.mjs doctor
 open project-map/obsidian-vault</code></pre>
@@ -199,7 +200,7 @@ node scripts/mapkeeper.mjs audit</code></pre>
 <p>Generated regions are wrapped in <code>&lt;!-- mapkeeper:begin id=... --&gt;</code> blocks. Text outside the blocks is yours and survives every run.</p>
 <h3 id="install-install-as-a-skill">Install as a skill</h3>
 <p>Agent-neutral (SKILL.md layout):</p>
-<pre data-copy><code class="lang-bash">npx skills add &lt;this-repo-url&gt; --skill mapkeeper   # replace with the repository URL</code></pre>
+<pre data-copy><code class="lang-bash">npx skills add https://github.com/MIQBALHAKIM/Mapkeeper --skill mapkeeper</code></pre>
 <p>Kilo, user-level:</p>
 <pre data-copy><code class="lang-bash">cp -R . ~/.config/kilo/skills/mapkeeper</code></pre>
 <p>Kilo, project-level:</p>
@@ -250,7 +251,7 @@ npm run check</code></pre>
 <section id="commands">
   <div class="section-head">
     <h2>Commands</h2>
-    <a class="source" href="references/commands.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/commands.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>Run from the repository root. The CLI is zero-dependency (<code>node &gt;= 20</code>).</p>
 <pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs &lt;command&gt; [options]</code></pre>
@@ -300,7 +301,7 @@ node scripts/mapkeeper.mjs export</code></pre>
 <section id="contract">
   <div class="section-head">
     <h2>Contract</h2>
-    <a class="source" href="references/contract.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/contract.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>This file is the single source of truth for what Mapkeeper writes. <code>SKILL.md</code>, <code>Mapkeeper_Prompt.md</code>, and the HTML guide are generated from or must agree with this file.</p>
 <h3 id="contract-output-layout-inside-the-users-repository">Output layout (inside the user's repository)</h3>
@@ -340,7 +341,7 @@ generated content
 <section id="modes">
   <div class="section-head">
     <h2>Modes and phases</h2>
-    <a class="source" href="references/modes.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/modes.md" target="_blank" rel="noopener">source</a>
   </div>
   <h3 id="modes-mode-decision-table">Mode decision table</h3>
 <p>Pick the first match:</p>
@@ -379,7 +380,7 @@ generated content
 <section id="graphify">
   <div class="section-head">
     <h2>Graphify adapter</h2>
-    <a class="source" href="references/graphify-adapter.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/graphify-adapter.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>Graphify is an optional external tool. It is never required; Mapkeeper always has a deterministic fallback.</p>
 <h3 id="graphify-detection-honest-in-this-order">Detection (honest, in this order)</h3>
@@ -416,7 +417,7 @@ semantically_similar_to, rationale_for</code></pre>
 <section id="schema">
   <div class="section-head">
     <h2>Graph and ledger schema</h2>
-    <a class="source" href="references/schema.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/schema.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>Machine-readable sources: <code>schema/graph.schema.json</code>, <code>schema/ledger.schema.json</code>, <code>schema/context.schema.json</code>. Validators: <code>scripts/validate-*.mjs</code>. If prose and schema disagree, the schema wins.</p>
 <h3 id="schema-graphjson">graph.json</h3>
@@ -492,7 +493,7 @@ semantically_similar_to, rationale_for</code></pre>
 <section id="obsidian">
   <div class="section-head">
     <h2>Obsidian vault</h2>
-    <a class="source" href="references/obsidian.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/obsidian.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>The vault is a normal Obsidian vault: open <code>project-map/obsidian-vault/</code> directly.</p>
 <h3 id="obsidian-layout">Layout</h3>
@@ -560,7 +561,7 @@ _Add human notes here; Mapkeeper never edits this section._</code></pre>
 <section id="exports">
   <div class="section-head">
     <h2>Architecture exports</h2>
-    <a class="source" href="references/architecture-exports.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/architecture-exports.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>Three files, one source of truth:</p>
 <table><thead><tr><th>File</th><th>Audience</th><th>Rule</th></tr></thead><tbody><tr><td><code>architecture-overview.md</code></td><td>humans, PRs, Obsidian exports</td><td>readable, tables, wikilinks</td></tr><tr><td><code>architecture-overview.json</code></td><td>automation, dashboards</td><td>mirrors the Markdown content, no HTML</td></tr><tr><td><code>architecture-overview.html</code></td><td>no-install viewing</td><td>standalone, inline CSS, no CDN, no JS required</td></tr></tbody></table>
@@ -596,7 +597,7 @@ _Add human notes here; Mapkeeper never edits this section._</code></pre>
 <section id="speckit">
   <div class="section-head">
     <h2>Spec-kit adapter</h2>
-    <a class="source" href="references/speckit-adapter.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/speckit-adapter.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>Read-only integration with <a href="https://github.com/github/spec-kit">github/spec-kit</a>. Spec-kit is optional; Mapkeeper works without <code>.specify/</code>.</p>
 <h3 id="speckit-detection">Detection</h3>
@@ -634,7 +635,7 @@ _Add human notes here; Mapkeeper never edits this section._</code></pre>
 <section id="security">
   <div class="section-head">
     <h2>Security-audit adapter</h2>
-    <a class="source" href="references/security-adapter.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/security-adapter.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>Read-only integration with <a href="https://github.com/cloudflare/security-audit-skill">cloudflare/security-audit-skill</a>. Mapkeeper consumes finished audit artifacts; it does not reimplement the audit methodology.</p>
 <h3 id="security-locating-the-skill-and-a-run">Locating the skill and a run</h3>
@@ -668,7 +669,7 @@ _Add human notes here; Mapkeeper never edits this section._</code></pre>
 <section id="troubleshooting">
   <div class="section-head">
     <h2>Troubleshooting</h2>
-    <a class="source" href="references/troubleshooting.md">source</a>
+    <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/troubleshooting.md" target="_blank" rel="noopener">source</a>
   </div>
   <p>Start here:</p>
 <pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs doctor</code></pre>
@@ -704,10 +705,10 @@ node scripts/mapkeeper.mjs doctor</code></pre>
     <section id="prompt">
       <div class="section-head">
         <h2>Legacy prompt</h2>
-        <a class="source" href="Mapkeeper_Prompt.md">source</a>
+        <a class="source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/Mapkeeper_Prompt.md" target="_blank" rel="noopener">source</a>
       </div>
       <p><code>Mapkeeper_Prompt.md</code> is generated from these same files and kept for one deprecation cycle. The skill and CLI are authoritative.</p>
-      <p><a href="Mapkeeper_Prompt.md">Open the generated prompt</a></p>
+      <p><a href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/Mapkeeper_Prompt.md" target="_blank" rel="noopener">Open the generated prompt</a></p>
       <pre data-copy><code>You are Mapkeeper. Map the repository into project-map/ with the exact layout,
 validate every artifact, and never claim a tool ran unless it did.
 
@@ -721,7 +722,7 @@ validate every artifact, and never claim a tool ran unless it did.
 <footer>
   <div class="foot">
     <span>Generated from <code>SKILL.md</code> and <code>references/</code>. Edit those, then run <code>npm run build:guide</code>.</span>
-    <span>Apache-2.0 · <a href="NOTICE">notice</a></span>
+    <span>Apache-2.0 · <a href="https://github.com/MIQBALHAKIM/Mapkeeper" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/NOTICE" target="_blank" rel="noopener">notice</a></span>
   </div>
 </footer>
 <script>
