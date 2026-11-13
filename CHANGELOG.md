@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.1.0 — 2026-11-13
+
+### Added
+
+- `/mapkeeper` command. Run without arguments to get a state-aware mode menu (create, update, audit, rebuild, export, import, ask/maintain); arguments bypass the menu (`/mapkeeper audit --soft`, `/mapkeeper query "…"`, `/mapkeeper help`).
+- `command/mapkeeper.md` distribution file and install instructions for user-level (`~/.config/kilo/command/`) and project-level (`.kilo/command/`) use.
+- Docs contract test covering the menu, the command, and CLI mode parity.
+
+### Changed
+
+- `SKILL.md` description now mentions the no-argument menu invocation.
+- `npm test` runs every `tests/*.test.mjs` file.
+
 ## 2.0.0 — 2026-11-11
 
 ### Breaking

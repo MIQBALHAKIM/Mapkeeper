@@ -67,6 +67,40 @@ If the CLI or skill is unavailable, still produce the exact file layout and sche
 
 Turn any repository into a living, validated project map. The map is a projection of evidence, not a novel.
 
+## Start here
+
+**Only show this menu when the invocation has no task or arguments, for example `/mapkeeper`.
+If the user already asked for something (map this repo, audit it, import specs, ask a question),
+skip the menu and execute their request.**
+
+Check once whether `project-map/graph.json` exists (a single `ls` or Read; do not scan the repo).
+Recommend **Create** when it is absent and **Update** when it is present.
+
+| # | Choice | Runs | Use when |
+| --- | --- | --- | --- |
+| 1 | Create the map | `init` | No map yet; first scan |
+| 2 | Update the map | `sync` | Map exists; code or specs changed |
+| 3 | Audit the map | `audit` | Validate artifacts, coverage, and gaps |
+| 4 | Rebuild the map | `full` | Handover, reset, or as-built rebuild |
+| 5 | Export docs | `export` / `context` / `graph` | Refresh docs, LLM context, or graph only |
+| 6 | Import context | `specs` / `security` / `graphify` | `.specify/`, a security run, or an external graph |
+| 7 | Ask or maintain | `query` / `doctor` / `migrate` | Question, health check, v1 upgrade |
+
+Submenus:
+
+- **5 Export docs** → `export` (architecture + vault), `context` (`02-LLM-Context.md` only),
+  `graph` (`project-map/graph.json` only).
+- **6 Import context** → `specs` (spec-kit traceability), `security <run-dir>` (audit findings),
+  `graphify` (report cache/version; no write).
+- **7 Ask or maintain** → `query "<question>"`, `doctor`, `migrate` (v1 trees),
+  "show all commands" (`references/commands.md`).
+
+After a choice: run the matching CLI command with defaults (`--dir` cwd; phase `DURING`
+unless the user says handover), ask at most one follow-up if the command needs a path or
+question text, and finish with the standard report (mode, generation source, coverage,
+artifacts, next actions). If the map is missing and the chosen mode needs one, offer
+`init` instead of failing.
+
 
 ## Output contract (short form)
 
@@ -86,6 +120,8 @@ project-map/
 `graphify-out/graph.json` is a tool cache. `project-map/graph.json` is the graph of record. Never place artifacts outside `project-map/` except the optional legacy `Mapkeeper_Prompt.md`.
 
 ## Choose the mode
+
+Use this table when the user already stated a task or passed arguments; otherwise use `## Start here`.
 
 | Situation | Mode |
 | --- | --- |

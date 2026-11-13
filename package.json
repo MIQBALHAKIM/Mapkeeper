@@ -1,6 +1,6 @@
 {
   "name": "mapkeeper",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Living project map: validated knowledge graph, coverage ledger, Obsidian vault, and architecture exports, with Graphify, spec-kit, and security-audit adapters.",
   "type": "module",
   "license": "Apache-2.0",
@@ -8,7 +8,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test tests/validators.test.mjs tests/adapters.test.mjs",
+    "test": "node --test tests/*.test.mjs",
     "check": "npm test && node scripts/build-guide.mjs --check && node scripts/build-guide.mjs --prompt --check",
     "build:guide": "node scripts/build-guide.mjs",
     "build:prompt": "node scripts/build-guide.mjs --prompt",
@@ -20,6 +20,7 @@
     "Mapkeeper_Prompt.md",
     "README.md",
     "index.html",
+    "command/",
     "references/",
     "schema/",
     "scripts/",

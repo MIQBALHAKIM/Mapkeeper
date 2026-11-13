@@ -378,7 +378,7 @@ function renderMarkdown(md, prefix) {
 }
 
 function renderTable(rows) {
-  const cells = rows.map((row) => row.split("|").slice(1, -1).map((cell) => cell.trim()));
+  const cells = rows.map(splitTableRow);
   if (cells.length > 1 && cells[1].every((cell) => /^:?-{2,}:?$/.test(cell))) {
     const head = cells[0].map((cell) => `<th>${inline(cell)}</th>`).join("");
     const body = cells
@@ -389,6 +389,27 @@ function renderTable(rows) {
   }
   const body = cells.map((row) => `<tr>${row.map((cell) => `<td>${inline(cell)}</td>`).join("")}</tr>`).join("");
   return `<div class="table-wrap"><table><tbody>${body}</tbody></table></div>`;
+}
+
+function splitTableRow(row) {
+  const cells = [];
+  let current = "";
+  for (let i = 0; i < row.length; i += 1) {
+    const char = row[i];
+    if (char === "\\" && row[i + 1] === "|") {
+      current += "|";
+      i += 1;
+      continue;
+    }
+    if (char === "|") {
+      cells.push(current);
+      current = "";
+      continue;
+    }
+    current += char;
+  }
+  cells.push(current);
+  return cells.slice(1, -1).map((cell) => cell.trim());
 }
 
 function inline(text) {

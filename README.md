@@ -49,17 +49,36 @@ npx skills add https://github.com/MIQBALHAKIM/Mapkeeper --skill mapkeeper
 Kilo, user-level:
 
 ```bash
-cp -R . ~/.config/kilo/skills/mapkeeper
+mkdir -p ~/.config/kilo/skills/mapkeeper
+cp -R ./* ~/.config/kilo/skills/mapkeeper/
 ```
 
 Kilo, project-level:
 
 ```bash
-mkdir -p .kilo/skills
-cp -R . .kilo/skills/mapkeeper
+mkdir -p .kilo/skills/mapkeeper
+cp -R ./* .kilo/skills/mapkeeper/
 ```
 
 Other agents: copy the directory into the agent's skills folder; `SKILL.md` is the entry point and `references/` is progressive disclosure.
+
+### Install the `/mapkeeper` command
+
+The command shows a mode menu when run without arguments; arguments bypass it (`/mapkeeper audit --soft`).
+
+```bash
+mkdir -p ~/.config/kilo/command
+cp command/mapkeeper.md ~/.config/kilo/command/mapkeeper.md
+```
+
+Project-local instead of global:
+
+```bash
+mkdir -p .kilo/command
+cp command/mapkeeper.md .kilo/command/mapkeeper.md
+```
+
+The command is plain Markdown with frontmatter; copy it into another agent's command or prompt folder if that agent supports slash commands. Re-copy the skill directory after updating Mapkeeper — the installed copy is not a symlink.
 
 ## Install as a spec-kit extension
 
@@ -114,14 +133,15 @@ node scripts/check-managed-blocks.mjs project-map
 ## Repository layout
 
 ```text
-SKILL.md                 # agent entry point
-Mapkeeper_Prompt.md         # generated legacy shim
-index.html               # generated single-file guide
-references/              # progressive disclosure for modes, adapters, schema, troubleshooting
-schema/                  # JSON Schemas (draft 2020-12)
-scripts/                 # zero-dependency CLI, validators, guide builder
-spec-kit-extension/      # optional extension manifest and commands
-tests/                   # node:test suites and fixtures
+SKILL.md                # agent entry point
+Mapkeeper_Prompt.md     # generated legacy shim
+index.html              # generated single-file guide
+command/                # /mapkeeper slash command source
+references/             # progressive disclosure for modes, adapters, schema, troubleshooting
+schema/                 # JSON Schemas (draft 2020-12)
+scripts/                # zero-dependency CLI, validators, guide builder
+spec-kit-extension/     # optional extension manifest and commands
+tests/                  # node:test suites and fixtures
 ```
 
 ## Background

@@ -6,6 +6,28 @@ Run from the repository root. The CLI is zero-dependency (`node >= 20`).
 node scripts/mapkeeper.mjs <command> [options]
 ```
 
+## Menu (`/mapkeeper`)
+
+`/mapkeeper` with no arguments shows a mode menu and waits for a choice. Arguments bypass the menu and route directly to a mode.
+
+| Choice | Runs |
+| --- | --- |
+| 1. Create the map | `init` |
+| 2. Update the map | `sync` |
+| 3. Audit the map | `audit` |
+| 4. Rebuild the map | `full` |
+| 5. Export docs | `export` / `context` / `graph` |
+| 6. Import context | `specs` / `security <run-dir>` / `graphify` status |
+| 7. Ask or maintain | `query "<question>"` / `doctor` / `migrate` / show all commands |
+
+The menu is state-aware: it recommends `init` when `project-map/graph.json` is absent and `sync` when it exists. Install the command with:
+
+```bash
+cp command/mapkeeper.md ~/.config/kilo/command/mapkeeper.md
+```
+
+For a project-local command, copy it to `.kilo/command/mapkeeper.md`. The file is plain Markdown with frontmatter and can be adapted for other agents' prompt folders.
+
 ## Commands
 
 | Command | Writes | Purpose |
