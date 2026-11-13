@@ -3,16 +3,17 @@ Copyright 2026 Mapkeeper contributors
 
 This product is licensed under the Apache License, Version 2.0.
 
-Design inspiration and process patterns:
+Mapkeeper is a router. It does not bundle or relicense its providers:
 
-- github/spec-kit (MIT) — spec-driven artifacts, extension/hook packaging, command naming.
+- Graphify — external knowledge-graph tool and skill.
+  https://pypi.org/project/graphifyy/
+- github/spec-kit (MIT) — external CLI and command workflow.
   https://github.com/github/spec-kit
-- cloudflare/security-audit-skill (MIT) — schema-validated findings, coverage ledger,
-  zero-dependency validators, independent record verification, verdict discipline.
+- cloudflare/security-audit-skill (MIT) — external security-audit skill.
   https://github.com/cloudflare/security-audit-skill
 
-No source code from either project is copied into this repository. Their licenses
-apply to their own distributions.
+No provider source code is copied into this repository. The router reads
+provider-owned artifacts only when the user asks for status or links.
 
-Graphify (https://pypi.org/project/graphifyy/) is an optional external dependency.
-It is invoked through its public CLI and is not bundled here.
+The earlier v2 implementation took process inspiration from spec-kit and
+security-audit-skill; that implementation has been removed in v3.

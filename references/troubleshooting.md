@@ -1,83 +1,67 @@
 # Troubleshooting
 
-Start here:
+## A provider is not detected
+
+`status` prints hints; Mapkeeper never installs anything.
+
+| Provider | Typical fix |
+| --- | --- |
+| Graphify | Install the `graphify` skill or CLI, then run `/graphify`; a cache alone still enables links |
+| spec-kit | Install `specify`, run `specify init` for this project, then install the `/speckit.*` commands for your agent |
+| security-audit | Install the `security-audit` skill; full audits need an output directory outside the target |
+
+## spec-kit commands are missing
+
+`status` reports “initialized but no `speckit.*` commands”. Initialize the project with `specify init` and select the current agent, or add the commands to `.kilo/commands/` (spec-kit's Kilo integration uses that directory). Mapkeeper will not recreate them.
+
+## `/mapkeeper spec …` only prints a command
+
+That is intentional. An agent cannot execute another slash command. Run the printed `/speckit.*` command, then return to `/mapkeeper links` or `status`.
+
+## “no inputs found”
+
+There is no `graphify-out/graph.json`, no `.specify/` feature, and no security run. Build a Graphify cache, initialize spec-kit, or pass `--run <dir>`. No report is written.
+
+## Invalid Graphify cache
+
+`status --check` fails and `links` adds `invalid_graph` when `graphify-out/graph.json` is not valid JSON. Re-run `/graphify --update`. Mapkeeper does not repair provider output.
+
+## Invalid findings
+
+`findings.json` exists but cannot be parsed. Use the security-audit skill's own validator and regenerate the run. Mapkeeper does not rewrite or re-validate a run.
+
+## Links are missing
+
+Check `unresolved` first:
+
+- `finding_no_graph_node` — Graphify did not index that file; update the graph.
+- `finding_unknown_requirement` — the finding references a requirement absent from the active feature.
+- `requirement_no_task` — `tasks.md` does not mention the requirement.
+- `task_missing_file` — the task references a path that does not exist.
+- `task_unknown_requirement` — the task references an ID not in `spec.md`.
+
+## Reports are stale
+
+`links` warns when the security run revision, Graphify cache, or spec files predate the latest commit. Refresh the relevant provider. Warnings do not fail `--check`; only broken link targets do.
+
+## Security findings are absent from a published report
+
+Local reports include fingerprints, files, severities, and verdicts but never titles, descriptions, or absolute run paths. If security was skipped, check `--no-security` or whether a run is recorded.
+
+## Legacy `project-map/` detected
+
+v3 does not read or write v2 artifacts. They are inert history. Archive or delete them manually; `status` will keep warning until they are gone.
+
+## `mapkeeper` command not found
+
+Run the CLI from the skill checkout:
 
 ```bash
-node scripts/mapkeeper.mjs doctor
+node scripts/mapkeeper.mjs status
 ```
 
-| Check | Meaning | Fix |
-| --- | --- | --- |
-| `graph` fail | `graph.json` missing or schema-invalid | run `init`, or fix the reported field |
-| `ledger` fail | a mapped unit lost its evidence, or ids collide | run `sync`; set a unit `out_of_scope` if it should not be mapped |
-| `context` fail | frontmatter invalid or over 2000 tokens | shorten the body; move detail to node notes |
-| `blocks` fail | unclosed/duplicate managed block | restore the matching `<!-- mapkeeper:end id=... -->` |
-| `links` warn | a wikilink points at a missing note | run `export`; check for a renamed id |
-| `graphify` warn | binary or cache absent | optional: install graphify, or accept the deterministic scan |
-| `speckit` warn | no `.specify/` | optional: only needed for spec traceability |
-| `security-skill` warn | no installed skill | optional; `npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit` |
-| `coverage` warn | stale/unmapped units | `sync`, or mark intentional exclusions `out_of_scope` |
-| `artifacts` fail | an export is missing | `export` |
+or install the bin with `npm link` from the skill directory. The `/mapkeeper` slash command is separate: copy `command/mapkeeper.md` into `~/.config/kilo/command/` or `.kilo/command/`.
 
-## "graph validation failed"
+## The `/mapkeeper` command is missing from the palette
 
-The previous valid `graph.json` is untouched; the rejected candidate is at `project-map/.cache/graph.candidate.json`.
-
-1. Read the first five errors — they are path-addressed (`$.nodes[12].id`).
-2. Common causes: duplicate id; inferred node without `confidence`; edge pointing at a missing node; `severity` on a `needs_validation` finding; counts out of date.
-3. Fix the input (usually an ingestion bug), rerun. Do not hand-edit `graph.json` to silence the validator.
-
-## Context note is over budget
-
-`02-LLM-Context.md` is meant to be a pointer file. Move detail into component/requirement notes and link them:
-
-```markdown
-- [[20-Components/component_api|API]]
-```
-
-Then `mapkeeper context` regenerates it. Never raise the budget to hide bloat; the hard limit is 2000 tokens.
-
-## Units are unmapped
-
-- A new directory appeared: `sync` reseeds path units automatically.
-- The files are binary/lockfiles: they are ignored by design; they should not be units.
-- The area is intentionally out of scope: set the unit to `out_of_scope` with a one-line reason in `sync-summary.md` human text. Do not delete the unit; `audit` treats a missing path as a failure.
-
-## Graphify says "no cache"
-
-`graphify` binary present but no `graphify-out/graph.json`. Options:
-
-1. Accept `graphify-fallback` (file/import graph) and say so.
-2. Run graphify yourself, then `mapkeeper graph`.
-3. Run `mapkeeper init --run-tool` if you want Mapkeeper to call `graphify update` (only with an existing cache).
-
-Never claim graphify was used when only the fallback ran.
-
-## A spec requirement has no task
-
-This is a real finding, not a Mapkeeper bug. Fix the spec/tasks, or accept the gap in the summary. `audit` exits 1 until a `satisfies_requirement` edge exists.
-
-## Security findings are stale
-
-The run's `source_ref` no longer matches the repository and an affected file changed. Re-run the audit, or accept `stale_source: true` knowingly. Never upgrade `needs_validation` to `confirmed` by hand.
-
-## Non-git directory
-
-`source_revision` is `worktree`; `sync` cannot diff, so it rescans all files and marks every path unit `stale` before remapping. That is expected. Reports will show the coverage after remap, not a delta.
-
-## Migrating an old map
-
-```bash
-node scripts/mapkeeper.mjs migrate
-node scripts/mapkeeper.mjs doctor
-```
-
-`migrate` copies the five artifacts into `project-map/.backup-v1/`, maps legacy `type`/`relationship_type`, skips unknown relations with warnings, writes schema v2, seeds the ledger, and regenerates the vault and exports. `doctor --migrate` does the same when a v1 tree is detected. Old `Mapkeeper_Prompt.md` users: the prompt is a deprecated wrapper over this skill; keep it if you like, but the CLI is authoritative.
-
-## Notes were deleted unexpectedly
-
-Only `--prune` deletes notes, and only mapkeeper-managed notes whose content outside managed blocks is empty. If human notes were lost, restore from version control; Mapkeeper never writes outside blocks.
-
-## Nothing happens on `sync`
-
-No changed files and no stale units. Check `--dir` points at the repository root, and that files are tracked (or the directory is not a git repo — then a full rescan runs).
+Kilo loads commands at session start. Start a new session or reload after installing `command/mapkeeper.md`.

@@ -1,152 +1,112 @@
 ---
 name: mapkeeper
-description: "Build and maintain a living project map for any repository: a validated knowledge graph, a coverage ledger, an Obsidian vault, and architecture exports. Use when asked to map a project, generate or sync architecture docs, audit code-versus-documentation drift, ingest spec-kit specs, turn security findings into a project map, or answer questions from an existing project-map/ or graphify-out/. Also triggers when the user runs /mapkeeper with no arguments to choose a mode."
+description: "Route work to Graphify, spec-kit, and security-audit without reimplementing them. Use for mapping a codebase, spec-driven development, security review handoff, provider status, or a cross-reference report linking findings, requirements, tasks, files, and Graphify nodes. Also triggers when the user runs /mapkeeper with no arguments to choose a provider."
 ---
 
 # Mapkeeper
 
-Turn any repository into a living, validated project map. The map is a projection of evidence, not a novel.
+Mapkeeper is a router and cross-reference layer. Graphify owns the graph, spec-kit owns the specs, and security-audit owns the audit. Mapkeeper detects them, hands off, records local provenance, and links their native outputs.
+
+**Never reimplement a provider.** No graph projection, vault, architecture export, coverage ledger, findings ingestion, or spec execution.
 
 ## Start here
 
 **Only show this menu when the invocation has no task or arguments, for example `/mapkeeper`.
-If the user already asked for something (map this repo, audit it, import specs, ask a question),
-skip the menu and execute their request.**
+If the user already asked for something, skip the menu and act.**
 
-Check once whether `project-map/graph.json` exists (a single `ls` or Read; do not scan the repo).
-Recommend **Create** when it is absent and **Update** when it is present.
+Check once, without scanning the repo:
 
-| # | Choice | Runs | Use when |
+- `graphify-out/graph.json` — Graphify cache present?
+- `.specify/` — spec-kit initialized?
+- `.mapkeeper/state.json` — last recorded security run?
+- `project-map/graph.json` — legacy v2 map?
+
+Recommend **Update** when a Graphify cache exists, **Build** when it does not, and surface a recorded security run.
+
+| # | Choice | Provider | What happens |
 | --- | --- | --- | --- |
-| 1 | Create the map | `init` | No map yet; first scan |
-| 2 | Update the map | `sync` | Map exists; code or specs changed |
-| 3 | Audit the map | `audit` | Validate artifacts, coverage, and gaps |
-| 4 | Rebuild the map | `full` | Handover, reset, or as-built rebuild |
-| 5 | Export docs | `export` / `context` / `graph` | Refresh docs, LLM context, or graph only |
-| 6 | Import context | `specs` / `security` / `graphify` | `.specify/`, a security run, or an external graph |
-| 7 | Ask or maintain | `query` / `doctor` / `migrate` | Question, health check, v1 upgrade |
+| 1 | Map codebase | Graphify | Build, update, query, or open the native report |
+| 2 | Spec-driven work | spec-kit | Show feature state, then hand off the exact `/speckit.*` command |
+| 3 | Security review | security-audit | Guidance, full audit, or use an existing run |
+| 4 | Combine outputs | Mapkeeper | Generate or publish the cross-reference link report |
+| 5 | Status & health | Mapkeeper | Detect providers, versions, artifacts, staleness, legacy maps |
 
 Submenus:
 
-- **5 Export docs** → `export` (architecture + vault), `context` (`02-LLM-Context.md` only),
-  `graph` (`project-map/graph.json` only).
-- **6 Import context** → `specs` (spec-kit traceability), `security <run-dir>` (audit findings),
-  `graphify` (report cache/version; no write).
-- **7 Ask or maintain** → `query "<question>"`, `doctor`, `migrate` (v1 trees),
-  "show all commands" (`references/commands.md`).
+- **1 Map codebase** → Build (`/graphify`), Update (`/graphify --update`), Query (`/graphify query "<question>"`), Open `graphify-out/GRAPH_REPORT.md` or the HTML view.
+- **2 Spec-driven work** → Status, Specify, Plan, Tasks, Analyze, Implement. Print the exact command from the detected command dir (`/speckit.specify …`, `/speckit.plan`, …). If no commands are installed, print `specify init` guidance and stop.
+- **3 Security review** → Guidance (default), Full audit (requires an explicit output directory outside the target and confirmation), or Use an existing run (record its path for links).
+- **4 Combine outputs** → Generate links, show unresolved gaps, publish with `--out <path>`.
+- **5 Status & health** → `mapkeeper status`, `--json`, `--check`, legacy warning.
 
-After a choice: run the matching CLI command with defaults (`--dir` cwd; phase `DURING`
-unless the user says handover), ask at most one follow-up if the command needs a path or
-question text, and finish with the standard report (mode, generation source, coverage,
-artifacts, next actions). If the map is missing and the chosen mode needs one, offer
-`init` instead of failing.
+## Provider handoffs
 
-## Read this first
+| Intent | Detect | Handoff | Owned artifacts |
+| --- | --- | --- | --- |
+| Map or query the codebase | Graphify skill, `graphify` CLI, `graphify-out/graph.json` | Invoke the `graphify` skill with the user's arguments | `graphify-out/{graph.json,GRAPH_REPORT.md,graph.html}`, optional obsidian dir |
+| Specify / plan / tasks / analyze | `specify` CLI, `.specify/`, `speckit.*.md` in `.kilo/commands`, `.kilo/command`, `.claude/commands`, `.github/prompts`, etc. | Print the exact `/speckit.*` command; never execute the template | `.specify/`, `specs/<feature>/{spec,plan,tasks}.md` |
+| Security review | security-audit skill, run directory | Invoke the skill; guidance vs full audit is the user's choice | `run-metadata.json`, `findings.json`, `coverage-ledger.json`, `REPORT.md` |
 
-Before writing any artifact, read `references/contract.md`. It is the only place that defines paths, managed blocks, evidence rules, and failure behavior. Do not restate its rules from memory.
+If a provider is missing, print its install/setup hint and continue with the others. Never install or modify a provider.
 
-Then read the one reference for the work at hand:
+## Rules
+
+- A provider is never reported as used unless it ran and its output parsed.
+- Never build a full Graphify graph or run a security audit without an explicit request. Prefer `--update` when a cache exists.
+- Spec-kit is handoff-only. Do not read and execute `speckit.*.md` inside a Mapkeeper turn.
+- Never publish a security candidate with verdict `rejected`, and never add severity to `needs_validation`.
+- Local artifacts only:
+  - `.mapkeeper/state.json` — provider paths, versions, revisions, last run
+  - `.mapkeeper/links.{json,md}` — optional cross-reference report
+- Do not write `project-map/` or any `graphify-out/`/`.specify/` content.
+- Legacy `project-map/` trees are read-only history; report them, never rewrite them.
+- Link reports contain fingerprints, file paths, requirement/task IDs, severities, and verdicts only — no finding titles, descriptions, or absolute run paths.
+
+## Status
+
+```bash
+mapkeeper status [--json] [--check]
+```
+
+If the `mapkeeper` bin is not installed, run the CLI from the skill checkout: `node scripts/mapkeeper.mjs status`.
+
+Detects providers, versions, native artifact paths, staleness, and legacy maps. `--check` exits non-zero only when a present artifact is unreadable or invalid.
+
+## Links
+
+```bash
+mapkeeper links [--run <dir>] [--graph <path>] [--no-security] [--out <path>] [--check]
+```
+
+If the bin is unavailable, use `node scripts/mapkeeper.mjs links` from the skill checkout.
+
+Reads native outputs only:
+
+| Link | From → to |
+| --- | --- |
+| `finding_file` | finding fingerprint → file path, with matching Graphify node IDs |
+| `finding_requirement` | finding fingerprint → `FR-###` / `NFR-###` |
+| `requirement_task` | requirement → task |
+| `task_file` | task → file |
+| `requirement_file` | requirement → file (derived through tasks) |
+
+Partial inputs are allowed; missing providers are reported, never invented. `--check` exits non-zero when a real link target is missing (file, node, requirement, task), not when an optional provider is absent.
+
+## References
 
 | Need | Read |
 | --- | --- |
-| Modes, phases, token/output discipline | `references/modes.md` |
-| Graphify detection, projection, fallback | `references/graphify-adapter.md` |
-| Graph and ledger fields | `references/schema.md` |
-| Vault layout and note format | `references/obsidian.md` |
-| Markdown/JSON/HTML exports | `references/architecture-exports.md` |
-| Spec-kit specs, plans, tasks, traceability | `references/speckit-adapter.md` |
-| Security audit findings ingestion | `references/security-adapter.md` |
-| Commands, flags, legacy aliases | `references/commands.md` |
-| Broken run, failed validation, migration | `references/troubleshooting.md` |
-
-## Output contract (short form)
-
-```text
-project-map/
-├── graph.json                 # schema v2, machine truth
-├── map-ledger.json            # coverage units + run history
-├── architecture-overview.md|.json|.html
-├── sync-summary.md
-└── obsidian-vault/
-    ├── 00-Home.md
-    ├── 01-Index.md
-    ├── 02-LLM-Context.md      # ≤ 1500 tokens target, 2000 hard fail
-    └── ...
-```
-
-`graphify-out/graph.json` is a tool cache. `project-map/graph.json` is the graph of record. Never place artifacts outside `project-map/` except the optional legacy `Mapkeeper_Prompt.md`.
-
-## Choose the mode
-
-Use this table when the user already stated a task or passed arguments; otherwise use `## Start here`.
-
-| Situation | Mode |
-| --- | --- |
-| No `project-map/graph.json` | `init` |
-| Existing map, user describes a change | `sync` |
-| Review / consistency / gaps requested | `audit` |
-| Full rebuild, handover, as-built | `full` |
-| Only docs requested | `export` |
-| Only the compact context note requested | `context` |
-| Only the graph requested | `graph` |
-| `.specify/` changed | `specs` |
-| A security run directory is supplied | `security` |
-
-An explicit `--mode` or a legacy verb wins.
-
-## Procedure
-
-1. **Resolve the project**: `--dir` (default cwd), project name from `--name`, then `package.json`, then the directory name.
-2. **Gather evidence**: graphify cache or deterministic scan; `.specify/` if present; a security run if supplied.
-3. **Project, never invent**: map graphify nodes and relations 1:1, keep ids stable, tag `derivation` (`graphify`, `speckit`, `security`, `llm`). A skipped relation is a warning, not a guess.
-4. **Write through the CLI**, not by hand:
-   ```bash
-   node scripts/mapkeeper.mjs init|sync|audit|export|context|graph|specs|security|doctor|query|migrate
-   ```
-   The CLI owns validation, managed blocks, the vault, exports, and the ledger. Hand-writing `graph.json` is a last resort and must still pass `scripts/validate-graph.mjs`.
-5. **Report**: mode, generation source, changed units, coverage counts, assumptions/unknowns, artifacts, next actions.
-
-## Non-negotiables
-
-- A tool is never reported as used unless it ran and its output parsed. If graphify is missing, say `graphify-fallback` or `llm-manual`.
-- Every non-inferred node needs `source_refs` or `spec_refs`. Inferred nodes need `confidence` and appear under *Unverified* in `sync-summary.md`.
-- Validation failure must not overwrite the previous good graph. The CLI writes the candidate to `project-map/.cache/graph.candidate.json` and exits non-zero.
-- Never write into `.specify/`, a security run directory, or a human-owned region of a vault note.
-- Never publish a security candidate whose verdict is `rejected`, and never assign severity to `needs_validation`.
-- Redact secrets to `<redacted>` and add an `unknowns` entry describing what was removed.
-
-## Adapters (optional, read-only)
-
-**Graphify**: detect the `graphify` binary and `graphify-out/graph.json`. Run `graphify update` only when a cache exists and the user allows it (`--run-tool`); otherwise consume the cache. `mapkeeper query` delegates to `graphify query|path|explain`.
-
-**Spec-kit**: detect `.specify/`; ingest `constitution.md`, `spec.md`, `plan.md`, `tasks.md`. Requirements get ids from `FR-###`/`US#`; tasks from `T###`; edges `satisfies_requirement`. Report requirements with no task and tasks referencing missing files. Never edit spec-kit artifacts.
-
-**Security audit**: locate an installed `security-audit` skill and a run directory containing `run-metadata.json`, `architecture.md`, `findings.json`. Preserve verdicts; trust boundaries become nodes; findings link to files, boundaries, and requirements. Never run an audit implicitly.
-
-## Answering questions from the map
-
-1. Read `project-map/obsidian-vault/02-LLM-Context.md` first.
-2. If the question is about structure, use `mapkeeper query` (or `graphify query`) before reading source.
-3. Open only the node notes linked from the answer.
-
-## Validation
-
-```bash
-node scripts/validate-graph.mjs project-map/graph.json
-node scripts/validate-ledger.mjs project-map/map-ledger.json
-node scripts/validate-context.mjs project-map/obsidian-vault/02-LLM-Context.md
-node scripts/check-managed-blocks.mjs project-map
-node scripts/mapkeeper.mjs doctor
-```
-
-An `audit` exits non-zero when artifacts are invalid, a tracked path is absent from the ledger, a mapped unit's evidence is missing, or a requirement has no satisfying edge. Never claim full coverage without stating the ledger counts.
+| Graphify handoff and artifacts | `references/providers/graphify.md` |
+| spec-kit detection and command handoff | `references/providers/speckit.md` |
+| security-audit modes and runs | `references/providers/security.md` |
+| Router and CLI surface | `references/commands.md` |
+| Link types and report schema | `references/links.md` |
+| State and exit codes | `references/status.md` |
+| Missing tools and broken inputs | `references/troubleshooting.md` |
 
 ## Final response
 
-1. Mode and phase.
-2. Generation source (`graphify`, `graphify+llm`, `llm-manual`, `graphify-fallback`).
-3. What changed or what the audit found.
-4. Coverage: mapped / stale / unmapped / out_of_scope.
-5. Assumptions and unknowns.
-6. Artifacts written.
-7. Risks and next actions.
+1. Provider routed to (or handoff command printed).
+2. What ran, what was only read, and what was skipped.
+3. Native artifacts and local `.mapkeeper/` updates.
+4. Gaps, warnings, and the next command.

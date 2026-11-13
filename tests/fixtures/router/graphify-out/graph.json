@@ -1,0 +1,7 @@
+{
+  "nodes": [
+    { "id": "src_auth_session", "label": "session.js", "source_file": "src/auth/session.js" },
+    { "id": "src_index", "label": "index.js", "source_file": "src/index.js" }
+  ],
+  "edges": []
+}

@@ -2,45 +2,25 @@
 
 [Read the guide](https://miqbalhakim.github.io/Mapkeeper/) · [Source](https://github.com/MIQBALHAKIM/Mapkeeper)
 
-## 60-second start
+Mapkeeper is a router for three providers:
 
-```bash
-node scripts/mapkeeper.mjs init
-node scripts/mapkeeper.mjs doctor
-open project-map/obsidian-vault
-```
+- **Graphify** — codebase knowledge graph, queries, reports
+- **spec-kit** — specifications, plans, tasks, and their command workflow
+- **security-audit** — sandboxed security reviews and findings
 
-Then, after changes:
+Each provider already does its job well. Mapkeeper does not rebuild a graph, vault, coverage ledger, or audit. It detects the providers, hands off to their native skills and commands, records local provenance, and links their outputs when asked.
 
-```bash
-node scripts/mapkeeper.mjs sync
-node scripts/mapkeeper.mjs audit
-```
+## Requirements
 
-No install step, no API key, no network access. Node 20+.
+- Node.js 20+ for the local CLI (`status`, `links`).
+- Any subset of the three providers. None is a hard dependency.
+- Optional: Kilo for the `/mapkeeper` slash command and skill invocation.
 
-## What you get
+## Install
 
-```text
-project-map/
-├── graph.json                 # schema v2: nodes, edges, derivation, provenance
-├── map-ledger.json            # coverage units + run history
-├── architecture-overview.md   # human view
-├── architecture-overview.json # machine view
-├── architecture-overview.html # standalone, no CDN
-├── sync-summary.md            # latest run, gaps, warnings, history
-└── obsidian-vault/            # open directly in Obsidian
-    ├── 00-Home.md
-    ├── 01-Index.md
-    ├── 02-LLM-Context.md      # ≤1500 tokens, the first file an agent reads
-    └── 10-Architecture/ … 90-Meta/
-```
+### Skill
 
-Generated regions are wrapped in `<!-- mapkeeper:begin id=... -->` blocks. Text outside the blocks is yours and survives every run.
-
-## Install as a skill
-
-Agent-neutral (SKILL.md layout):
+Agent-neutral:
 
 ```bash
 npx skills add https://github.com/MIQBALHAKIM/Mapkeeper --skill mapkeeper
@@ -60,109 +40,139 @@ mkdir -p .kilo/skills/mapkeeper
 cp -R ./* .kilo/skills/mapkeeper/
 ```
 
-Other agents: copy the directory into the agent's skills folder; `SKILL.md` is the entry point and `references/` is progressive disclosure.
-
-### Install the `/mapkeeper` command
-
-The command shows a mode menu when run without arguments; arguments bypass it (`/mapkeeper audit --soft`).
+### `/mapkeeper` command
 
 ```bash
 mkdir -p ~/.config/kilo/command
 cp command/mapkeeper.md ~/.config/kilo/command/mapkeeper.md
 ```
 
-Project-local instead of global:
+Or project-local: copy it to `.kilo/command/mapkeeper.md`.
+
+### CLI
 
 ```bash
-mkdir -p .kilo/command
-cp command/mapkeeper.md .kilo/command/mapkeeper.md
+npm link            # installs the `mapkeeper` bin
+mapkeeper status
 ```
 
-The command is plain Markdown with frontmatter; copy it into another agent's command or prompt folder if that agent supports slash commands. Re-copy the skill directory after updating Mapkeeper — the installed copy is not a symlink.
-
-## Install as a spec-kit extension
+Without linking:
 
 ```bash
-specify extension add --dev "$(pwd)/spec-kit-extension"
+node scripts/mapkeeper.mjs status
+node scripts/mapkeeper.mjs links
 ```
 
-Adds `/speckit-mapkeeper-init`, `/speckit-mapkeeper-sync`, `/speckit-mapkeeper-audit`, plus optional `after_tasks` and `after_implement` hooks. It reads `.specify/` and never writes to it.
+## `/mapkeeper` menu
 
-## Prefer prompts?
+| # | Choice | Provider |
+| --- | --- | --- |
+| 1 | Map codebase | Graphify (build, update, query) |
+| 2 | Spec-driven work | spec-kit (handoff to `/speckit.*`) |
+| 3 | Security review | security-audit (guidance, full audit, existing run) |
+| 4 | Combine outputs | `mapkeeper links` |
+| 5 | Status & health | `mapkeeper status` |
 
-`Mapkeeper_Prompt.md` is generated and deprecated. It is a bounded compatibility shim for environments with no CLI or skill. Regenerate with `npm run build:prompt`.
+Arguments skip the menu:
 
-## Commands
+```text
+/mapkeeper map --update
+/mapkeeper spec plan
+/mapkeeper security
+/mapkeeper links --run ~/security-audit-skill/app/run-2
+/mapkeeper status --check
+```
 
-| Command | Purpose |
+## What Mapkeeper owns
+
+| Owns | Does not own |
 | --- | --- |
-| `init` | first map (graph, ledger, vault, exports, summary, context) |
-| `sync` | incremental update of changed units only |
-| `audit` | validate artifacts, report coverage and traceability gaps, exit 1 on failure |
-| `full` | rebuild derived artifacts, keep human text |
-| `export` | regenerate architecture docs and vault |
-| `context` | regenerate `02-LLM-Context.md` only |
-| `graph` | regenerate `graph.json` only |
-| `specs` | ingest `.specify/` and report requirement coverage |
-| `security <run>` | ingest a security-audit run directory |
-| `query "<q>"` / `query path a b` / `query explain x` | delegate to graphify, else traverse the graph |
-| `doctor` | checks: schemas, blocks, links, coverage, adapters |
-| `migrate` | v1 `project-map/` → schema v2, with backup |
+| Provider detection and routing | Graph construction or projection |
+| `.mapkeeper/state.json` provenance | Obsidian vaults or architecture exports |
+| Opt-in cross-link reports | Coverage ledgers or findings ingestion |
+| Status, staleness, legacy warnings | Running audits, builds, or spec commands |
 
-Legacy `MAPPER INIT|SYNC|AUDIT|FULL|EXPORT ONLY|CONTEXT ONLY|GRAPHIFY ONLY` verbs still work.
-
-## Adapters
-
-**Graphify** — detects `graphify` and `graphify-out/graph.json`, runs `graphify update` only when a cache exists and you allow it (`--run-tool`), projects nodes and relations 1:1, and never invents a relation. Without it, a deterministic file/import scan keeps the map useful and labels itself `llm-manual` or `graphify-fallback`.
-
-**spec-kit** — reads `constitution.md`, `spec.md`, `plan.md`, `tasks.md`; creates requirement, task, goal, component, decision, and constraint nodes with stable ids (`FR-001`, `T012`); adds `satisfies_requirement` edges; reports requirements without tasks and tasks referencing missing files.
-
-**security-audit** — reads `run-metadata.json`, `architecture.md`, and `findings.json`; preserves verdicts (`confirmed`, `needs_validation`, `rejected`), never assigns severity to `needs_validation`, never publishes rejected candidates, and never re-runs an audit.
-
-## Validation
+## Status
 
 ```bash
-npm test                                   # schemas, adapters, managed blocks
-npm run check                              # tests + generated files are current
-node scripts/validate-graph.mjs project-map/graph.json
-node scripts/validate-ledger.mjs project-map/map-ledger.json
-node scripts/validate-context.mjs project-map/obsidian-vault/02-LLM-Context.md
-node scripts/check-managed-blocks.mjs project-map
+mapkeeper status
 ```
+
+```text
+Mapkeeper status — revision 4f2a1c-dirty
+
+Graphify    skill: yes · cli: 0.9.0 · cache: graphify-out/graph.json · report: graphify-out/GRAPH_REPORT.md
+spec-kit    cli: 0.16.2 · initialized: yes · feature: specs/001-auth · commands: .kilo/commands (9)
+security    skill: yes · run: run-2 · status: complete · findings: 4
+```
+
+`mapkeeper status --check` exits non-zero only when a present artifact is unreadable or invalid. Missing providers are warnings.
+
+## Links
+
+`mapkeeper links` reads native outputs and produces `.mapkeeper/links.{json,md}`:
+
+| Link | From → to |
+| --- | --- |
+| `finding_file` | finding fingerprint → file, with matching Graphify node IDs |
+| `finding_requirement` | finding → requirement |
+| `requirement_task` | requirement → task |
+| `task_file` | task → file |
+| `requirement_file` | requirement → file (derived through tasks) |
+
+```bash
+mapkeeper links
+mapkeeper links --run ~/security-audit-skill/app/run-2
+mapkeeper links --check
+mapkeeper links --out docs/mapkeeper-links.md
+```
+
+Reports contain fingerprints, file paths, requirement/task IDs, severities, and verdicts — no finding titles, descriptions, or absolute run paths. Rejected findings are never linked; `needs_validation` findings keep their verdict and carry no severity.
+
+## Local artifacts
+
+```text
+.mapkeeper/
+├── .gitignore       # "*" + "!.gitignore" — the directory stays local
+├── state.json       # provider paths, versions, revisions, last run
+└── links.{json,md}  # optional cross-reference report
+```
+
+Nothing else is written. Mapkeeper never modifies `graphify-out/`, `.specify/`, a security run directory, or a legacy `project-map/`.
+
+## Providers
+
+| Provider | Owns | Mapkeeper hands off |
+| --- | --- | --- |
+| [Graphify](https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/providers/graphify.md) | `graphify-out/graph.json`, `GRAPH_REPORT.md`, HTML, obsidian, query/path/explain, MCP | Invoke the `graphify` skill |
+| [spec-kit](https://github.com/github/spec-kit) | `.specify/`, `specs/<feature>/`, `/speckit.*` commands, hooks | Print the exact `/speckit.*` command |
+| [security-audit](https://github.com/cloudflare/security-audit-skill) | run metadata, `findings.json`, `coverage-ledger.json`, reports | Invoke the skill; audit mode requires an explicit external output directory |
+
+If a provider is missing, Mapkeeper prints its setup hint and continues with the others.
+
+## Legacy v2
+
+v3 is a clean break. `project-map/`, graph/ledger schemas, the Obsidian writer, architecture exports, `Mapkeeper_Prompt.md`, and the spec-kit extension are gone. Existing `project-map/` directories are left untouched and reported as legacy by `status`.
 
 ## Repository layout
 
 ```text
-SKILL.md                # agent entry point
-Mapkeeper_Prompt.md     # generated legacy shim
-index.html              # generated single-file guide
-command/                # /mapkeeper slash command source
-references/             # progressive disclosure for modes, adapters, schema, troubleshooting
-schema/                 # JSON Schemas (draft 2020-12)
-scripts/                # zero-dependency CLI, validators, guide builder
-spec-kit-extension/     # optional extension manifest and commands
-tests/                  # node:test suites and fixtures
+SKILL.md                # router entry point
+command/mapkeeper.md    # /mapkeeper slash command
+index.html              # generated guide
+references/             # provider handoffs, links, status, troubleshooting
+scripts/                # status/links CLI
+tests/                  # router tests and fixtures
 ```
-
-## Background
-
-A living project map for any repository: a validated knowledge graph, a coverage ledger, an Obsidian vault, and architecture exports.
-
-The original version was a 1,300-line prompt that asked an agent to produce JSON it could not validate and to call Graphify tools that did not exist. This version is a skill plus a zero-dependency CLI. Every artifact has a schema, the coverage claim is falsifiable, and Graphify, spec-kit, and security-audit are optional adapters rather than assumptions.
 
 ## Development
 
 ```bash
 npm test
 npm run build:guide
-npm run build:prompt
 npm run check
 ```
 
-`npm run check` fails if `index.html` or `Mapkeeper_Prompt.md` is stale.
-
 ## License
 
-Apache-2.0. See `NOTICE` for inspiration and attribution.
-
-The process patterns (schema-validated artifacts, coverage ledger, independently verified records) are inspired by [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) and [github/spec-kit](https://github.com/github/spec-kit), both MIT. Graphify is an external optional tool, not bundled.
+Apache-2.0. Graphify, spec-kit, and security-audit are external projects with their own licenses; none is bundled. See `NOTICE`.

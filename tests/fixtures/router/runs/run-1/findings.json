@@ -1,0 +1,37 @@
+[
+  {
+    "fingerprint": "fp1",
+    "verdict": "confirmed",
+    "title": "SQL injection in login",
+    "severity": "high",
+    "file": "src/auth/session.js",
+    "requirements": ["FR-001"]
+  },
+  {
+    "fingerprint": "fp2",
+    "verdict": "needs_validation",
+    "title": "Secret path may be attacker controlled",
+    "file": "src/index.js",
+    "requirements": ["FR-002"]
+  },
+  {
+    "fingerprint": "fp3",
+    "verdict": "rejected",
+    "title": "False positive",
+    "file": "src/index.js"
+  },
+  {
+    "fingerprint": "fp4",
+    "verdict": "confirmed",
+    "title": "Unknown area finding",
+    "severity": "low",
+    "file": "src/unknown.js",
+    "requirements": ["FR-999"]
+  },
+  {
+    "fingerprint": "fp5",
+    "verdict": "confirmed",
+    "title": "Finding with no location",
+    "severity": "medium"
+  }
+]

@@ -1,38 +1,39 @@
 {
   "name": "mapkeeper",
-  "version": "2.1.0",
-  "description": "Living project map: validated knowledge graph, coverage ledger, Obsidian vault, and architecture exports, with Graphify, spec-kit, and security-audit adapters.",
+  "version": "3.0.0",
+  "description": "Router for Graphify, spec-kit, and security-audit: detect providers, hand off, and link their native outputs without reimplementing them.",
   "type": "module",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=20"
   },
+  "bin": {
+    "mapkeeper": "scripts/mapkeeper.mjs"
+  },
   "scripts": {
     "test": "node --test tests/*.test.mjs",
-    "check": "npm test && node scripts/build-guide.mjs --check && node scripts/build-guide.mjs --prompt --check",
+    "check": "npm test && node scripts/build-guide.mjs --check",
     "build:guide": "node scripts/build-guide.mjs",
-    "build:prompt": "node scripts/build-guide.mjs --prompt",
-    "map": "node scripts/mapkeeper.mjs",
-    "doctor": "node scripts/mapkeeper.mjs doctor"
+    "status": "node scripts/mapkeeper.mjs status",
+    "links": "node scripts/mapkeeper.mjs links",
+    "map": "node scripts/mapkeeper.mjs"
   },
   "files": [
     "SKILL.md",
-    "Mapkeeper_Prompt.md",
     "README.md",
+    "NOTICE",
     "index.html",
     "command/",
     "references/",
-    "schema/",
-    "scripts/",
-    "spec-kit-extension/"
+    "scripts/"
   ],
   "keywords": [
-    "skill",
-    "project-map",
-    "architecture",
-    "knowledge-graph",
-    "obsidian",
+    "router",
+    "graphify",
     "spec-kit",
-    "graphify"
+    "security-audit",
+    "project-map",
+    "agent-skills",
+    "codebase-analysis"
   ]
 }

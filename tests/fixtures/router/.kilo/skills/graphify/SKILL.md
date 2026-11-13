@@ -1,0 +1,1 @@
+# Graphify skill fixture

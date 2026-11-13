@@ -6,7 +6,6 @@ import { readJson, readText, writeText } from "./lib/fs-utils.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "index.html");
-const PROMPT = path.join(ROOT, "Mapkeeper_Prompt.md");
 const VERSION = readJson(path.join(ROOT, "package.json")).version;
 const REPO = "https://github.com/MIQBALHAKIM/Mapkeeper";
 const BLOB = `${REPO}/blob/main`;
@@ -14,62 +13,29 @@ const BLOB = `${REPO}/blob/main`;
 const SECTIONS = [
   { id: "overview", file: "SKILL.md", title: "Overview", nav: "Overview", group: "start" },
   { id: "install", file: "README.md", title: "Install", nav: "Install", group: "start" },
-  { id: "commands", file: "references/commands.md", title: "Commands", nav: "Commands", group: "usage" },
-  { id: "modes", file: "references/modes.md", title: "Modes and phases", nav: "Modes and phases", group: "usage" },
-  { id: "contract", file: "references/contract.md", title: "Contract", nav: "Contract", group: "usage" },
-  { id: "graphify", file: "references/graphify-adapter.md", title: "Graphify adapter", nav: "Graphify", group: "integrations", badge: "optional" },
-  { id: "speckit", file: "references/speckit-adapter.md", title: "Spec-kit adapter", nav: "Spec-kit", group: "integrations", badge: "optional" },
-  { id: "security", file: "references/security-adapter.md", title: "Security-audit adapter", nav: "Security audit", group: "integrations", badge: "optional" },
-  { id: "schema", file: "references/schema.md", title: "Graph and ledger schema", nav: "Schema", group: "reference", badge: "v2" },
-  { id: "obsidian", file: "references/obsidian.md", title: "Obsidian vault", nav: "Obsidian vault", group: "reference" },
-  { id: "exports", file: "references/architecture-exports.md", title: "Architecture exports", nav: "Exports", group: "reference" },
-  { id: "troubleshooting", file: "references/troubleshooting.md", title: "Troubleshooting", nav: "Troubleshooting", group: "reference" },
+  { id: "commands", file: "references/commands.md", title: "Router and CLI", nav: "Commands", group: "use" },
+  { id: "graphify", file: "references/providers/graphify.md", title: "Graphify", nav: "Graphify", group: "providers", badge: "optional" },
+  { id: "speckit", file: "references/providers/speckit.md", title: "spec-kit", nav: "spec-kit", group: "providers", badge: "optional" },
+  { id: "security", file: "references/providers/security.md", title: "security-audit", nav: "security-audit", group: "providers", badge: "optional" },
+  { id: "links", file: "references/links.md", title: "Links report", nav: "Links", group: "use" },
+  { id: "status", file: "references/status.md", title: "Status and state", nav: "Status", group: "use" },
+  { id: "troubleshooting", file: "references/troubleshooting.md", title: "Troubleshooting", nav: "Troubleshooting", group: "help" },
 ];
 
 const GROUPS = [
   { id: "start", label: "Get started", lead: "overview" },
-  { id: "usage", label: "Usage", lead: "commands" },
-  { id: "integrations", label: "Integrations", lead: "graphify" },
-  { id: "reference", label: "Reference", lead: "schema" },
-  { id: "legacy", label: "Legacy", lead: "prompt" },
+  { id: "providers", label: "Providers", lead: "graphify" },
+  { id: "use", label: "Router", lead: "commands" },
+  { id: "help", label: "Help", lead: "troubleshooting" },
 ];
 
 const check = process.argv.includes("--check");
-const promptOnly = process.argv.includes("--prompt");
-
-if (promptOnly) {
-  const content = renderPromptShim();
-  if (check) compare(PROMPT, content);
-  else {
-    writeText(PROMPT, content);
-    console.log(`wrote ${path.relative(ROOT, PROMPT)}`);
-  }
-  process.exit(0);
-}
 
 function main() {
   const sections = SECTIONS.map((meta) => {
     const raw = readText(path.join(ROOT, meta.file));
     if (raw === null) throw new Error(`missing source: ${meta.file}`);
     return { ...meta, html: renderMarkdown(stripFrontmatter(raw), meta.id) };
-  });
-
-  sections.push({
-    id: "prompt",
-    file: "Mapkeeper_Prompt.md",
-    title: "Legacy prompt",
-    nav: "Prompt shim",
-    group: "legacy",
-    badge: "legacy",
-    html: `<p><code>Mapkeeper_Prompt.md</code> is generated from these same files and kept for one deprecation cycle. The skill and CLI are authoritative.</p>
-<p><a href="${BLOB}/Mapkeeper_Prompt.md" target="_blank" rel="noopener">Open the generated prompt on GitHub</a></p>
-<pre data-copy><code>You are Mapkeeper. Map the repository into project-map/ with the exact layout,
-validate every artifact, and never claim a tool ran unless it did.
-
-  node scripts/mapkeeper.mjs init
-  node scripts/mapkeeper.mjs doctor
-  node scripts/mapkeeper.mjs sync
-  node scripts/mapkeeper.mjs audit</code></pre>`,
   });
 
   const withSubs = sections.map((section) => ({
@@ -95,9 +61,9 @@ validate every artifact, and never claim a tool ran unless it did.
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Mapkeeper — a living project map: validated knowledge graph, coverage ledger, Obsidian vault, and architecture exports.">
+<meta name="description" content="Mapkeeper routes to Graphify, spec-kit, and security-audit, records local provenance, and links their native outputs.">
 <meta name="color-scheme" content="light dark">
-<title>Mapkeeper Docs — Codebase Mapping</title>
+<title>Mapkeeper Docs — Provider Router</title>
 <style>${CSS}</style>
 </head>
 <body>
@@ -145,11 +111,11 @@ validate every artifact, and never claim a tool ran unless it did.
 
   <main id="main">
     <h1 id="top-title">Mapkeeper</h1>
-    <p class="lede">Documentation for the Mapkeeper skill and CLI. Build a living project map from repository evidence — graph, coverage ledger, vault, and exports.</p>
+    <p class="lede">A router for Graphify, spec-kit, and security-audit. Mapkeeper detects the providers, hands off to their native skills and commands, and links their outputs — without reimplementing any of them.</p>
 
     <div class="callout">
-      <p class="callout-label">${ICON_INFO} Skill + CLI</p>
-      <p>No install step, no API key, no network access. Start with <code>node scripts/mapkeeper.mjs init</code>, then run <code>doctor</code> to validate the result.</p>
+      <p class="callout-label">${ICON_INFO} Router + local state</p>
+      <p>Mapkeeper does not build graphs, run audits, or execute specs. Start with the provider's own command, then use <code>mapkeeper status</code> and <code>mapkeeper links</code> for provenance and cross-references.</p>
     </div>
 
     <details class="mobile-nav">
@@ -207,92 +173,6 @@ validate every artifact, and never claim a tool ran unless it did.
   }
 }
 
-function renderPromptShim() {
-  const skill = stripFrontmatter(readText(path.join(ROOT, "SKILL.md")) || "");
-  const body = skill
-    .replace(/^# Mapkeeper\n+/, "")
-    .replace(/\[`(references\/[^`]+)`\]/g, "`$1`")
-    .replace(/\n## Read this first[\s\S]*?(?=\n## )/, "\n");
-  return `# Mapkeeper_Prompt.md (generated, deprecated)
-
-> This file is a compatibility shim. The maintained implementation is the
-> \`mapkeeper\` skill plus the zero-dependency CLI in \`scripts/\`.
-> Prefer: \`node scripts/mapkeeper.mjs init|sync|audit|export|doctor\`.
-> Do not edit this file; regenerate with \`npm run build:prompt\`.
-
-You are Mapkeeper. Follow the contract below and produce only validated artifacts.
-
-## Output contract
-
-\`\`\`text
-project-map/
-├── graph.json                 # schema v2, machine truth
-├── map-ledger.json            # coverage units + run history
-├── architecture-overview.md|.json|.html
-├── sync-summary.md
-└── obsidian-vault/
-    ├── 00-Home.md
-    ├── 01-Index.md
-    ├── 02-LLM-Context.md      # <= 1500 tokens target, 2000 hard fail
-    └── ...
-\`\`\`
-
-\`graphify-out/graph.json\` is a tool cache, never the graph of record. Do not write outside
-\`project-map/\` except this file.
-
-## Mandatory rules
-
-1. Use stable ids matching \`^[A-Za-z0-9][A-Za-z0-9_.:-]*$\`; never rename an id because a label changed.
-2. Every node needs \`source_refs\` or \`spec_refs\` unless it is inferred; inferred nodes need \`confidence\`.
-3. Every generated Markdown region is wrapped in \`<!-- mapkeeper:begin id=... -->\` … \`<!-- mapkeeper:end id=... -->\`; never edit outside those markers.
-4. Do not invent facts, relations, findings, severities, or tool runs. Skip and warn instead.
-5. Never expose secrets; redact to \`<redacted>\` and record an unknown.
-6. Validation failure must not overwrite a valid graph.
-
-## Modes
-
-\`init\` (no map) · \`sync\` (incremental) · \`audit\` (read-only validation and gaps) ·
-\`full\` (rebuild) · \`export\` · \`context\` · \`graph\` · \`specs\` · \`security\` · \`doctor\`.
-
-Legacy verbs \`MAPPER INIT|SYNC|AUDIT|FULL|EXPORT ONLY|CONTEXT ONLY|GRAPHIFY ONLY\` map to the same modes.
-
-## Evidence rules
-
-| Source | Required evidence |
-| --- | --- |
-| graphify | \`source_refs\` copied from \`source_file\`; ids preserved verbatim |
-| spec-kit | \`spec_refs: ["<spec>#FR-001"]\`; requirement/task ids stable |
-| security | \`source_refs: ["<file>:<line>"]\`; verdict preserved |
-| model inference | \`confidence\` (low/medium/high), listed as unverified |
-
-Never publish a rejected security candidate; never assign severity to \`needs_validation\`.
-
-## Procedure
-
-1. Resolve project root, phase, and mode.
-2. Gather evidence: graphify cache or deterministic scan; \`.specify/\`; optional security run.
-3. Project nodes and edges 1:1; tag \`derivation\` as graphify, speckit, security, llm.
-4. Seed or update \`map-ledger.json\`; mark changed units stale; remap them.
-5. Write \`graph.json\`, vault, exports, summary, context; validate everything.
-6. Report mode, generation source, coverage, gaps, artifacts, next actions.
-
-If the CLI or skill is unavailable, still produce the exact file layout and schema; run the validators mentally against the rules above.
-
-${body.trim()}
-
-## Validation checklist
-
-- \`graph.json\` has unique ids, resolvable edges, correct counts.
-- Every mapped ledger unit has a node id and evidence.
-- \`02-LLM-Context.md\` is under budget and has valid frontmatter.
-- Managed blocks are balanced; no rejected findings; no severity on needs_validation.
-
-## Final response
-
-Mode and phase · generation source · changes or findings · coverage counts · assumptions/unknowns · artifacts · next actions.
-`;
-}
-
 function compare(file, expected) {
   const actual = readText(file, "");
   if (actual === expected) {
@@ -300,7 +180,7 @@ function compare(file, expected) {
     return;
   }
   console.error(`stale: ${path.relative(ROOT, file)} differs from generated output`);
-  console.error("run: npm run build:guide && npm run build:prompt");
+  console.error("run: npm run build:guide");
   process.exit(1);
 }
 

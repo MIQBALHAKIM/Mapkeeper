@@ -1,5 +1,28 @@
 # Changelog
 
+## 3.0.0 — 2026-11-13
+
+### Breaking
+
+- Mapkeeper is now a router for Graphify, spec-kit, and security-audit. It no longer builds a graph, vault, coverage ledger, architecture export, or provider-specific ingestion.
+- Removed the `init`, `sync`, `audit`, `full`, `export`, `context`, `graph`, `specs`, `security`, `migrate`, and `query` commands, their schemas, validators, tests, and docs.
+- Removed `Mapkeeper_Prompt.md` and the `speckit.mapkeeper.*` extension. The prompt cannot delegate, and spec-kit owns its command surface.
+- Existing `project-map/` trees are left untouched and reported as legacy; they are not read or migrated.
+
+### Added
+
+- `/mapkeeper` menu with five choices: map (Graphify), spec-driven work (spec-kit handoff), security review, combine outputs, status.
+- `mapkeeper status`: provider detection, versions, artifact paths, staleness, and legacy warnings; local `.mapkeeper/state.json`.
+- `mapkeeper links`: findings ↔ requirements ↔ tasks ↔ files ↔ Graphify nodes, with explicit unresolved gaps and redacted report output.
+- Local `.mapkeeper/.gitignore` so state and reports stay out of version control; `--out` publishes a Markdown copy.
+- Provider references, router docs tests, and detection/link/status test fixtures.
+
+### Changed
+
+- `SKILL.md` is a router and handoff guide; it never reimplements a provider.
+- The docs guide is regenerated for the router and no longer includes a prompt shim.
+- Package version and `bin` entry; `mapkeeper` is installable as a CLI.
+
 ## 2.1.0 — 2026-11-13
 
 ### Added

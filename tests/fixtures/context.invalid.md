@@ -1,1 +1,0 @@
-No frontmatter here, and the body is long enough to pass the length check but not the schema check. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

@@ -15,10 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Run tests and staleness checks
+      - name: Run router tests and guide check
         run: npm run check
-      - name: Validate example artifacts
-        run: |
-          node scripts/validate-graph.mjs tests/fixtures/graph.valid.json
-          node scripts/validate-context.mjs tests/fixtures/context.valid.md
-          node scripts/check-managed-blocks.mjs tests/fixtures
+      - name: Check fixture status
+        run: node scripts/mapkeeper.mjs status --dir tests/fixtures/router --no-write --check

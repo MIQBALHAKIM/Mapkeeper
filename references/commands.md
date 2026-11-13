@@ -1,128 +1,96 @@
 # Commands
 
-Run from the repository root. The CLI is zero-dependency (`node >= 20`).
+Mapkeeper v3 has two surfaces: the `/mapkeeper` menu that routes to providers, and a small local CLI for status and links.
 
-```bash
-node scripts/mapkeeper.mjs <command> [options]
-```
+## `/mapkeeper` menu
 
-## Menu (`/mapkeeper`)
+| # | Choice | Routes to |
+| --- | --- | --- |
+| 1 | Map codebase | Graphify: build, update, query, open report |
+| 2 | Spec-driven work | spec-kit: status, specify, plan, tasks, analyze, implement |
+| 3 | Security review | security-audit: guidance, full audit, existing run |
+| 4 | Combine outputs | `mapkeeper links` |
+| 5 | Status & health | `mapkeeper status` |
 
-`/mapkeeper` with no arguments shows a mode menu and waits for a choice. Arguments bypass the menu and route directly to a mode.
+With arguments, skip the menu:
 
-| Choice | Runs |
+| Input | Action |
 | --- | --- |
-| 1. Create the map | `init` |
-| 2. Update the map | `sync` |
-| 3. Audit the map | `audit` |
-| 4. Rebuild the map | `full` |
-| 5. Export docs | `export` / `context` / `graph` |
-| 6. Import context | `specs` / `security <run-dir>` / `graphify` status |
-| 7. Ask or maintain | `query "<question>"` / `doctor` / `migrate` / show all commands |
+| `/mapkeeper map [args]` | Invoke the Graphify skill unchanged |
+| `/mapkeeper spec <action>` | Print the exact `/speckit.<action>` command |
+| `/mapkeeper security [guidance\|audit\|run <dir>]` | Route to the security-audit skill |
+| `/mapkeeper links [args]` | Generate the cross-reference report |
+| `/mapkeeper status [args]` | Detect providers and artifacts |
+| `/mapkeeper help` | Router reference |
 
-The menu is state-aware: it recommends `init` when `project-map/graph.json` is absent and `sync` when it exists. Install the command with:
+The command lives at `~/.config/kilo/command/mapkeeper.md` (user) or `.kilo/command/mapkeeper.md` (project). It is plain Markdown with frontmatter.
 
-```bash
-cp command/mapkeeper.md ~/.config/kilo/command/mapkeeper.md
-```
-
-For a project-local command, copy it to `.kilo/command/mapkeeper.md`. The file is plain Markdown with frontmatter and can be adapted for other agents' prompt folders.
-
-## Commands
-
-| Command | Writes | Purpose |
-| --- | --- | --- |
-| `init` | everything | first map, or rebuild after a reset |
-| `sync` | stale units + summary + context | incremental update |
-| `audit` | summary only | validate and report gaps; exit 1 on failure |
-| `full` | everything | rebuild derived artifacts, keep human text |
-| `export` | architecture + vault | regenerate docs from an existing graph |
-| `context` | `02-LLM-Context.md` | compact context only |
-| `graph` | `graph.json` (+ ledger) | graph only |
-| `specs` | spec nodes merged | ingest `.specify/` |
-| `security <run>` | security nodes merged | ingest a security-audit run |
-| `query "<q>"` | nothing | graphify query, else graph traversal |
-| `query path <a> <b>` | nothing | shortest path |
-| `query explain <node>` | nothing | dump one node |
-| `doctor` | nothing | environment/artifact checks; `--migrate` upgrades v1 first |
-| `migrate` | graph, ledger, exports, vault, summary | v1 → v2 with `project-map/.backup-v1/` backup |
-
-## Options
-
-| Flag | Default | Notes |
-| --- | --- | --- |
-| `--dir <path>` | cwd | project root |
-| `--out <path>` | `project-map` | output directory |
-| `--phase BEFORE\|DURING\|END` | previous or `DURING` | |
-| `--name <project>` | package.json or dir | |
-| `--graphify auto\|manual\|disabled` | `auto` | `manual`/`disabled` force the fallback |
-| `--run-tool` | off | allow `graphify update` when a cache exists |
-| `--security-run <dir>` | none | ingest this run |
-| `--no-specs` | off | skip `.specify/` |
-| `--budget <tokens>` | 1500 | context note target |
-| `--prune` | off | delete orphaned mapkeeper-managed notes |
-| `--soft` | off | audit exits 0 despite failures |
-| `--strict` | off | non-zero exit on warnings |
-| `--json` | off | machine-readable `doctor` output |
-| `--debug` | off | stack traces |
-
-## Legacy aliases
-
-The old prompt verbs map to the same handlers:
-
-```text
-MAPPER INIT            → init
-MAPPER SYNC            → sync
-MAPPER AUDIT           → audit
-MAPPER FULL            → full
-MAPPER EXPORT ONLY     → export
-MAPPER CONTEXT ONLY    → context
-MAPPER GRAPHIFY ONLY   → graph
-```
-
-## Typical sequences
+## CLI
 
 ```bash
-# first map, with graphify cache and a security run
-node scripts/mapkeeper.mjs init --security-run ../audits/run-1
+# from the skill checkout
+node scripts/mapkeeper.mjs status
+node scripts/mapkeeper.mjs links
 
-# after a code change
-node scripts/mapkeeper.mjs sync
-
-# before a release
-node scripts/mapkeeper.mjs audit
-
-# after /speckit-tasks
-node scripts/mapkeeper.mjs specs
-
-# from a security audit output directory
-node scripts/mapkeeper.mjs security ~/security-audit-skill/app/run-2
-
-# handover
-node scripts/mapkeeper.mjs full --phase END
-node scripts/mapkeeper.mjs export
+# or after installing the bin
+mapkeeper status
+mapkeeper links
 ```
 
-## Spec-kit extension commands
+| Command | Purpose |
+| --- | --- |
+| `status` | Detect providers, versions, native artifacts, staleness, legacy maps |
+| `links` | Cross-reference findings ↔ requirements ↔ tasks ↔ files ↔ Graphify nodes |
+| `help` | CLI reference |
 
-After `specify extension add --dev spec-kit-extension`:
+### `status`
 
-```text
-/speckit-mapkeeper-init
-/speckit-mapkeeper-sync
-/speckit-mapkeeper-audit
+```bash
+mapkeeper status [--json] [--check] [--dir <path>] [--no-write]
 ```
 
-Optional hooks: `after_tasks` and `after_implement` ask whether to sync the map.
+- Refreshes `.mapkeeper/state.json` by default; `--no-write` keeps it read-only.
+- `--check` exits `1` only when a present artifact is unreadable or invalid.
+- Absent providers are warnings, not failures.
+
+### `links`
+
+```bash
+mapkeeper links [--run <dir>] [--graph <path>] [--no-security]
+                [--out <path>] [--json] [--check] [--dir <path>] [--no-write]
+```
+
+- `--run` records an existing security run (default: last recorded run).
+- `--graph` overrides `graphify-out/graph.json`.
+- `--no-security` omits findings from the report.
+- `--out` publishes a shareable Markdown copy; local JSON and Markdown always go to `.mapkeeper/`.
+- `--check` exits `1` when a linked target is missing or an input is malformed.
+
+## Examples
+
+```bash
+# after Graphify builds a cache
+mapkeeper status
+mapkeeper links
+
+# combine all three providers
+mapkeeper links --run ~/security-audit-skill/app/run-2
+
+# hand off a spec action (printed by /mapkeeper spec plan)
+/speckit.plan
+
+# publish a report for a PR
+mapkeeper links --out docs/mapkeeper-links.md
+```
 
 ## Exit codes
 
 | Code | Meaning |
 | --- | --- |
-| 0 | success |
-| 1 | validation/audit failure or warnings under `--strict` |
-| 2 | missing inputs or usage error |
+| 0 | success, including warnings and partial inputs |
+| 1 | `--check` blocking gaps, no inputs, or a requested run is missing |
+| 2 | usage error |
 
-## Environment
+## Removed in v3
 
-No secrets are read. The CLI never needs an API key. Graphify may use its own configuration; this tool only calls `graphify --version`, `graphify update`, and `graphify query|path|explain`.
+`init`, `sync`, `audit`, `full`, `export`, `context`, `graph`, `specs`, `security`, `migrate`, and `query` are owned by the providers. Use `/graphify`, `/speckit.*`, the security-audit skill, or `graphify query` directly. Legacy `MAPPER …` verbs are gone.

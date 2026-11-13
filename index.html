@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Mapkeeper — a living project map: validated knowledge graph, coverage ledger, Obsidian vault, and architecture exports.">
+<meta name="description" content="Mapkeeper routes to Graphify, spec-kit, and security-audit, records local provenance, and links their native outputs.">
 <meta name="color-scheme" content="light dark">
-<title>Mapkeeper Docs — Codebase Mapping</title>
+<title>Mapkeeper Docs — Provider Router</title>
 <style>
 :root{
   --bg:#ffffff;--text:#111827;--body:#374151;--muted:#6b7280;--faint:#9ca3af;
@@ -187,15 +187,14 @@ hr{border:0;border-top:1px solid var(--border);margin:2rem 0}
     </div>
     <div class="header-actions">
       <a class="header-link" href="https://github.com/MIQBALHAKIM/Mapkeeper" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z" fill="currentColor"/></svg><span>GitHub</span></a>
-      <span class="version-badge">v2.1.0</span>
+      <span class="version-badge">v3.0.0</span>
     </div>
   </div>
   <nav class="topnav" aria-label="Primary">
     <a class="topnav-link" data-group="start" href="#overview">Get started</a>
-    <a class="topnav-link" data-group="usage" href="#commands">Usage</a>
-    <a class="topnav-link" data-group="integrations" href="#graphify">Integrations</a>
-    <a class="topnav-link" data-group="reference" href="#schema">Reference</a>
-    <a class="topnav-link" data-group="legacy" href="#prompt">Legacy</a>
+    <a class="topnav-link" data-group="providers" href="#graphify">Providers</a>
+    <a class="topnav-link" data-group="use" href="#commands">Router</a>
+    <a class="topnav-link" data-group="help" href="#troubleshooting">Help</a>
   </nav>
 </header>
 
@@ -207,37 +206,30 @@ hr{border:0;border-top:1px solid var(--border);margin:2rem 0}
       <a class="nav-item" data-nav="install" href="#install"><span>Install</span></a>
     </div>
     <div class="nav-group">
-      <p class="nav-label">Usage</p>
-      <a class="nav-item" data-nav="commands" href="#commands"><span>Commands</span></a>
-      <a class="nav-item" data-nav="modes" href="#modes"><span>Modes and phases</span></a>
-      <a class="nav-item" data-nav="contract" href="#contract"><span>Contract</span></a>
-    </div>
-    <div class="nav-group">
-      <p class="nav-label">Integrations</p>
+      <p class="nav-label">Providers</p>
       <a class="nav-item" data-nav="graphify" href="#graphify"><span>Graphify</span><span class="badge optional">optional</span></a>
-      <a class="nav-item" data-nav="speckit" href="#speckit"><span>Spec-kit</span><span class="badge optional">optional</span></a>
-      <a class="nav-item" data-nav="security" href="#security"><span>Security audit</span><span class="badge optional">optional</span></a>
+      <a class="nav-item" data-nav="speckit" href="#speckit"><span>spec-kit</span><span class="badge optional">optional</span></a>
+      <a class="nav-item" data-nav="security" href="#security"><span>security-audit</span><span class="badge optional">optional</span></a>
     </div>
     <div class="nav-group">
-      <p class="nav-label">Reference</p>
-      <a class="nav-item" data-nav="schema" href="#schema"><span>Schema</span><span class="badge v2">v2</span></a>
-      <a class="nav-item" data-nav="obsidian" href="#obsidian"><span>Obsidian vault</span></a>
-      <a class="nav-item" data-nav="exports" href="#exports"><span>Exports</span></a>
+      <p class="nav-label">Router</p>
+      <a class="nav-item" data-nav="commands" href="#commands"><span>Commands</span></a>
+      <a class="nav-item" data-nav="links" href="#links"><span>Links</span></a>
+      <a class="nav-item" data-nav="status" href="#status"><span>Status</span></a>
+    </div>
+    <div class="nav-group">
+      <p class="nav-label">Help</p>
       <a class="nav-item" data-nav="troubleshooting" href="#troubleshooting"><span>Troubleshooting</span></a>
-    </div>
-    <div class="nav-group">
-      <p class="nav-label">Legacy</p>
-      <a class="nav-item" data-nav="prompt" href="#prompt"><span>Prompt shim</span><span class="badge legacy">legacy</span></a>
     </div>
   </aside>
 
   <main id="main">
     <h1 id="top-title">Mapkeeper</h1>
-    <p class="lede">Documentation for the Mapkeeper skill and CLI. Build a living project map from repository evidence — graph, coverage ledger, vault, and exports.</p>
+    <p class="lede">A router for Graphify, spec-kit, and security-audit. Mapkeeper detects the providers, hands off to their native skills and commands, and links their outputs — without reimplementing any of them.</p>
 
     <div class="callout">
-      <p class="callout-label"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" focusable="false"><path d="M10 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16Zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm-1 4h2v6H9V8Zm0-3h2v2H9V5Z" fill="currentColor"/></svg> Skill + CLI</p>
-      <p>No install step, no API key, no network access. Start with <code>node scripts/mapkeeper.mjs init</code>, then run <code>doctor</code> to validate the result.</p>
+      <p class="callout-label"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true" focusable="false"><path d="M10 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16Zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm-1 4h2v6H9V8Zm0-3h2v2H9V5Z" fill="currentColor"/></svg> Router + local state</p>
+      <p>Mapkeeper does not build graphs, run audits, or execute specs. Start with the provider's own command, then use <code>mapkeeper status</code> and <code>mapkeeper links</code> for provenance and cross-references.</p>
     </div>
 
     <details class="mobile-nav">
@@ -245,17 +237,13 @@ hr{border:0;border-top:1px solid var(--border);margin:2rem 0}
       <div class="mobile-links">
         <a href="#overview">Overview</a>
         <a href="#install">Install</a>
-        <a href="#commands">Commands</a>
-        <a href="#modes">Modes and phases</a>
-        <a href="#contract">Contract</a>
-        <a href="#graphify">Graphify adapter</a>
-        <a href="#speckit">Spec-kit adapter</a>
-        <a href="#security">Security-audit adapter</a>
-        <a href="#schema">Graph and ledger schema</a>
-        <a href="#obsidian">Obsidian vault</a>
-        <a href="#exports">Architecture exports</a>
+        <a href="#commands">Router and CLI</a>
+        <a href="#graphify">Graphify</a>
+        <a href="#speckit">spec-kit</a>
+        <a href="#security">security-audit</a>
+        <a href="#links">Links report</a>
+        <a href="#status">Status and state</a>
         <a href="#troubleshooting">Troubleshooting</a>
-        <a href="#prompt">Legacy prompt</a>
       </div>
     </details>
 
@@ -264,60 +252,35 @@ hr{border:0;border-top:1px solid var(--border);margin:2rem 0}
     <h2>Overview</h2>
     <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/SKILL.md" target="_blank" rel="noopener" aria-label="View source for Overview">Source</a>
   </div>
-  <p>Turn any repository into a living, validated project map. The map is a projection of evidence, not a novel.</p>
+  <p>Mapkeeper is a router and cross-reference layer. Graphify owns the graph, spec-kit owns the specs, and security-audit owns the audit. Mapkeeper detects them, hands off, records local provenance, and links their native outputs.</p>
+<p><strong>Never reimplement a provider.</strong> No graph projection, vault, architecture export, coverage ledger, findings ingestion, or spec execution.</p>
 <h3 id="overview-start-here">Start here</h3>
-<p><strong>Only show this menu when the invocation has no task or arguments, for example <code>/mapkeeper</code>. If the user already asked for something (map this repo, audit it, import specs, ask a question), skip the menu and execute their request.</strong></p>
-<p>Check once whether <code>project-map/graph.json</code> exists (a single <code>ls</code> or Read; do not scan the repo). Recommend <strong>Create</strong> when it is absent and <strong>Update</strong> when it is present.</p>
-<div class="table-wrap"><table><thead><tr><th>#</th><th>Choice</th><th>Runs</th><th>Use when</th></tr></thead><tbody><tr><td>1</td><td>Create the map</td><td><code>init</code></td><td>No map yet; first scan</td></tr><tr><td>2</td><td>Update the map</td><td><code>sync</code></td><td>Map exists; code or specs changed</td></tr><tr><td>3</td><td>Audit the map</td><td><code>audit</code></td><td>Validate artifacts, coverage, and gaps</td></tr><tr><td>4</td><td>Rebuild the map</td><td><code>full</code></td><td>Handover, reset, or as-built rebuild</td></tr><tr><td>5</td><td>Export docs</td><td><code>export</code> / <code>context</code> / <code>graph</code></td><td>Refresh docs, LLM context, or graph only</td></tr><tr><td>6</td><td>Import context</td><td><code>specs</code> / <code>security</code> / <code>graphify</code></td><td><code>.specify/</code>, a security run, or an external graph</td></tr><tr><td>7</td><td>Ask or maintain</td><td><code>query</code> / <code>doctor</code> / <code>migrate</code></td><td>Question, health check, v1 upgrade</td></tr></tbody></table></div>
+<p><strong>Only show this menu when the invocation has no task or arguments, for example <code>/mapkeeper</code>. If the user already asked for something, skip the menu and act.</strong></p>
+<p>Check once, without scanning the repo:</p>
+<ul><li><code>graphify-out/graph.json</code> — Graphify cache present?</li><li><code>.specify/</code> — spec-kit initialized?</li><li><code>.mapkeeper/state.json</code> — last recorded security run?</li><li><code>project-map/graph.json</code> — legacy v2 map?</li></ul>
+<p>Recommend <strong>Update</strong> when a Graphify cache exists, <strong>Build</strong> when it does not, and surface a recorded security run.</p>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Choice</th><th>Provider</th><th>What happens</th></tr></thead><tbody><tr><td>1</td><td>Map codebase</td><td>Graphify</td><td>Build, update, query, or open the native report</td></tr><tr><td>2</td><td>Spec-driven work</td><td>spec-kit</td><td>Show feature state, then hand off the exact <code>/speckit.*</code> command</td></tr><tr><td>3</td><td>Security review</td><td>security-audit</td><td>Guidance, full audit, or use an existing run</td></tr><tr><td>4</td><td>Combine outputs</td><td>Mapkeeper</td><td>Generate or publish the cross-reference link report</td></tr><tr><td>5</td><td>Status &amp; health</td><td>Mapkeeper</td><td>Detect providers, versions, artifacts, staleness, legacy maps</td></tr></tbody></table></div>
 <p>Submenus:</p>
-<ul><li><strong>5 Export docs</strong> → <code>export</code> (architecture + vault), <code>context</code> (<code>02-LLM-Context.md</code> only),</li></ul>
-<p>  <code>graph</code> (<code>project-map/graph.json</code> only).</p>
-<ul><li><strong>6 Import context</strong> → <code>specs</code> (spec-kit traceability), <code>security &lt;run-dir&gt;</code> (audit findings),</li></ul>
-<p>  <code>graphify</code> (report cache/version; no write).</p>
-<ul><li><strong>7 Ask or maintain</strong> → <code>query &quot;&lt;question&gt;&quot;</code>, <code>doctor</code>, <code>migrate</code> (v1 trees),</li></ul>
-<p>  &quot;show all commands&quot; (<code>references/commands.md</code>).</p>
-<p>After a choice: run the matching CLI command with defaults (<code>--dir</code> cwd; phase <code>DURING</code> unless the user says handover), ask at most one follow-up if the command needs a path or question text, and finish with the standard report (mode, generation source, coverage, artifacts, next actions). If the map is missing and the chosen mode needs one, offer <code>init</code> instead of failing.</p>
-<h3 id="overview-read-this-first">Read this first</h3>
-<p>Before writing any artifact, read <code>references/contract.md</code>. It is the only place that defines paths, managed blocks, evidence rules, and failure behavior. Do not restate its rules from memory.</p>
-<p>Then read the one reference for the work at hand:</p>
-<div class="table-wrap"><table><thead><tr><th>Need</th><th>Read</th></tr></thead><tbody><tr><td>Modes, phases, token/output discipline</td><td><code>references/modes.md</code></td></tr><tr><td>Graphify detection, projection, fallback</td><td><code>references/graphify-adapter.md</code></td></tr><tr><td>Graph and ledger fields</td><td><code>references/schema.md</code></td></tr><tr><td>Vault layout and note format</td><td><code>references/obsidian.md</code></td></tr><tr><td>Markdown/JSON/HTML exports</td><td><code>references/architecture-exports.md</code></td></tr><tr><td>Spec-kit specs, plans, tasks, traceability</td><td><code>references/speckit-adapter.md</code></td></tr><tr><td>Security audit findings ingestion</td><td><code>references/security-adapter.md</code></td></tr><tr><td>Commands, flags, legacy aliases</td><td><code>references/commands.md</code></td></tr><tr><td>Broken run, failed validation, migration</td><td><code>references/troubleshooting.md</code></td></tr></tbody></table></div>
-<h3 id="overview-output-contract-short-form">Output contract (short form)</h3>
-<pre data-copy><code class="lang-text">project-map/
-├── graph.json                 # schema v2, machine truth
-├── map-ledger.json            # coverage units + run history
-├── architecture-overview.md|.json|.html
-├── sync-summary.md
-└── obsidian-vault/
-    ├── 00-Home.md
-    ├── 01-Index.md
-    ├── 02-LLM-Context.md      # ≤ 1500 tokens target, 2000 hard fail
-    └── ...</code></pre>
-<p><code>graphify-out/graph.json</code> is a tool cache. <code>project-map/graph.json</code> is the graph of record. Never place artifacts outside <code>project-map/</code> except the optional legacy <code>Mapkeeper_Prompt.md</code>.</p>
-<h3 id="overview-choose-the-mode">Choose the mode</h3>
-<p>Use this table when the user already stated a task or passed arguments; otherwise use <code>## Start here</code>.</p>
-<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Mode</th></tr></thead><tbody><tr><td>No <code>project-map/graph.json</code></td><td><code>init</code></td></tr><tr><td>Existing map, user describes a change</td><td><code>sync</code></td></tr><tr><td>Review / consistency / gaps requested</td><td><code>audit</code></td></tr><tr><td>Full rebuild, handover, as-built</td><td><code>full</code></td></tr><tr><td>Only docs requested</td><td><code>export</code></td></tr><tr><td>Only the compact context note requested</td><td><code>context</code></td></tr><tr><td>Only the graph requested</td><td><code>graph</code></td></tr><tr><td><code>.specify/</code> changed</td><td><code>specs</code></td></tr><tr><td>A security run directory is supplied</td><td><code>security</code></td></tr></tbody></table></div>
-<p>An explicit <code>--mode</code> or a legacy verb wins.</p>
-<h3 id="overview-procedure">Procedure</h3>
-<ol><li><strong>Resolve the project</strong>: <code>--dir</code> (default cwd), project name from <code>--name</code>, then <code>package.json</code>, then the directory name.</li><li><strong>Gather evidence</strong>: graphify cache or deterministic scan; <code>.specify/</code> if present; a security run if supplied.</li><li><strong>Project, never invent</strong>: map graphify nodes and relations 1:1, keep ids stable, tag <code>derivation</code> (<code>graphify</code>, <code>speckit</code>, <code>security</code>, <code>llm</code>). A skipped relation is a warning, not a guess.</li><li><strong>Write through the CLI</strong>, not by hand:</li></ol>
-<p>   ``<code>bash    node scripts/mapkeeper.mjs init|sync|audit|export|context|graph|specs|security|doctor|query|migrate    </code>`<code>    The CLI owns validation, managed blocks, the vault, exports, and the ledger. Hand-writing </code>graph.json<code> is a last resort and must still pass </code>scripts/validate-graph.mjs`.</p>
-<ol><li><strong>Report</strong>: mode, generation source, changed units, coverage counts, assumptions/unknowns, artifacts, next actions.</li></ol>
-<h3 id="overview-non-negotiables">Non-negotiables</h3>
-<ul><li>A tool is never reported as used unless it ran and its output parsed. If graphify is missing, say <code>graphify-fallback</code> or <code>llm-manual</code>.</li><li>Every non-inferred node needs <code>source_refs</code> or <code>spec_refs</code>. Inferred nodes need <code>confidence</code> and appear under *Unverified* in <code>sync-summary.md</code>.</li><li>Validation failure must not overwrite the previous good graph. The CLI writes the candidate to <code>project-map/.cache/graph.candidate.json</code> and exits non-zero.</li><li>Never write into <code>.specify/</code>, a security run directory, or a human-owned region of a vault note.</li><li>Never publish a security candidate whose verdict is <code>rejected</code>, and never assign severity to <code>needs_validation</code>.</li><li>Redact secrets to <code>&lt;redacted&gt;</code> and add an <code>unknowns</code> entry describing what was removed.</li></ul>
-<h3 id="overview-adapters-optional-read-only">Adapters (optional, read-only)</h3>
-<p><strong>Graphify</strong>: detect the <code>graphify</code> binary and <code>graphify-out/graph.json</code>. Run <code>graphify update</code> only when a cache exists and the user allows it (<code>--run-tool</code>); otherwise consume the cache. <code>mapkeeper query</code> delegates to <code>graphify query|path|explain</code>.</p>
-<p><strong>Spec-kit</strong>: detect <code>.specify/</code>; ingest <code>constitution.md</code>, <code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>. Requirements get ids from <code>FR-###</code>/<code>US#</code>; tasks from <code>T###</code>; edges <code>satisfies_requirement</code>. Report requirements with no task and tasks referencing missing files. Never edit spec-kit artifacts.</p>
-<p><strong>Security audit</strong>: locate an installed <code>security-audit</code> skill and a run directory containing <code>run-metadata.json</code>, <code>architecture.md</code>, <code>findings.json</code>. Preserve verdicts; trust boundaries become nodes; findings link to files, boundaries, and requirements. Never run an audit implicitly.</p>
-<h3 id="overview-answering-questions-from-the-map">Answering questions from the map</h3>
-<ol><li>Read <code>project-map/obsidian-vault/02-LLM-Context.md</code> first.</li><li>If the question is about structure, use <code>mapkeeper query</code> (or <code>graphify query</code>) before reading source.</li><li>Open only the node notes linked from the answer.</li></ol>
-<h3 id="overview-validation">Validation</h3>
-<pre data-copy><code class="lang-bash">node scripts/validate-graph.mjs project-map/graph.json
-node scripts/validate-ledger.mjs project-map/map-ledger.json
-node scripts/validate-context.mjs project-map/obsidian-vault/02-LLM-Context.md
-node scripts/check-managed-blocks.mjs project-map
-node scripts/mapkeeper.mjs doctor</code></pre>
-<p>An <code>audit</code> exits non-zero when artifacts are invalid, a tracked path is absent from the ledger, a mapped unit's evidence is missing, or a requirement has no satisfying edge. Never claim full coverage without stating the ledger counts.</p>
+<ul><li><strong>1 Map codebase</strong> → Build (<code>/graphify</code>), Update (<code>/graphify --update</code>), Query (<code>/graphify query &quot;&lt;question&gt;&quot;</code>), Open <code>graphify-out/GRAPH_REPORT.md</code> or the HTML view.</li><li><strong>2 Spec-driven work</strong> → Status, Specify, Plan, Tasks, Analyze, Implement. Print the exact command from the detected command dir (<code>/speckit.specify …</code>, <code>/speckit.plan</code>, …). If no commands are installed, print <code>specify init</code> guidance and stop.</li><li><strong>3 Security review</strong> → Guidance (default), Full audit (requires an explicit output directory outside the target and confirmation), or Use an existing run (record its path for links).</li><li><strong>4 Combine outputs</strong> → Generate links, show unresolved gaps, publish with <code>--out &lt;path&gt;</code>.</li><li><strong>5 Status &amp; health</strong> → <code>mapkeeper status</code>, <code>--json</code>, <code>--check</code>, legacy warning.</li></ul>
+<h3 id="overview-provider-handoffs">Provider handoffs</h3>
+<div class="table-wrap"><table><thead><tr><th>Intent</th><th>Detect</th><th>Handoff</th><th>Owned artifacts</th></tr></thead><tbody><tr><td>Map or query the codebase</td><td>Graphify skill, <code>graphify</code> CLI, <code>graphify-out/graph.json</code></td><td>Invoke the <code>graphify</code> skill with the user's arguments</td><td><code>graphify-out/{graph.json,GRAPH_REPORT.md,graph.html}</code>, optional obsidian dir</td></tr><tr><td>Specify / plan / tasks / analyze</td><td><code>specify</code> CLI, <code>.specify/</code>, <code>speckit.*.md</code> in <code>.kilo/commands</code>, <code>.kilo/command</code>, <code>.claude/commands</code>, <code>.github/prompts</code>, etc.</td><td>Print the exact <code>/speckit.*</code> command; never execute the template</td><td><code>.specify/</code>, <code>specs/&lt;feature&gt;/{spec,plan,tasks}.md</code></td></tr><tr><td>Security review</td><td>security-audit skill, run directory</td><td>Invoke the skill; guidance vs full audit is the user's choice</td><td><code>run-metadata.json</code>, <code>findings.json</code>, <code>coverage-ledger.json</code>, <code>REPORT.md</code></td></tr></tbody></table></div>
+<p>If a provider is missing, print its install/setup hint and continue with the others. Never install or modify a provider.</p>
+<h3 id="overview-rules">Rules</h3>
+<ul><li>A provider is never reported as used unless it ran and its output parsed.</li><li>Never build a full Graphify graph or run a security audit without an explicit request. Prefer <code>--update</code> when a cache exists.</li><li>Spec-kit is handoff-only. Do not read and execute <code>speckit.*.md</code> inside a Mapkeeper turn.</li><li>Never publish a security candidate with verdict <code>rejected</code>, and never add severity to <code>needs_validation</code>.</li><li>Local artifacts only:</li><li><code>.mapkeeper/state.json</code> — provider paths, versions, revisions, last run</li><li><code>.mapkeeper/links.{json,md}</code> — optional cross-reference report</li><li>Do not write <code>project-map/</code> or any <code>graphify-out/</code>/<code>.specify/</code> content.</li><li>Legacy <code>project-map/</code> trees are read-only history; report them, never rewrite them.</li><li>Link reports contain fingerprints, file paths, requirement/task IDs, severities, and verdicts only — no finding titles, descriptions, or absolute run paths.</li></ul>
+<h3 id="overview-status">Status</h3>
+<pre data-copy><code class="lang-bash">mapkeeper status [--json] [--check]</code></pre>
+<p>If the <code>mapkeeper</code> bin is not installed, run the CLI from the skill checkout: <code>node scripts/mapkeeper.mjs status</code>.</p>
+<p>Detects providers, versions, native artifact paths, staleness, and legacy maps. <code>--check</code> exits non-zero only when a present artifact is unreadable or invalid.</p>
+<h3 id="overview-links">Links</h3>
+<pre data-copy><code class="lang-bash">mapkeeper links [--run &lt;dir&gt;] [--graph &lt;path&gt;] [--no-security] [--out &lt;path&gt;] [--check]</code></pre>
+<p>If the bin is unavailable, use <code>node scripts/mapkeeper.mjs links</code> from the skill checkout.</p>
+<p>Reads native outputs only:</p>
+<div class="table-wrap"><table><thead><tr><th>Link</th><th>From → to</th></tr></thead><tbody><tr><td><code>finding_file</code></td><td>finding fingerprint → file path, with matching Graphify node IDs</td></tr><tr><td><code>finding_requirement</code></td><td>finding fingerprint → <code>FR-###</code> / <code>NFR-###</code></td></tr><tr><td><code>requirement_task</code></td><td>requirement → task</td></tr><tr><td><code>task_file</code></td><td>task → file</td></tr><tr><td><code>requirement_file</code></td><td>requirement → file (derived through tasks)</td></tr></tbody></table></div>
+<p>Partial inputs are allowed; missing providers are reported, never invented. <code>--check</code> exits non-zero when a real link target is missing (file, node, requirement, task), not when an optional provider is absent.</p>
+<h3 id="overview-references">References</h3>
+<div class="table-wrap"><table><thead><tr><th>Need</th><th>Read</th></tr></thead><tbody><tr><td>Graphify handoff and artifacts</td><td><code>references/providers/graphify.md</code></td></tr><tr><td>spec-kit detection and command handoff</td><td><code>references/providers/speckit.md</code></td></tr><tr><td>security-audit modes and runs</td><td><code>references/providers/security.md</code></td></tr><tr><td>Router and CLI surface</td><td><code>references/commands.md</code></td></tr><tr><td>Link types and report schema</td><td><code>references/links.md</code></td></tr><tr><td>State and exit codes</td><td><code>references/status.md</code></td></tr><tr><td>Missing tools and broken inputs</td><td><code>references/troubleshooting.md</code></td></tr></tbody></table></div>
 <h3 id="overview-final-response">Final response</h3>
-<ol><li>Mode and phase.</li><li>Generation source (<code>graphify</code>, <code>graphify+llm</code>, <code>llm-manual</code>, <code>graphify-fallback</code>).</li><li>What changed or what the audit found.</li><li>Coverage: mapped / stale / unmapped / out_of_scope.</li><li>Assumptions and unknowns.</li><li>Artifacts written.</li><li>Risks and next actions.</li></ol>
+<ol><li>Provider routed to (or handoff command printed).</li><li>What ran, what was only read, and what was skipped.</li><li>Native artifacts and local <code>.mapkeeper/</code> updates.</li><li>Gaps, warnings, and the next command.</li></ol>
 </section>
 <section class="doc-section" id="install" data-group="start">
   <div class="section-head">
@@ -325,30 +288,14 @@ node scripts/mapkeeper.mjs doctor</code></pre>
     <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/README.md" target="_blank" rel="noopener" aria-label="View source for Install">Source</a>
   </div>
   <p><a href="https://miqbalhakim.github.io/Mapkeeper/">Read the guide</a> · <a href="https://github.com/MIQBALHAKIM/Mapkeeper">Source</a></p>
-<h3 id="install-60-second-start">60-second start</h3>
-<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs init
-node scripts/mapkeeper.mjs doctor
-open project-map/obsidian-vault</code></pre>
-<p>Then, after changes:</p>
-<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs sync
-node scripts/mapkeeper.mjs audit</code></pre>
-<p>No install step, no API key, no network access. Node 20+.</p>
-<h3 id="install-what-you-get">What you get</h3>
-<pre data-copy><code class="lang-text">project-map/
-├── graph.json                 # schema v2: nodes, edges, derivation, provenance
-├── map-ledger.json            # coverage units + run history
-├── architecture-overview.md   # human view
-├── architecture-overview.json # machine view
-├── architecture-overview.html # standalone, no CDN
-├── sync-summary.md            # latest run, gaps, warnings, history
-└── obsidian-vault/            # open directly in Obsidian
-    ├── 00-Home.md
-    ├── 01-Index.md
-    ├── 02-LLM-Context.md      # ≤1500 tokens, the first file an agent reads
-    └── 10-Architecture/ … 90-Meta/</code></pre>
-<p>Generated regions are wrapped in <code>&lt;!-- mapkeeper:begin id=... --&gt;</code> blocks. Text outside the blocks is yours and survives every run.</p>
-<h3 id="install-install-as-a-skill">Install as a skill</h3>
-<p>Agent-neutral (SKILL.md layout):</p>
+<p>Mapkeeper is a router for three providers:</p>
+<ul><li><strong>Graphify</strong> — codebase knowledge graph, queries, reports</li><li><strong>spec-kit</strong> — specifications, plans, tasks, and their command workflow</li><li><strong>security-audit</strong> — sandboxed security reviews and findings</li></ul>
+<p>Each provider already does its job well. Mapkeeper does not rebuild a graph, vault, coverage ledger, or audit. It detects the providers, hands off to their native skills and commands, records local provenance, and links their outputs when asked.</p>
+<h3 id="install-requirements">Requirements</h3>
+<ul><li>Node.js 20+ for the local CLI (<code>status</code>, <code>links</code>).</li><li>Any subset of the three providers. None is a hard dependency.</li><li>Optional: Kilo for the <code>/mapkeeper</code> slash command and skill invocation.</li></ul>
+<h3 id="install-install">Install</h3>
+<h4 id="install-skill">Skill</h4>
+<p>Agent-neutral:</p>
 <pre data-copy><code class="lang-bash">npx skills add https://github.com/MIQBALHAKIM/Mapkeeper --skill mapkeeper</code></pre>
 <p>Kilo, user-level:</p>
 <pre data-copy><code class="lang-bash">mkdir -p ~/.config/kilo/skills/mapkeeper
@@ -356,531 +303,309 @@ cp -R ./* ~/.config/kilo/skills/mapkeeper/</code></pre>
 <p>Kilo, project-level:</p>
 <pre data-copy><code class="lang-bash">mkdir -p .kilo/skills/mapkeeper
 cp -R ./* .kilo/skills/mapkeeper/</code></pre>
-<p>Other agents: copy the directory into the agent's skills folder; <code>SKILL.md</code> is the entry point and <code>references/</code> is progressive disclosure.</p>
-<h4 id="install-install-the-mapkeeper-command">Install the <code>/mapkeeper</code> command</h4>
-<p>The command shows a mode menu when run without arguments; arguments bypass it (<code>/mapkeeper audit --soft</code>).</p>
+<h4 id="install-mapkeeper-command"><code>/mapkeeper</code> command</h4>
 <pre data-copy><code class="lang-bash">mkdir -p ~/.config/kilo/command
 cp command/mapkeeper.md ~/.config/kilo/command/mapkeeper.md</code></pre>
-<p>Project-local instead of global:</p>
-<pre data-copy><code class="lang-bash">mkdir -p .kilo/command
-cp command/mapkeeper.md .kilo/command/mapkeeper.md</code></pre>
-<p>The command is plain Markdown with frontmatter; copy it into another agent's command or prompt folder if that agent supports slash commands. Re-copy the skill directory after updating Mapkeeper — the installed copy is not a symlink.</p>
-<h3 id="install-install-as-a-spec-kit-extension">Install as a spec-kit extension</h3>
-<pre data-copy><code class="lang-bash">specify extension add --dev &quot;$(pwd)/spec-kit-extension&quot;</code></pre>
-<p>Adds <code>/speckit-mapkeeper-init</code>, <code>/speckit-mapkeeper-sync</code>, <code>/speckit-mapkeeper-audit</code>, plus optional <code>after_tasks</code> and <code>after_implement</code> hooks. It reads <code>.specify/</code> and never writes to it.</p>
-<h3 id="install-prefer-prompts">Prefer prompts?</h3>
-<p><code>Mapkeeper_Prompt.md</code> is generated and deprecated. It is a bounded compatibility shim for environments with no CLI or skill. Regenerate with <code>npm run build:prompt</code>.</p>
-<h3 id="install-commands">Commands</h3>
-<div class="table-wrap"><table><thead><tr><th>Command</th><th>Purpose</th></tr></thead><tbody><tr><td><code>init</code></td><td>first map (graph, ledger, vault, exports, summary, context)</td></tr><tr><td><code>sync</code></td><td>incremental update of changed units only</td></tr><tr><td><code>audit</code></td><td>validate artifacts, report coverage and traceability gaps, exit 1 on failure</td></tr><tr><td><code>full</code></td><td>rebuild derived artifacts, keep human text</td></tr><tr><td><code>export</code></td><td>regenerate architecture docs and vault</td></tr><tr><td><code>context</code></td><td>regenerate <code>02-LLM-Context.md</code> only</td></tr><tr><td><code>graph</code></td><td>regenerate <code>graph.json</code> only</td></tr><tr><td><code>specs</code></td><td>ingest <code>.specify/</code> and report requirement coverage</td></tr><tr><td><code>security &lt;run&gt;</code></td><td>ingest a security-audit run directory</td></tr><tr><td><code>query &quot;&lt;q&gt;&quot;</code> / <code>query path a b</code> / <code>query explain x</code></td><td>delegate to graphify, else traverse the graph</td></tr><tr><td><code>doctor</code></td><td>checks: schemas, blocks, links, coverage, adapters</td></tr><tr><td><code>migrate</code></td><td>v1 <code>project-map/</code> → schema v2, with backup</td></tr></tbody></table></div>
-<p>Legacy <code>MAPPER INIT|SYNC|AUDIT|FULL|EXPORT ONLY|CONTEXT ONLY|GRAPHIFY ONLY</code> verbs still work.</p>
-<h3 id="install-adapters">Adapters</h3>
-<p><strong>Graphify</strong> — detects <code>graphify</code> and <code>graphify-out/graph.json</code>, runs <code>graphify update</code> only when a cache exists and you allow it (<code>--run-tool</code>), projects nodes and relations 1:1, and never invents a relation. Without it, a deterministic file/import scan keeps the map useful and labels itself <code>llm-manual</code> or <code>graphify-fallback</code>.</p>
-<p><strong>spec-kit</strong> — reads <code>constitution.md</code>, <code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code>; creates requirement, task, goal, component, decision, and constraint nodes with stable ids (<code>FR-001</code>, <code>T012</code>); adds <code>satisfies_requirement</code> edges; reports requirements without tasks and tasks referencing missing files.</p>
-<p><strong>security-audit</strong> — reads <code>run-metadata.json</code>, <code>architecture.md</code>, and <code>findings.json</code>; preserves verdicts (<code>confirmed</code>, <code>needs_validation</code>, <code>rejected</code>), never assigns severity to <code>needs_validation</code>, never publishes rejected candidates, and never re-runs an audit.</p>
-<h3 id="install-validation">Validation</h3>
-<pre data-copy><code class="lang-bash">npm test                                   # schemas, adapters, managed blocks
-npm run check                              # tests + generated files are current
-node scripts/validate-graph.mjs project-map/graph.json
-node scripts/validate-ledger.mjs project-map/map-ledger.json
-node scripts/validate-context.mjs project-map/obsidian-vault/02-LLM-Context.md
-node scripts/check-managed-blocks.mjs project-map</code></pre>
+<p>Or project-local: copy it to <code>.kilo/command/mapkeeper.md</code>.</p>
+<h4 id="install-cli">CLI</h4>
+<pre data-copy><code class="lang-bash">npm link            # installs the `mapkeeper` bin
+mapkeeper status</code></pre>
+<p>Without linking:</p>
+<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs status
+node scripts/mapkeeper.mjs links</code></pre>
+<h3 id="install-mapkeeper-menu"><code>/mapkeeper</code> menu</h3>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Choice</th><th>Provider</th></tr></thead><tbody><tr><td>1</td><td>Map codebase</td><td>Graphify (build, update, query)</td></tr><tr><td>2</td><td>Spec-driven work</td><td>spec-kit (handoff to <code>/speckit.*</code>)</td></tr><tr><td>3</td><td>Security review</td><td>security-audit (guidance, full audit, existing run)</td></tr><tr><td>4</td><td>Combine outputs</td><td><code>mapkeeper links</code></td></tr><tr><td>5</td><td>Status &amp; health</td><td><code>mapkeeper status</code></td></tr></tbody></table></div>
+<p>Arguments skip the menu:</p>
+<pre data-copy><code class="lang-text">/mapkeeper map --update
+/mapkeeper spec plan
+/mapkeeper security
+/mapkeeper links --run ~/security-audit-skill/app/run-2
+/mapkeeper status --check</code></pre>
+<h3 id="install-what-mapkeeper-owns">What Mapkeeper owns</h3>
+<div class="table-wrap"><table><thead><tr><th>Owns</th><th>Does not own</th></tr></thead><tbody><tr><td>Provider detection and routing</td><td>Graph construction or projection</td></tr><tr><td><code>.mapkeeper/state.json</code> provenance</td><td>Obsidian vaults or architecture exports</td></tr><tr><td>Opt-in cross-link reports</td><td>Coverage ledgers or findings ingestion</td></tr><tr><td>Status, staleness, legacy warnings</td><td>Running audits, builds, or spec commands</td></tr></tbody></table></div>
+<h3 id="install-status">Status</h3>
+<pre data-copy><code class="lang-bash">mapkeeper status</code></pre>
+<pre data-copy><code class="lang-text">Mapkeeper status — revision 4f2a1c-dirty
+
+Graphify    skill: yes · cli: 0.9.0 · cache: graphify-out/graph.json · report: graphify-out/GRAPH_REPORT.md
+spec-kit    cli: 0.16.2 · initialized: yes · feature: specs/001-auth · commands: .kilo/commands (9)
+security    skill: yes · run: run-2 · status: complete · findings: 4</code></pre>
+<p><code>mapkeeper status --check</code> exits non-zero only when a present artifact is unreadable or invalid. Missing providers are warnings.</p>
+<h3 id="install-links">Links</h3>
+<p><code>mapkeeper links</code> reads native outputs and produces <code>.mapkeeper/links.{json,md}</code>:</p>
+<div class="table-wrap"><table><thead><tr><th>Link</th><th>From → to</th></tr></thead><tbody><tr><td><code>finding_file</code></td><td>finding fingerprint → file, with matching Graphify node IDs</td></tr><tr><td><code>finding_requirement</code></td><td>finding → requirement</td></tr><tr><td><code>requirement_task</code></td><td>requirement → task</td></tr><tr><td><code>task_file</code></td><td>task → file</td></tr><tr><td><code>requirement_file</code></td><td>requirement → file (derived through tasks)</td></tr></tbody></table></div>
+<pre data-copy><code class="lang-bash">mapkeeper links
+mapkeeper links --run ~/security-audit-skill/app/run-2
+mapkeeper links --check
+mapkeeper links --out docs/mapkeeper-links.md</code></pre>
+<p>Reports contain fingerprints, file paths, requirement/task IDs, severities, and verdicts — no finding titles, descriptions, or absolute run paths. Rejected findings are never linked; <code>needs_validation</code> findings keep their verdict and carry no severity.</p>
+<h3 id="install-local-artifacts">Local artifacts</h3>
+<pre data-copy><code class="lang-text">.mapkeeper/
+├── .gitignore       # &quot;*&quot; + &quot;!.gitignore&quot; — the directory stays local
+├── state.json       # provider paths, versions, revisions, last run
+└── links.{json,md}  # optional cross-reference report</code></pre>
+<p>Nothing else is written. Mapkeeper never modifies <code>graphify-out/</code>, <code>.specify/</code>, a security run directory, or a legacy <code>project-map/</code>.</p>
+<h3 id="install-providers">Providers</h3>
+<div class="table-wrap"><table><thead><tr><th>Provider</th><th>Owns</th><th>Mapkeeper hands off</th></tr></thead><tbody><tr><td><a href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/providers/graphify.md">Graphify</a></td><td><code>graphify-out/graph.json</code>, <code>GRAPH_REPORT.md</code>, HTML, obsidian, query/path/explain, MCP</td><td>Invoke the <code>graphify</code> skill</td></tr><tr><td><a href="https://github.com/github/spec-kit">spec-kit</a></td><td><code>.specify/</code>, <code>specs/&lt;feature&gt;/</code>, <code>/speckit.*</code> commands, hooks</td><td>Print the exact <code>/speckit.*</code> command</td></tr><tr><td><a href="https://github.com/cloudflare/security-audit-skill">security-audit</a></td><td>run metadata, <code>findings.json</code>, <code>coverage-ledger.json</code>, reports</td><td>Invoke the skill; audit mode requires an explicit external output directory</td></tr></tbody></table></div>
+<p>If a provider is missing, Mapkeeper prints its setup hint and continues with the others.</p>
+<h3 id="install-legacy-v2">Legacy v2</h3>
+<p>v3 is a clean break. <code>project-map/</code>, graph/ledger schemas, the Obsidian writer, architecture exports, <code>Mapkeeper_Prompt.md</code>, and the spec-kit extension are gone. Existing <code>project-map/</code> directories are left untouched and reported as legacy by <code>status</code>.</p>
 <h3 id="install-repository-layout">Repository layout</h3>
-<pre data-copy><code class="lang-text">SKILL.md                # agent entry point
-Mapkeeper_Prompt.md     # generated legacy shim
-index.html              # generated single-file guide
-command/                # /mapkeeper slash command source
-references/             # progressive disclosure for modes, adapters, schema, troubleshooting
-schema/                 # JSON Schemas (draft 2020-12)
-scripts/                # zero-dependency CLI, validators, guide builder
-spec-kit-extension/     # optional extension manifest and commands
-tests/                  # node:test suites and fixtures</code></pre>
-<h3 id="install-background">Background</h3>
-<p>A living project map for any repository: a validated knowledge graph, a coverage ledger, an Obsidian vault, and architecture exports.</p>
-<p>The original version was a 1,300-line prompt that asked an agent to produce JSON it could not validate and to call Graphify tools that did not exist. This version is a skill plus a zero-dependency CLI. Every artifact has a schema, the coverage claim is falsifiable, and Graphify, spec-kit, and security-audit are optional adapters rather than assumptions.</p>
+<pre data-copy><code class="lang-text">SKILL.md                # router entry point
+command/mapkeeper.md    # /mapkeeper slash command
+index.html              # generated guide
+references/             # provider handoffs, links, status, troubleshooting
+scripts/                # status/links CLI
+tests/                  # router tests and fixtures</code></pre>
 <h3 id="install-development">Development</h3>
 <pre data-copy><code class="lang-bash">npm test
 npm run build:guide
-npm run build:prompt
 npm run check</code></pre>
-<p><code>npm run check</code> fails if <code>index.html</code> or <code>Mapkeeper_Prompt.md</code> is stale.</p>
 <h3 id="install-license">License</h3>
-<p>Apache-2.0. See <code>NOTICE</code> for inspiration and attribution.</p>
-<p>The process patterns (schema-validated artifacts, coverage ledger, independently verified records) are inspired by <a href="https://github.com/cloudflare/security-audit-skill">cloudflare/security-audit-skill</a> and <a href="https://github.com/github/spec-kit">github/spec-kit</a>, both MIT. Graphify is an external optional tool, not bundled.</p>
+<p>Apache-2.0. Graphify, spec-kit, and security-audit are external projects with their own licenses; none is bundled. See <code>NOTICE</code>.</p>
 </section>
-<section class="doc-section" id="commands" data-group="usage">
+<section class="doc-section" id="commands" data-group="use">
   <div class="section-head">
-    <h2>Commands</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/commands.md" target="_blank" rel="noopener" aria-label="View source for Commands">Source</a>
+    <h2>Router and CLI</h2>
+    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/commands.md" target="_blank" rel="noopener" aria-label="View source for Router and CLI">Source</a>
   </div>
-  <p>Run from the repository root. The CLI is zero-dependency (<code>node &gt;= 20</code>).</p>
-<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs &lt;command&gt; [options]</code></pre>
-<h3 id="commands-menu-mapkeeper">Menu (<code>/mapkeeper</code>)</h3>
-<p><code>/mapkeeper</code> with no arguments shows a mode menu and waits for a choice. Arguments bypass the menu and route directly to a mode.</p>
-<div class="table-wrap"><table><thead><tr><th>Choice</th><th>Runs</th></tr></thead><tbody><tr><td>1. Create the map</td><td><code>init</code></td></tr><tr><td>2. Update the map</td><td><code>sync</code></td></tr><tr><td>3. Audit the map</td><td><code>audit</code></td></tr><tr><td>4. Rebuild the map</td><td><code>full</code></td></tr><tr><td>5. Export docs</td><td><code>export</code> / <code>context</code> / <code>graph</code></td></tr><tr><td>6. Import context</td><td><code>specs</code> / <code>security &lt;run-dir&gt;</code> / <code>graphify</code> status</td></tr><tr><td>7. Ask or maintain</td><td><code>query &quot;&lt;question&gt;&quot;</code> / <code>doctor</code> / <code>migrate</code> / show all commands</td></tr></tbody></table></div>
-<p>The menu is state-aware: it recommends <code>init</code> when <code>project-map/graph.json</code> is absent and <code>sync</code> when it exists. Install the command with:</p>
-<pre data-copy><code class="lang-bash">cp command/mapkeeper.md ~/.config/kilo/command/mapkeeper.md</code></pre>
-<p>For a project-local command, copy it to <code>.kilo/command/mapkeeper.md</code>. The file is plain Markdown with frontmatter and can be adapted for other agents' prompt folders.</p>
-<h3 id="commands-commands">Commands</h3>
-<div class="table-wrap"><table><thead><tr><th>Command</th><th>Writes</th><th>Purpose</th></tr></thead><tbody><tr><td><code>init</code></td><td>everything</td><td>first map, or rebuild after a reset</td></tr><tr><td><code>sync</code></td><td>stale units + summary + context</td><td>incremental update</td></tr><tr><td><code>audit</code></td><td>summary only</td><td>validate and report gaps; exit 1 on failure</td></tr><tr><td><code>full</code></td><td>everything</td><td>rebuild derived artifacts, keep human text</td></tr><tr><td><code>export</code></td><td>architecture + vault</td><td>regenerate docs from an existing graph</td></tr><tr><td><code>context</code></td><td><code>02-LLM-Context.md</code></td><td>compact context only</td></tr><tr><td><code>graph</code></td><td><code>graph.json</code> (+ ledger)</td><td>graph only</td></tr><tr><td><code>specs</code></td><td>spec nodes merged</td><td>ingest <code>.specify/</code></td></tr><tr><td><code>security &lt;run&gt;</code></td><td>security nodes merged</td><td>ingest a security-audit run</td></tr><tr><td><code>query &quot;&lt;q&gt;&quot;</code></td><td>nothing</td><td>graphify query, else graph traversal</td></tr><tr><td><code>query path &lt;a&gt; &lt;b&gt;</code></td><td>nothing</td><td>shortest path</td></tr><tr><td><code>query explain &lt;node&gt;</code></td><td>nothing</td><td>dump one node</td></tr><tr><td><code>doctor</code></td><td>nothing</td><td>environment/artifact checks; <code>--migrate</code> upgrades v1 first</td></tr><tr><td><code>migrate</code></td><td>graph, ledger, exports, vault, summary</td><td>v1 → v2 with <code>project-map/.backup-v1/</code> backup</td></tr></tbody></table></div>
-<h3 id="commands-options">Options</h3>
-<div class="table-wrap"><table><thead><tr><th>Flag</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>--dir &lt;path&gt;</code></td><td>cwd</td><td>project root</td></tr><tr><td><code>--out &lt;path&gt;</code></td><td><code>project-map</code></td><td>output directory</td></tr><tr><td><code>--phase BEFORE|DURING|END</code></td><td>previous or <code>DURING</code></td><td></td></tr><tr><td><code>--name &lt;project&gt;</code></td><td>package.json or dir</td><td></td></tr><tr><td><code>--graphify auto|manual|disabled</code></td><td><code>auto</code></td><td><code>manual</code>/<code>disabled</code> force the fallback</td></tr><tr><td><code>--run-tool</code></td><td>off</td><td>allow <code>graphify update</code> when a cache exists</td></tr><tr><td><code>--security-run &lt;dir&gt;</code></td><td>none</td><td>ingest this run</td></tr><tr><td><code>--no-specs</code></td><td>off</td><td>skip <code>.specify/</code></td></tr><tr><td><code>--budget &lt;tokens&gt;</code></td><td>1500</td><td>context note target</td></tr><tr><td><code>--prune</code></td><td>off</td><td>delete orphaned mapkeeper-managed notes</td></tr><tr><td><code>--soft</code></td><td>off</td><td>audit exits 0 despite failures</td></tr><tr><td><code>--strict</code></td><td>off</td><td>non-zero exit on warnings</td></tr><tr><td><code>--json</code></td><td>off</td><td>machine-readable <code>doctor</code> output</td></tr><tr><td><code>--debug</code></td><td>off</td><td>stack traces</td></tr></tbody></table></div>
-<h3 id="commands-legacy-aliases">Legacy aliases</h3>
-<p>The old prompt verbs map to the same handlers:</p>
-<pre data-copy><code class="lang-text">MAPPER INIT            → init
-MAPPER SYNC            → sync
-MAPPER AUDIT           → audit
-MAPPER FULL            → full
-MAPPER EXPORT ONLY     → export
-MAPPER CONTEXT ONLY    → context
-MAPPER GRAPHIFY ONLY   → graph</code></pre>
-<h3 id="commands-typical-sequences">Typical sequences</h3>
-<pre data-copy><code class="lang-bash"># first map, with graphify cache and a security run
-node scripts/mapkeeper.mjs init --security-run ../audits/run-1
+  <p>Mapkeeper v3 has two surfaces: the <code>/mapkeeper</code> menu that routes to providers, and a small local CLI for status and links.</p>
+<h3 id="commands-mapkeeper-menu"><code>/mapkeeper</code> menu</h3>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Choice</th><th>Routes to</th></tr></thead><tbody><tr><td>1</td><td>Map codebase</td><td>Graphify: build, update, query, open report</td></tr><tr><td>2</td><td>Spec-driven work</td><td>spec-kit: status, specify, plan, tasks, analyze, implement</td></tr><tr><td>3</td><td>Security review</td><td>security-audit: guidance, full audit, existing run</td></tr><tr><td>4</td><td>Combine outputs</td><td><code>mapkeeper links</code></td></tr><tr><td>5</td><td>Status &amp; health</td><td><code>mapkeeper status</code></td></tr></tbody></table></div>
+<p>With arguments, skip the menu:</p>
+<div class="table-wrap"><table><thead><tr><th>Input</th><th>Action</th></tr></thead><tbody><tr><td><code>/mapkeeper map [args]</code></td><td>Invoke the Graphify skill unchanged</td></tr><tr><td><code>/mapkeeper spec &lt;action&gt;</code></td><td>Print the exact <code>/speckit.&lt;action&gt;</code> command</td></tr><tr><td><code>/mapkeeper security [guidance|audit|run &lt;dir&gt;]</code></td><td>Route to the security-audit skill</td></tr><tr><td><code>/mapkeeper links [args]</code></td><td>Generate the cross-reference report</td></tr><tr><td><code>/mapkeeper status [args]</code></td><td>Detect providers and artifacts</td></tr><tr><td><code>/mapkeeper help</code></td><td>Router reference</td></tr></tbody></table></div>
+<p>The command lives at <code>~/.config/kilo/command/mapkeeper.md</code> (user) or <code>.kilo/command/mapkeeper.md</code> (project). It is plain Markdown with frontmatter.</p>
+<h3 id="commands-cli">CLI</h3>
+<pre data-copy><code class="lang-bash"># from the skill checkout
+node scripts/mapkeeper.mjs status
+node scripts/mapkeeper.mjs links
 
-# after a code change
-node scripts/mapkeeper.mjs sync
+# or after installing the bin
+mapkeeper status
+mapkeeper links</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>Purpose</th></tr></thead><tbody><tr><td><code>status</code></td><td>Detect providers, versions, native artifacts, staleness, legacy maps</td></tr><tr><td><code>links</code></td><td>Cross-reference findings ↔ requirements ↔ tasks ↔ files ↔ Graphify nodes</td></tr><tr><td><code>help</code></td><td>CLI reference</td></tr></tbody></table></div>
+<h4 id="commands-status"><code>status</code></h4>
+<pre data-copy><code class="lang-bash">mapkeeper status [--json] [--check] [--dir &lt;path&gt;] [--no-write]</code></pre>
+<ul><li>Refreshes <code>.mapkeeper/state.json</code> by default; <code>--no-write</code> keeps it read-only.</li><li><code>--check</code> exits <code>1</code> only when a present artifact is unreadable or invalid.</li><li>Absent providers are warnings, not failures.</li></ul>
+<h4 id="commands-links"><code>links</code></h4>
+<pre data-copy><code class="lang-bash">mapkeeper links [--run &lt;dir&gt;] [--graph &lt;path&gt;] [--no-security]
+                [--out &lt;path&gt;] [--json] [--check] [--dir &lt;path&gt;] [--no-write]</code></pre>
+<ul><li><code>--run</code> records an existing security run (default: last recorded run).</li><li><code>--graph</code> overrides <code>graphify-out/graph.json</code>.</li><li><code>--no-security</code> omits findings from the report.</li><li><code>--out</code> publishes a shareable Markdown copy; local JSON and Markdown always go to <code>.mapkeeper/</code>.</li><li><code>--check</code> exits <code>1</code> when a linked target is missing or an input is malformed.</li></ul>
+<h3 id="commands-examples">Examples</h3>
+<pre data-copy><code class="lang-bash"># after Graphify builds a cache
+mapkeeper status
+mapkeeper links
 
-# before a release
-node scripts/mapkeeper.mjs audit
+# combine all three providers
+mapkeeper links --run ~/security-audit-skill/app/run-2
 
-# after /speckit-tasks
-node scripts/mapkeeper.mjs specs
+# hand off a spec action (printed by /mapkeeper spec plan)
+/speckit.plan
 
-# from a security audit output directory
-node scripts/mapkeeper.mjs security ~/security-audit-skill/app/run-2
-
-# handover
-node scripts/mapkeeper.mjs full --phase END
-node scripts/mapkeeper.mjs export</code></pre>
-<h3 id="commands-spec-kit-extension-commands">Spec-kit extension commands</h3>
-<p>After <code>specify extension add --dev spec-kit-extension</code>:</p>
-<pre data-copy><code class="lang-text">/speckit-mapkeeper-init
-/speckit-mapkeeper-sync
-/speckit-mapkeeper-audit</code></pre>
-<p>Optional hooks: <code>after_tasks</code> and <code>after_implement</code> ask whether to sync the map.</p>
+# publish a report for a PR
+mapkeeper links --out docs/mapkeeper-links.md</code></pre>
 <h3 id="commands-exit-codes">Exit codes</h3>
-<div class="table-wrap"><table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td>0</td><td>success</td></tr><tr><td>1</td><td>validation/audit failure or warnings under <code>--strict</code></td></tr><tr><td>2</td><td>missing inputs or usage error</td></tr></tbody></table></div>
-<h3 id="commands-environment">Environment</h3>
-<p>No secrets are read. The CLI never needs an API key. Graphify may use its own configuration; this tool only calls <code>graphify --version</code>, <code>graphify update</code>, and <code>graphify query|path|explain</code>.</p>
+<div class="table-wrap"><table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td>0</td><td>success, including warnings and partial inputs</td></tr><tr><td>1</td><td><code>--check</code> blocking gaps, no inputs, or a requested run is missing</td></tr><tr><td>2</td><td>usage error</td></tr></tbody></table></div>
+<h3 id="commands-removed-in-v3">Removed in v3</h3>
+<p><code>init</code>, <code>sync</code>, <code>audit</code>, <code>full</code>, <code>export</code>, <code>context</code>, <code>graph</code>, <code>specs</code>, <code>security</code>, <code>migrate</code>, and <code>query</code> are owned by the providers. Use <code>/graphify</code>, <code>/speckit.*</code>, the security-audit skill, or <code>graphify query</code> directly. Legacy <code>MAPPER …</code> verbs are gone.</p>
 </section>
-<section class="doc-section" id="modes" data-group="usage">
+<section class="doc-section" id="graphify" data-group="providers">
   <div class="section-head">
-    <h2>Modes and phases</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/modes.md" target="_blank" rel="noopener" aria-label="View source for Modes and phases">Source</a>
+    <h2>Graphify</h2>
+    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/providers/graphify.md" target="_blank" rel="noopener" aria-label="View source for Graphify">Source</a>
   </div>
-  <h3 id="modes-mode-decision-table">Mode decision table</h3>
-<p>Pick the first match:</p>
-<div class="table-wrap"><table><thead><tr><th>Condition</th><th>Mode</th></tr></thead><tbody><tr><td><code>project-map/graph.json</code> missing</td><td><code>INIT</code></td></tr><tr><td>User asks for review / validation / consistency / gaps</td><td><code>AUDIT</code></td></tr><tr><td>User asks for full rebuild, handover, closure, or as-built export</td><td><code>FULL</code></td></tr><tr><td>Only exports are requested</td><td><code>EXPORT</code></td></tr><tr><td>Only the LLM context note is requested</td><td><code>CONTEXT</code></td></tr><tr><td>Only the graph is requested</td><td><code>GRAPH</code></td></tr><tr><td><code>.specify/</code> changed and no code changed</td><td><code>SPECS</code></td></tr><tr><td>A security run directory is supplied</td><td><code>SECURITY</code></td></tr><tr><td>Anything else with an existing map</td><td><code>SYNC</code></td></tr></tbody></table></div>
-<p>An explicit flag wins: <code>--mode init|sync|audit|full|export|context|graph|specs|security</code>.</p>
-<h3 id="modes-init">INIT</h3>
-<ol><li>Resolve project name (arg → <code>package.json</code>/<code>pyproject.toml</code>/directory name).</li><li>Detect <code>.specify/</code> and an existing security run directory; ingest if present.</li><li>Detect graphify: binary on <code>PATH</code>, <code>graphify --version</code>, and <code>graphify-out/graph.json</code>. Run <code>graphify update</code> only when a cache already exists; never start a long extraction unasked.</li><li>Project whatever graph data exists into <code>project-map/graph.json</code>.</li><li>Seed <code>map-ledger.json</code> from tracked files, one unit per top-level tree plus root files.</li><li>Write the vault, architecture exports, sync summary, and context note.</li><li>Validate everything, then print the summary.</li></ol>
-<h3 id="modes-sync-incremental">SYNC (incremental)</h3>
-<ol><li>Load ledger. Compute changed files from git (<code>git status --porcelain</code> plus the diff from <code>ledger.source_revision</code> when available).</li><li>Mark only affected units <code>stale</code>. Units whose scope did not match remain untouched.</li><li>Re-extract only stale units: graphify <code>--update</code> if a cache exists; otherwise rescan only those paths.</li><li>Merge: new extraction replaces nodes for the rescanned paths; spec-kit and security nodes are preserved until re-ingested.</li><li>Update the ledger and summary. Output only: changed units, added/removed/updated node ids, new gaps, warnings.</li></ol>
-<p>Never regenerate the whole vault. Rewrite only notes whose node ids changed or disappeared; delete notes for removed nodes only when they carry no human text outside managed blocks.</p>
-<h3 id="modes-audit">AUDIT</h3>
-<p>Read-only with respect to the graph. Produce a report and set the exit code:</p>
-<ul><li>Validate <code>graph.json</code>, <code>map-ledger.json</code>, <code>02-LLM-Context.md</code> budget, and managed blocks.</li><li>Every tracked path must appear in the ledger as <code>mapped</code>, <code>unmapped</code>, or <code>out_of_scope</code>; a path missing from the ledger is a failure.</li><li>Every <code>mapped</code> unit's evidence file must exist.</li><li>Every requirement unit must have at least one <code>satisfies_requirement</code> edge or be reported missing coverage.</li><li>Report stale units, orphaned Obsidian links, nodes without refs, and findings marked <code>stale</code>.</li><li>Exit <code>0</code> when clean, <code>1</code> when any failure is found, <code>2</code> when inputs are missing. <code>--soft</code> forces exit 0 for exploratory use.</li></ul>
-<p>An audit never claims completeness beyond the ledger. State the coverage counts explicitly.</p>
-<h3 id="modes-full">FULL</h3>
-<p>Same pipeline as <code>INIT</code>, but discard cached derivations for graphify- and scan-derived nodes and rebuild them. Preserve human text, spec-kit nodes, and security nodes unless <code>--reset-specs</code> / <code>--reset-security</code> is given. Write <code>project-map/.backup-v1/</code> first when migrating a v1 tree.</p>
-<h3 id="modes-export">EXPORT</h3>
-<p>Regenerate <code>architecture-overview.{md,json,html}</code> and the vault from <code>graph.json</code>. Fail if the graph is missing or invalid. Never modify <code>graph.json</code>.</p>
-<h3 id="modes-context">CONTEXT</h3>
-<p>Regenerate <code>02-LLM-Context.md</code> only. Must satisfy the context schema and the token budget.</p>
-<h3 id="modes-graph">GRAPH</h3>
-<p>Rebuild <code>graph.json</code> only. Includes spec-kit and security ingestion unless <code>--no-specs</code> / <code>--no-security</code> is set.</p>
-<h3 id="modes-specs">SPECS</h3>
-<p>Ingest <code>.specify/</code> artifacts, merge into the graph, update requirement/task units, and write the traceability report.</p>
-<h3 id="modes-security">SECURITY</h3>
-<p>Ingest one security run directory. Never run the audit itself unless the user explicitly asked for an audit; in that case delegate to the installed <code>security-audit</code> skill and state its output directory.</p>
-<h3 id="modes-phase-handling">Phase handling</h3>
-<div class="table-wrap"><table><thead><tr><th>Phase</th><th>Emphasis</th><th>Status vocabulary</th></tr></thead><tbody><tr><td><code>BEFORE</code></td><td>goals, scope, requirements, constraints, stakeholders, planned architecture</td><td><code>planned</code>, <code>unknown</code></td></tr><tr><td><code>DURING</code></td><td>implementation, decisions, task state, drift between docs and code</td><td><code>implemented</code>, <code>planned</code>, <code>unknown</code></td></tr><tr><td><code>END</code></td><td>as-built, deviations, debt, operational notes, handover</td><td><code>implemented</code>, <code>deprecated</code>, <code>unknown</code></td></tr></tbody></table></div>
-<p>Never present planned work as implemented. Anything inferred rather than read is labeled.</p>
-<h3 id="modes-token-rules">Token rules</h3>
-<p>The rules below are enforced or made mechanical, not requested:</p>
-<ol><li><code>SYNC</code> prints only deltas (from the ledger diff).</li><li><code>02-LLM-Context.md</code> is the first context source for later questions; <code>SKILL.md</code> says so and the validator enforces its size.</li><li><code>query</code> delegates to <code>graphify query|path|explain</code>; the fallback traversal reads <code>graph.json</code> only, never the repository.</li><li>Under a low context budget, read <code>02-LLM-Context.md</code> and the affected node notes only.</li><li>No artifact is duplicated across files: contract text exists once, in <code>references/contract.md</code>.</li></ol>
-<h3 id="modes-final-response-format">Final response format</h3>
-<ol><li>Mode and phase.</li><li>Generation source: <code>graphify</code>, <code>graphify+llm</code>, <code>llm-manual</code>, <code>graphify-fallback</code>, plus spec-kit/security ingestion flags.</li><li>What changed (or audit findings).</li><li>Coverage: <code>mapped / stale / unmapped / out_of_scope</code>.</li><li>Assumptions and unknowns.</li><li>Artifacts written.</li><li>Risks and next actions.</li></ol>
+  <p>Graphify owns the codebase graph. Mapkeeper only detects it, hands off, and reads its native JSON for links.</p>
+<h3 id="graphify-detection">Detection</h3>
+<ul><li>Skill: <code>graphify</code> under <code>.kilo/skills</code>, <code>.agents/skills</code>, <code>.claude/skills</code>, <code>.github/skills</code>, or the matching global skill dirs.</li><li>CLI: <code>graphify --version</code>.</li><li>Cache: <code>graphify-out/graph.json</code>; report <code>graphify-out/GRAPH_REPORT.md</code>; vault <code>graphify-out/obsidian/</code>.</li></ul>
+<p>State records <code>skill</code>, <code>skill_dir</code>, <code>cli</code>, <code>version</code>, <code>cache</code>, <code>cache_mtime</code>, <code>report</code>, <code>obsidian</code>.</p>
+<h3 id="graphify-handoff">Handoff</h3>
+<p>Invoke the <code>graphify</code> skill with the user's arguments. Do not reconstruct its commands.</p>
+<div class="table-wrap"><table><thead><tr><th>Intent</th><th>Handoff</th></tr></thead><tbody><tr><td>Build</td><td><code>/graphify</code> (or <code>/graphify &lt;path&gt;</code>)</td></tr><tr><td>Update</td><td><code>/graphify &lt;path&gt; --update</code> — prefer when a cache exists</td></tr><tr><td>Query</td><td><code>/graphify query &quot;&lt;question&gt;&quot;</code> (<code>--dfs</code>, <code>--budget</code> optional)</td></tr><tr><td>Path / explanation</td><td><code>/graphify</code> skill's <code>path</code>/<code>explain</code> modes</td></tr><tr><td>Obsidian</td><td><code>/graphify &lt;path&gt; --obsidian</code> (graphify owns the vault)</td></tr><tr><td>Graph database export</td><td><code>/graphify &lt;path&gt; --neo4j</code> or <code>--falkordb</code></td></tr><tr><td>Agent access</td><td><code>/graphify &lt;path&gt; --mcp</code></td></tr></tbody></table></div>
+<h3 id="graphify-rules">Rules</h3>
+<ul><li>Never project Graphify nodes into a Mapkeeper graph.</li><li>Never write an Obsidian vault, HTML view, or architecture export for Graphify.</li><li>Never run a full build without an explicit request; <code>--update</code> is the default suggestion when <code>graphify-out/graph.json</code> exists.</li><li>Never claim Graphify ran unless its output parsed.</li><li>If the skill is missing but a cache exists, links can still read the cache; print the install hint for build/query operations.</li></ul>
+<h3 id="graphify-links-input">Links input</h3>
+<p><code>graphify-out/graph.json</code> nodes with <code>id</code> and <code>source_file</code>. Mapkeeper maps normalized relative file paths to node IDs for <code>finding_file</code> links. It does not use labels, communities, or inferred edges.</p>
 </section>
-<section class="doc-section" id="contract" data-group="usage">
+<section class="doc-section" id="speckit" data-group="providers">
   <div class="section-head">
-    <h2>Contract</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/contract.md" target="_blank" rel="noopener" aria-label="View source for Contract">Source</a>
+    <h2>spec-kit</h2>
+    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/providers/speckit.md" target="_blank" rel="noopener" aria-label="View source for spec-kit">Source</a>
   </div>
-  <p>This file is the single source of truth for what Mapkeeper writes. <code>SKILL.md</code>, <code>Mapkeeper_Prompt.md</code>, and the HTML guide are generated from or must agree with this file.</p>
-<h3 id="contract-output-layout-inside-the-users-repository">Output layout (inside the user's repository)</h3>
-<pre data-copy><code class="lang-text">your-project/
-├── Mapkeeper_Prompt.md              # optional legacy shim, generated, deprecated
-└── project-map/
-    ├── graph.json                # schema v2 projection: machine truth
-    ├── map-ledger.json           # coverage units + run history
-    ├── architecture-overview.md
-    ├── architecture-overview.json
-    ├── architecture-overview.html
-    ├── sync-summary.md
-    └── obsidian-vault/
-        ├── 00-Home.md
-        ├── 01-Index.md
-        ├── 02-LLM-Context.md
-        ├── 10-Architecture/
-        └── &lt;kind folders&gt;/</code></pre>
-<p><code>.DS_Store</code>, <code>graphify-out/</code>, and <code>project-map/.cache/</code> are never mapped.</p>
-<h3 id="contract-mandatory-rules">Mandatory rules</h3>
-<ol><li><code>project-map/</code> is the only output directory. Do not use <code>docs/project-map/</code>, <code>.project-map/</code>, <code>knowledge/</code>, <code>architecture-map/</code>, or <code>maps/</code>.</li><li><code>project-map/graph.json</code> is the only graph of record. <code>graphify-out/graph.json</code> is a tool cache; it is never edited by hand and never committed as truth.</li><li><code>project-map/map-ledger.json</code> is the coverage record. A run that does not update it has not been audited.</li><li>Never place generated artifacts outside <code>project-map/</code>, except the optional <code>Mapkeeper_Prompt.md</code> shim and the repository's own docs.</li><li>Never write into <code>.specify/</code> or into a security audit run directory. Both are read-only inputs.</li><li>Never expose secrets, tokens, credentials, connection strings, or private keys in any artifact. Redact to <code>&lt;redacted&gt;</code> and add an <code>unknown</code> entry explaining what was removed.</li></ol>
-<h3 id="contract-write-rules-bind-to-these-not-to-prose">Write rules (bind to these, not to prose)</h3>
-<p>Every generated Markdown region is wrapped in a managed block:</p>
-<pre data-copy><code class="lang-markdown">&lt;!-- mapkeeper:begin id=&lt;stable-id&gt; --&gt;
-generated content
-&lt;!-- mapkeeper:end id=&lt;stable-id&gt; --&gt;</code></pre>
-<ul><li>Writers replace <strong>only</strong> the block body. Text outside blocks is human-owned and must survive every run.</li><li>A missing block is appended; an existing block is replaced; a new file is created with a heading, then the block.</li><li><code>scripts/check-managed-blocks.mjs</code> fails on an unclosed or duplicate block id.</li><li>Per-node notes carry YAML frontmatter that is regenerated on every run. Human notes go under a <code>## Notes</code> heading outside managed blocks.</li></ul>
-<p><code>02-LLM-Context.md</code> is fully generated and budget-enforced: target ≤ 1,500 tokens, hard fail &gt; 2,000 (<code>scripts/validate-context.mjs</code>).</p>
-<h3 id="contract-evidence-rules">Evidence rules</h3>
-<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Required evidence</th></tr></thead><tbody><tr><td>Node derived from graphify</td><td><code>source_refs: [&quot;&lt;file&gt;#&lt;loc&gt;&quot;]</code> or <code>source_refs: [&quot;&lt;file&gt;&quot;]</code> copied from <code>source_file</code></td></tr><tr><td>Node derived from spec-kit</td><td><code>spec_refs: [&quot;&lt;spec path&gt;#&lt;FR/T/US id&gt;&quot;]</code></td></tr><tr><td>Node derived from a security run</td><td><code>source_refs: [&quot;&lt;file&gt;:&lt;line&gt;&quot;]</code> and <code>verdict</code></td></tr><tr><td>Node inferred by the model</td><td><code>confidence</code> (low/medium/high) and listed under *Unverified* in <code>sync-summary.md</code></td></tr><tr><td>Edge</td><td><code>source</code>, <code>target</code>, <code>relation</code>, <code>confidence</code>; <code>confidence_score</code> is required unless <code>EXTRACTED</code></td></tr></tbody></table></div>
-<p>Ids are stable. Never rename an id because a label changed. Ids must match <code>^[A-Za-z0-9][A-Za-z0-9_.:-]*$</code>. Namespaced prefixes: <code>spec_&lt;feature&gt;_...</code> for spec-kit, <code>sec_&lt;run&gt;_...</code> for security, <code>decision_adr_...</code> for decisions.</p>
-<h3 id="contract-mode-contract">Mode contract</h3>
-<div class="table-wrap"><table><thead><tr><th>Mode</th><th>Writes</th><th>Reads</th></tr></thead><tbody><tr><td><code>INIT</code></td><td>graph, ledger, vault, exports, summary, context</td><td>source tree, graphify, <code>.specify/</code>, optional security run</td></tr><tr><td><code>SYNC</code></td><td>only stale/mapped units + summary + context</td><td>changed files plus prior ledger</td></tr><tr><td><code>AUDIT</code></td><td>summary findings only; no graph regeneration</td><td>graph, ledger, source tree</td></tr><tr><td><code>FULL</code></td><td>everything, rebuilt</td><td>full source tree</td></tr><tr><td><code>EXPORT</code></td><td>architecture exports + vault</td><td>existing graph</td></tr><tr><td><code>CONTEXT</code></td><td><code>02-LLM-Context.md</code></td><td>existing graph + ledger</td></tr><tr><td><code>GRAPH</code></td><td>graph.json</td><td>graphify cache or source scan</td></tr><tr><td><code>SPECS</code></td><td>spec nodes merge</td><td><code>.specify/</code></td></tr><tr><td><code>SECURITY</code></td><td>security nodes merge</td><td>a security run directory</td></tr></tbody></table></div>
-<h3 id="contract-failure-rules">Failure rules</h3>
-<ul><li>A tool is never reported as used unless it ran and its output parsed. Record <code>meta.graphify.available</code> honestly.</li><li>Graphify unavailable → deterministic source scan (files + import edges) + spec/security ingestion. Mark <code>derivation: &quot;llm&quot;</code> only for model-authored content.</li><li>Graphify failed mid-run → keep the previous graph, add a <code>sync-summary.md</code> warning with the exact error, and exit non-zero in <code>--strict</code> mode.</li><li>Validation failure → do not overwrite the previous valid graph; write to <code>project-map/.cache/graph.candidate.json</code>, report the error, exit 1.</li></ul>
-</section>
-<section class="doc-section" id="graphify" data-group="integrations">
-  <div class="section-head">
-    <h2>Graphify adapter</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/graphify-adapter.md" target="_blank" rel="noopener" aria-label="View source for Graphify adapter">Source</a>
-  </div>
-  <p>Graphify is an optional external tool. It is never required; Mapkeeper always has a deterministic fallback.</p>
-<h3 id="graphify-detection-honest-in-this-order">Detection (honest, in this order)</h3>
-<ol><li><code>graphify --version</code> on <code>PATH</code> → record the version. A missing binary is not an error.</li><li><code>graphify-out/graph.json</code> exists → a usable cache. Record <code>graph_path</code>.</li><li><code>.specify/</code> and security runs are independent inputs; they do not imply graphify.</li></ol>
-<p>Set <code>meta.graphify</code> accordingly:</p>
-<pre data-copy><code class="lang-json">{ &quot;available&quot;: true, &quot;version&quot;: &quot;0.9.x&quot;, &quot;graph_path&quot;: &quot;graphify-out/graph.json&quot;, &quot;used_cache&quot;: true }</code></pre>
-<p><code>available</code> means graph data was consumed. <code>used_cache: false</code> means the CLI was invoked this run.</p>
-<h3 id="graphify-invocation-rules">Invocation rules</h3>
-<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Action</th></tr></thead><tbody><tr><td>Cache exists, user passes <code>--run-tool</code></td><td>Run <code>graphify update</code> in the project root, 10-minute timeout</td></tr><tr><td>Cache exists, no <code>--run-tool</code></td><td>Consume the cache; note it in <code>sync-summary.md</code></td></tr><tr><td>Cache exists, <code>init</code> mode</td><td><code>graphify update</code> is allowed (default behavior)</td></tr><tr><td>No cache, binary present</td><td>Do <strong>not</strong> start a full extraction unprompted; use the fallback and say why</td></tr><tr><td><code>--graphify manual</code> or <code>disabled</code></td><td>Never invoke; use the deterministic fallback</td></tr><tr><td>Update fails</td><td>Keep the previous graph, record the exact stderr, continue with the fallback if no cache</td></tr></tbody></table></div>
-<p>Never run <code>graphify</code> with <code>--mcp</code> automatically. MCP is for query-time delegation.</p>
-<h3 id="graphify-projection-graphify-graphjson">Projection (graphify → graph.json)</h3>
-<p>Node mapping:</p>
-<div class="table-wrap"><table><thead><tr><th>graphify <code>file_type</code></th><th>Mapkeeper <code>kind</code></th></tr></thead><tbody><tr><td><code>code</code></td><td><code>file</code></td></tr><tr><td><code>document</code>, <code>paper</code>, <code>image</code></td><td><code>document</code></td></tr><tr><td><code>rationale</code></td><td><code>decision</code></td></tr><tr><td><code>concept</code></td><td><code>data_entity</code></td></tr><tr><td>missing/unknown</td><td><code>file</code></td></tr></tbody></table></div>
-<p>Preserve, verbatim:</p>
-<ul><li><code>id</code> (never rename, never add chunk suffixes)</li><li><code>label</code></li><li><code>source_file</code> (relativized to the project root when it is absolute and inside it)</li><li><code>source_location</code></li><li><code>community</code> (into <code>provenance.community</code> and <code>tags</code>)</li></ul>
-<p>Set <code>derivation: &quot;graphify&quot;</code>, <code>confidence: &quot;high&quot;</code> for code and <code>&quot;medium&quot;</code> otherwise, <code>status: &quot;implemented&quot;</code> for code and <code>&quot;unknown&quot;</code> otherwise, <code>provenance.relation_source: &quot;EXTRACTED&quot;</code>.</p>
-<p>Edge mapping is 1:1 and only for these relations:</p>
-<pre data-copy><code class="lang-text">calls, implements, references, cites,
-conceptually_related_to, shares_data_with,
-semantically_similar_to, rationale_for</code></pre>
-<p>If graphify emits any other relation, skip the edge and add a warning naming it. Never translate an unknown relation into <code>relates_to</code>.</p>
-<p>Keep <code>confidence</code> and <code>confidence_score</code> unchanged. Hyperedges are not projected in v2; count them in the warning list if present.</p>
-<h3 id="graphify-deterministic-fallback-llm-manual-graphify-fallback">Deterministic fallback (<code>llm-manual</code> / <code>graphify-fallback</code>)</h3>
-<p>When no graph is available, the scan is intentionally simple and reproducible:</p>
-<ol><li>One <code>project</code> node (<code>project_root</code>) and one <code>file</code> node per tracked text file, ids <code>file_&lt;sanitized-path-without-extension&gt;</code>.</li><li><code>component</code> nodes for top-level folders with 3+ files, edges <code>contains</code>.</li><li>Import edges <code>references</code> (<code>EXTRACTED</code>, score 1.0) resolved from relative JS/TS <code>import</code>/<code>require</code> and Python <code>import</code>/<code>from</code>. Unresolvable imports are dropped silently; cross-language edges are never created.</li><li><code>dependency</code> nodes from <code>package.json</code> with <code>depends_on</code> edges from the project node.</li><li>Ignored: <code>project-map/</code>, <code>graphify-out/</code>, <code>node_modules/</code>, <code>.git/</code>, <code>.specify/</code>, lockfiles, binary/media files.</li></ol>
-<p>The fallback does not invent call graphs, services, or data flows. If the user needs those, they must install graphify or provide a graph.</p>
-<h3 id="graphify-incremental-behavior">Incremental behavior</h3>
-<ul><li><code>sync</code> without a cache rescans only changed files (git status plus the diff from <code>ledger.source_revision</code>).</li><li>Units whose scope matched a changed file become <code>stale</code> before rescanning.</li><li>Nodes whose <code>source_refs</code> point at a changed file are replaced; untouched nodes are kept.</li><li>Non-git directories fall back to a full rescan; say so in the summary.</li></ul>
-<h3 id="graphify-query-delegation">Query delegation</h3>
-<p><code>mapkeeper query &quot;&lt;question&gt;&quot;</code> runs <code>graphify query &quot;&lt;question&gt;&quot;</code> when both the binary and the cache exist. <code>mapkeeper query path a b</code> and <code>mapkeeper query explain node</code> delegate to the same CLI. On failure, Mapkeeper prints the graphify error and traverses <code>project-map/graph.json</code> instead — it never falls back to reading the repository.</p>
-<h3 id="graphify-failure-modes-to-report-not-hide">Failure modes to report, not hide</h3>
-<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Message</th></tr></thead><tbody><tr><td>binary absent</td><td><code>graphify binary not found on PATH</code></td></tr><tr><td>binary present, cache absent</td><td><code>graphify binary present but graphify-out/graph.json is missing</code></td></tr><tr><td>update timeout</td><td><code>graphify update failed: &lt;stderr&gt;</code></td></tr><tr><td>schema mismatch</td><td><code>skipped graphify edge with unmapped relation &quot;&lt;x&gt;&quot;</code></td></tr><tr><td>refused shrink</td><td>surface graphify's own refusal text; do not delete the existing graph</td></tr></tbody></table></div>
-</section>
-<section class="doc-section" id="speckit" data-group="integrations">
-  <div class="section-head">
-    <h2>Spec-kit adapter</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/speckit-adapter.md" target="_blank" rel="noopener" aria-label="View source for Spec-kit adapter">Source</a>
-  </div>
-  <p>Read-only integration with <a href="https://github.com/github/spec-kit">github/spec-kit</a>. Spec-kit is optional; Mapkeeper works without <code>.specify/</code>.</p>
+  <p>spec-kit owns specifications, plans, tasks, and its command workflow. Mapkeeper detects it, shows feature state, and hands off the exact slash command.</p>
 <h3 id="speckit-detection">Detection</h3>
-<ol><li><code>.specify/</code> exists → spec-kit project.</li><li>Active feature directory from <code>.specify/feature.json</code> (keys <code>feature_directory</code>, <code>feature_dir</code>, <code>directory</code>, <code>path</code>, <code>feature</code>); fall back to the newest <code>specs/*/</code> containing <code>spec.md</code>.</li><li>Read <code>.specify/memory/constitution.md</code> when present.</li></ol>
-<p>Never create, edit, or delete anything under <code>.specify/</code>. Mapkeeper only reads it.</p>
-<h3 id="speckit-artifact-mapping">Artifact mapping</h3>
-<div class="table-wrap"><table><thead><tr><th>Artifact</th><th>Node kind</th><th>Id</th></tr></thead><tbody><tr><td><code>constitution.md</code> headings</td><td><code>constraint</code></td><td><code>spec_&lt;feature&gt;_constraint_&lt;slug&gt;</code></td></tr><tr><td><code>spec.md</code> <code>FR-###</code>, <code>NFR-###</code>, <code>SR-###</code>, <code>CR-###</code></td><td><code>requirement</code></td><td><code>spec_&lt;feature&gt;_fr-001</code></td></tr><tr><td><code>spec.md</code> <code>### User Story N</code></td><td><code>goal</code></td><td><code>spec_&lt;feature&gt;_goal_N</code></td></tr><tr><td><code>plan.md</code> <code>###</code> headings under Project Structure</td><td><code>component</code></td><td><code>spec_&lt;feature&gt;_component_&lt;slug&gt;</code></td></tr><tr><td><code>plan.md</code> <code><strong>Decision</strong>:</code> lines</td><td><code>decision</code></td><td><code>spec_&lt;feature&gt;_decision_&lt;slug&gt;</code></td></tr><tr><td><code>tasks.md</code> <code>- [ ] T###</code></td><td><code>task</code></td><td><code>spec_&lt;feature&gt;_t001</code></td></tr></tbody></table></div>
-<p>Edges:</p>
-<div class="table-wrap"><table><thead><tr><th>From</th><th>Relation</th><th>To</th><th>Evidence</th></tr></thead><tbody><tr><td>task</td><td><code>satisfies_requirement</code></td><td>requirement mentioned in the task line</td><td><code>tasks.md#T001</code></td></tr><tr><td>task</td><td><code>implements</code></td><td>file path mentioned and existing</td><td><code>tasks.md#T001</code></td></tr></tbody></table></div>
-<p>Every spec-kit node carries <code>derivation: &quot;speckit&quot;</code> and <code>spec_refs: [&quot;&lt;path&gt;#&lt;id&gt;&quot;]</code>. Source refs stay empty unless a task names a real file.</p>
-<h3 id="speckit-traceability-report">Traceability report</h3>
-<p><code>mapkeeper specs</code> and every <code>init|sync</code> write these gaps into <code>sync-summary.md</code> and <code>architecture-overview.md</code>:</p>
-<ol><li>Requirement with no task referencing it.</li><li>Task referencing a file path that does not exist.</li><li>Requirement with a task but no <code>implements</code> edge to code (when a file is named).</li><li>Checklist items left unchecked (reported, not enforced).</li></ol>
-<p>Gap text must name ids, not vague areas: <code>FR-002 has no task referencing it</code>.</p>
-<h3 id="speckit-requirement-units">Requirement units</h3>
-<p>Each requirement also becomes a <code>map-ledger.json</code> unit:</p>
-<pre data-copy><code class="lang-json">{
-  &quot;id&quot;: &quot;req_001-auth_fr-001&quot;,
-  &quot;kind&quot;: &quot;requirement&quot;,
-  &quot;scope&quot;: &quot;specs/001-auth/spec.md#FR-001&quot;,
-  &quot;status&quot;: &quot;mapped&quot;,
-  &quot;node_ids&quot;: [&quot;spec_001-auth_fr-001&quot;],
-  &quot;evidence&quot;: [&quot;project-map/graph.json#nodes&quot;]
-}</code></pre>
-<p><code>audit</code> fails when a requirement unit has no satisfying task or code edge. This is Mapkeeper's equivalent of <code>/speckit-analyze</code>, but evidence-based.</p>
-<h3 id="speckit-extension-packaging">Extension packaging</h3>
-<p><code>spec-kit-extension/</code> is an optional installable extension:</p>
-<pre data-copy><code class="lang-bash">specify extension add --dev /path/to/Mapkeeper/spec-kit-extension</code></pre>
-<p>Manifest highlights (<code>extension.yml</code>, schema_version <code>1.0</code>):</p>
-<ul><li>id <code>mapkeeper</code>; commands <code>speckit.mapkeeper.init</code>, <code>speckit.mapkeeper.sync</code>, <code>speckit.mapkeeper.audit</code>; files in <code>commands/</code>.</li><li>hooks <code>after_tasks</code> and <code>after_implement</code>, <code>optional: true</code>, so users opt in after <code>/speckit-tasks</code> and <code>/speckit-implement</code>.</li><li>no <code>requires.tools</code>; graphify and security-audit stay optional.</li></ul>
-<p>The commands call the repository-local CLI (<code>node scripts/mapkeeper.mjs …</code>) when Mapkeeper is vendored, or instruct the agent to run the skill when it is installed globally. They never edit spec-kit artifacts.</p>
-<h3 id="speckit-failure-handling">Failure handling</h3>
-<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Behavior</th></tr></thead><tbody><tr><td><code>.specify/feature.json</code> invalid</td><td>fall back to newest <code>specs/*</code>, warn</td></tr><tr><td>No spec.md/plan.md/tasks.md</td><td>warn; no nodes invented</td></tr><tr><td>Duplicate requirement ids</td><td>first occurrence wins, warn</td></tr><tr><td>Task references a missing file</td><td>gap, not a node</td></tr><tr><td><code>.specify/</code> unreadable</td><td>continue without spec-kit, record in warnings</td></tr></tbody></table></div>
+<ul><li>CLI: <code>specify</code> on <code>PATH</code>; version when <code>specify --version</code> works.</li><li>Project: <code>.specify/</code>; active feature from <code>.specify/feature.json</code> (<code>feature_directory</code>, <code>feature_dir</code>, <code>directory</code>, <code>path</code>, <code>feature</code>) or the newest <code>specs/*/spec.md</code>.</li><li>Commands: <code>speckit.*.md</code> in the first matching directory:</li></ul>
+<p>  <code>.kilo/commands</code>, <code>.kilo/command</code>, <code>.claude/commands</code>, <code>.github/prompts</code>, <code>.cursor/commands</code>,   <code>.windsurf/workflows</code>, <code>.opencode/command</code>, <code>.gemini/commands</code>, <code>.codex/prompts</code>, <code>.qwen/commands</code>.</p>
+<ul><li>Hooks: <code>.specify/extensions.yml</code>.</li></ul>
+<p>State records <code>cli</code>, <code>version</code>, <code>initialized</code>, <code>feature_dir</code>, <code>feature_mtime</code>, <code>commands_dir</code>, <code>commands</code>, <code>hooks</code>.</p>
+<h3 id="speckit-handoff">Handoff</h3>
+<p>Print the exact command; do not read or execute the command template.</p>
+<div class="table-wrap"><table><thead><tr><th>Action</th><th>Command</th></tr></thead><tbody><tr><td>Specify</td><td><code>/speckit.specify &lt;description&gt;</code></td></tr><tr><td>Clarify</td><td><code>/speckit.clarify</code></td></tr><tr><td>Plan</td><td><code>/speckit.plan</code></td></tr><tr><td>Tasks</td><td><code>/speckit.tasks</code></td></tr><tr><td>Analyze</td><td><code>/speckit.analyze</code></td></tr><tr><td>Checklist</td><td><code>/speckit.checklist</code></td></tr><tr><td>Implement</td><td><code>/speckit.implement</code></td></tr><tr><td>Constitution</td><td><code>/speckit.constitution</code></td></tr><tr><td>Converge</td><td><code>/speckit.converge</code></td></tr><tr><td>Tasks to issues</td><td><code>/speckit.taskstoissues</code></td></tr></tbody></table></div>
+<p>If the commands are not installed, print the project setup hint (<code>specify init</code> with the host agent, then <code>specify extension add …</code> when needed) and stop. If <code>specify</code> is missing but commands exist, hand off the commands and note the CLI is unavailable.</p>
+<h3 id="speckit-rules">Rules</h3>
+<ul><li>Never modify <code>.specify/</code>, <code>specs/</code>, or spec-kit extensions.</li><li>Never model requirements/tasks as a graph.</li><li>Mapkeeper reads <code>spec.md</code> and <code>tasks.md</code> only to extract IDs and file mentions for links and status counts, not to re-run <code>/speckit.analyze</code>.</li></ul>
+<h3 id="speckit-links-input">Links input</h3>
+<ul><li><code>spec.md</code>: <code>FR-###</code>, <code>NFR-###</code>, <code>SR-###</code>, <code>CR-###</code> requirement IDs.</li><li><code>tasks.md</code>: <code>- [ ] T### …</code> lines, referenced requirement IDs, and mentioned file paths.</li><li>File mentions are normalized relative paths; <code>specs/</code>, <code>.specify/</code>, <code>project-map/</code>, <code>.mapkeeper/</code>, and <code>graphify-out/</code> are ignored.</li></ul>
 </section>
-<section class="doc-section" id="security" data-group="integrations">
+<section class="doc-section" id="security" data-group="providers">
   <div class="section-head">
-    <h2>Security-audit adapter</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/security-adapter.md" target="_blank" rel="noopener" aria-label="View source for Security-audit adapter">Source</a>
+    <h2>security-audit</h2>
+    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/providers/security.md" target="_blank" rel="noopener" aria-label="View source for security-audit">Source</a>
   </div>
-  <p>Read-only integration with <a href="https://github.com/cloudflare/security-audit-skill">cloudflare/security-audit-skill</a>. Mapkeeper consumes finished audit artifacts; it does not reimplement the audit methodology.</p>
-<h3 id="security-locating-the-skill-and-a-run">Locating the skill and a run</h3>
-<p>Skill search order (first hit wins):</p>
-<pre data-copy><code class="lang-text">&lt;project&gt;/.kilo/skills/security-audit/SKILL.md
-&lt;project&gt;/.agents/skills/security-audit/SKILL.md
-&lt;project&gt;/.github/skills/security-audit/SKILL.md
-&lt;project&gt;/.claude/skills/security-audit/SKILL.md
-~/.config/kilo/skills/security-audit/SKILL.md
-~/.agents/skills/security-audit/SKILL.md
-~/.claude/skills/security-audit/SKILL.md</code></pre>
-<p>Run directory: supplied with <code>--security-run &lt;dir&gt;</code> (relative to the project) or as <code>mapkeeper security &lt;dir&gt;</code>. A run contains <code>run-metadata.json</code>, <code>architecture.md</code>, <code>coverage-ledger.json</code>, <code>findings.json</code>, <code>REPORT.md</code>, <code>FINDINGS-DETAIL.md</code>, <code>NEEDS-VALIDATION.md</code>.</p>
-<p>If the skill is not installed, print the install command and stop the audit path:</p>
-<pre data-copy><code class="lang-bash">npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit</code></pre>
-<p>Never invent findings, severities, or trust boundaries when the skill or run is missing.</p>
-<h3 id="security-invoking-an-audit">Invoking an audit</h3>
-<p>Only when the user explicitly asks to audit or pen-test:</p>
-<ol><li>Confirm the target and an output directory <strong>outside</strong> the repository (the upstream default is <code>~/security-audit-skill/&lt;repo&gt;/run-&lt;N&gt;</code>).</li><li>Delegate: ask the installed <code>security-audit</code> skill to run its full-audit mode against the target.</li><li>Ingest the resulting run directory with <code>mapkeeper security &lt;dir&gt;</code>.</li></ol>
-<p>Do not run all six phases yourself, do not copy its <code>SKILL.md</code>/companion docs into this repository, and do not relax its sandbox requirements.</p>
-<h3 id="security-ingestion-mapping">Ingestion mapping</h3>
-<div class="table-wrap"><table><thead><tr><th>Input</th><th>Mapkeeper output</th></tr></thead><tbody><tr><td><code>architecture.md</code> → <code>## Trust Boundaries</code> bullets</td><td><code>trust_boundary</code> nodes <code>sec_&lt;run&gt;_tb_&lt;slug&gt;</code></td></tr><tr><td><code>findings.json</code> record <code>verdict: confirmed</code></td><td><code>finding</code> node, <code>status: confirmed</code>, <code>severity</code> from the record</td></tr><tr><td><code>findings.json</code> record <code>verdict: needs_validation</code></td><td><code>finding</code> node, <code>status: needs_validation</code>, <strong>no severity</strong></td></tr><tr><td><code>findings.json</code> record <code>verdict: rejected</code></td><td>counted only (<code>counts.rejected</code>), never published</td></tr><tr><td>record <code>file</code> + <code>line</code></td><td><code>source_refs: [&quot;&lt;file&gt;:&lt;line&gt;&quot;]</code></td></tr><tr><td>record <code>trust_boundary</code></td><td>edge <code>violates</code> → boundary node</td></tr><tr><td>record file matching a graph node</td><td>edge <code>affects</code> → that node</td></tr><tr><td>record <code>requirements: [&quot;FR-001&quot;]</code></td><td>edge <code>affects</code> → the matching requirement node</td></tr><tr><td><code>run-metadata.json</code> <code>source_ref</code></td><td><code>last_verified.revision</code>; stale marker when the repo moved</td></tr></tbody></table></div>
-<p>Ids: <code>sec_&lt;run-id&gt;_&lt;fingerprint&gt;</code>; fingerprints are preserved verbatim when present. If a record has no fingerprint or id, hash a sanitized title.</p>
-<p>Tolerated <code>findings.json</code> shapes: a top-level array, or an object with <code>findings</code>, <code>records</code>, <code>results</code>, or <code>items</code>. Unknown shapes produce a warning and zero nodes.</p>
-<h3 id="security-severity-and-verdict-rules-non-negotiable">Severity and verdict rules (non-negotiable)</h3>
-<ul><li>Severity exists only for <code>confirmed</code>. <code>needs_validation</code> has zero severity and is displayed in its own table.</li><li><code>rejected</code> never appears in <code>graph.json</code>, the vault, or the architecture export.</li><li>A confirmed finding without a concrete file/line still publishes, but with <code>source_refs</code> pointing at <code>findings.json</code> and a warning.</li><li>A finding whose run revision is older than a changed affected file is marked <code>provenance.stale_source: true</code> and reported in <code>sync-summary.md</code>.</li></ul>
-<h3 id="security-what-mapkeeper-adds">What Mapkeeper adds</h3>
-<ul><li>Traceability: findings tied to components and requirements.</li><li>Coverage: a finding's file must also be mapped by a ledger unit; <code>audit</code> reports findings in unmapped paths.</li><li>Handover: confirmed and needs-validation findings appear in the architecture overview and the vault, with their original evidence links.</li></ul>
-<h3 id="security-what-mapkeeper-must-not-do">What Mapkeeper must not do</h3>
-<ul><li>Re-run exploit steps, reproduce candidates, or &quot;verify&quot; a finding itself.</li><li>Merge <code>needs_validation</code> into confirmed lists to make a report look complete.</li><li>Copy the upstream six-phase workflow, attack classes, or validators into this repository.</li><li>Write into the audit run directory.</li></ul>
+  <p>security-audit owns audit methodology, sandbox rules, candidate validation, and reports. Mapkeeper routes to it and reads a finished run for links. It never runs phases itself.</p>
+<h3 id="security-detection">Detection</h3>
+<ul><li>Skill: <code>security-audit</code> under project or global skill dirs.</li><li>Last run: recorded in <code>.mapkeeper/state.json</code>; otherwise pass <code>--run &lt;dir&gt;</code>.</li><li>Run artifacts: <code>run-metadata.json</code>, <code>findings.json</code>, <code>coverage-ledger.json</code>, <code>REPORT.md</code>, <code>FINDINGS-DETAIL.md</code>, <code>NEEDS-VALIDATION.md</code>, <code>architecture.md</code>.</li></ul>
+<p>State records <code>skill</code>, <code>skill_dir</code>, <code>last_run</code>, <code>run_status</code>, <code>findings</code>, <code>source_ref</code>, <code>run_id</code>.</p>
+<h3 id="security-modes">Modes</h3>
+<div class="table-wrap"><table><thead><tr><th>Choice</th><th>Behavior</th></tr></thead><tbody><tr><td>Guidance (default)</td><td>Invoke the skill for a focused question or review. No run directory required.</td></tr><tr><td>Full audit</td><td>Only on an explicit request. Ask for an output directory <strong>outside</strong> the target, profile, and budget, then invoke the skill. Its sandbox and validation rules are authoritative.</td></tr><tr><td>Existing run</td><td>Record the directory for links with <code>mapkeeper links --run &lt;dir&gt;</code>; do not re-audit.</td></tr></tbody></table></div>
+<p>Never auto-run a full audit from the menu, and never relax the skill's execution policy.</p>
+<h3 id="security-rules">Rules</h3>
+<ul><li>Never ingest findings into a graph, re-validate candidates, or rewrite a run directory.</li><li>Never publish <code>rejected</code> candidates or assign severity to <code>needs_validation</code>.</li><li>Never copy finding titles or descriptions into link reports; reports use fingerprints, files, requirement IDs, severities, and verdicts.</li><li>Validation stays in the provider: use its <code>validate-findings.cjs</code> and <code>validate-coverage-ledger.cjs</code> if validation is requested.</li></ul>
+<h3 id="security-links-input">Links input</h3>
+<p><code>findings.json</code> records with <code>fingerprint</code>/<code>id</code>, <code>verdict</code>, <code>file</code>/<code>path</code>, <code>requirements</code> (or <code>requirement_ids</code>/<code>spec_refs</code>), and <code>severity</code>. Tolerated shapes: an array, or an object with <code>findings</code>, <code>records</code>, <code>results</code>, or <code>items</code>. Rejected records are counted but not linked.</p>
 </section>
-<section class="doc-section" id="schema" data-group="reference">
+<section class="doc-section" id="links" data-group="use">
   <div class="section-head">
-    <h2>Graph and ledger schema</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/schema.md" target="_blank" rel="noopener" aria-label="View source for Graph and ledger schema">Source</a>
+    <h2>Links report</h2>
+    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/links.md" target="_blank" rel="noopener" aria-label="View source for Links report">Source</a>
   </div>
-  <p>Machine-readable sources: <code>schema/graph.schema.json</code>, <code>schema/ledger.schema.json</code>, <code>schema/context.schema.json</code>. Validators: <code>scripts/validate-*.mjs</code>. If prose and schema disagree, the schema wins.</p>
-<h3 id="schema-graphjson">graph.json</h3>
-<pre data-copy><code class="lang-json">{
-  &quot;schema_version&quot;: 2,
-  &quot;meta&quot;: {
-    &quot;project_name&quot;: &quot;string&quot;,
-    &quot;phase&quot;: &quot;BEFORE | DURING | END&quot;,
-    &quot;update_mode&quot;: &quot;INIT | SYNC | AUDIT | FULL&quot;,
-    &quot;generated_at&quot;: &quot;ISO-8601&quot;,
-    &quot;source_revision&quot;: &quot;git sha, sha-dirty, worktree, or migrated&quot;,
-    &quot;graphify&quot;: { &quot;available&quot;: false, &quot;version&quot;: null, &quot;graph_path&quot;: null, &quot;used_cache&quot;: false },
-    &quot;generator&quot;: &quot;graphify | graphify+llm | llm-manual | graphify-fallback&quot;,
-    &quot;counts&quot;: { &quot;nodes&quot;: 0, &quot;edges&quot;: 0, &quot;by_derivation&quot;: {} },
-    &quot;assumptions&quot;: [],
-    &quot;unknowns&quot;: []
-  },
-  &quot;nodes&quot;: [],
-  &quot;edges&quot;: [],
-  &quot;hyperedges&quot;: [],
-  &quot;coverage&quot;: { &quot;units_total&quot;: 0, &quot;mapped&quot;: 0, &quot;stale&quot;: 0, &quot;unmapped&quot;: 0, &quot;out_of_scope&quot;: 0 }
-}</code></pre>
-<h3 id="schema-node">Node</h3>
-<div class="table-wrap"><table><thead><tr><th>Field</th><th>Required</th><th>Notes</th></tr></thead><tbody><tr><td><code>id</code></td><td>yes</td><td><code>^[A-Za-z0-9][A-Za-z0-9_.:-]*$</code>, stable forever, unique</td></tr><tr><td><code>kind</code></td><td>yes</td><td>one of the 31 kinds in the schema (component, requirement, finding, trust_boundary, …)</td></tr><tr><td><code>label</code></td><td>yes</td><td>human name, ≤ 160 chars in practice</td></tr><tr><td><code>status</code></td><td>yes</td><td><code>planned</code>, <code>implemented</code>, <code>unknown</code>, <code>deprecated</code>, <code>confirmed</code>, <code>needs_validation</code></td></tr><tr><td><code>derivation</code></td><td>yes</td><td><code>graphify</code>, <code>speckit</code>, <code>security</code>, <code>llm</code>, <code>merged</code></td></tr><tr><td><code>summary</code></td><td>no</td><td>one or two sentences, no secrets</td></tr><tr><td><code>phase</code></td><td>no</td><td><code>BEFORE</code>, <code>DURING</code>, <code>END</code></td></tr><tr><td><code>confidence</code></td><td>no</td><td><code>low</code>, <code>medium</code>, <code>high</code>; required for inferred nodes</td></tr><tr><td><code>provenance</code></td><td>no</td><td>`{source_file, source_location, relation_source: EXTRACTED</td><td>INFERRED</td><td>AMBIGUOUS, run_dir?, community?}`</td></tr><tr><td><code>spec_refs</code></td><td>no</td><td><code>path/to/spec.md#FR-001</code></td></tr><tr><td><code>source_refs</code></td><td>no</td><td><code>path#L10</code>, <code>path:42</code></td></tr><tr><td><code>tags</code></td><td>no</td><td>free-form</td></tr><tr><td><code>severity</code></td><td>only confirmed findings</td><td><code>critical</code>, <code>high</code>, <code>medium</code>, <code>low</code>, <code>informational</code></td></tr><tr><td><code>verdict</code></td><td>findings</td><td><code>confirmed</code>, <code>needs_validation</code> (never <code>rejected</code>)</td></tr><tr><td><code>last_verified</code></td><td>no</td><td><code>{revision, date}</code></td></tr></tbody></table></div>
-<p>Rules enforced by <code>validate-graph.mjs</code>:</p>
-<ol><li>Node ids are unique.</li><li>A node whose <code>provenance.relation_source</code> is not <code>INFERRED</code> needs <code>source_refs</code> or <code>spec_refs</code>.</li><li>An inferred node needs <code>confidence</code>.</li><li><code>verdict: &quot;rejected&quot;</code> must never appear.</li><li><code>status: &quot;needs_validation&quot;</code> must not carry <code>severity</code>; <code>severity</code> requires <code>status: &quot;confirmed&quot;</code>.</li><li>Edge endpoints exist and are not self-edges.</li><li><code>meta.counts.nodes/edges</code> equal array lengths.</li></ol>
-<h3 id="schema-edge">Edge</h3>
-<pre data-copy><code class="lang-json">{
-  &quot;source&quot;: &quot;node-id&quot;,
-  &quot;target&quot;: &quot;node-id&quot;,
-  &quot;relation&quot;: &quot;calls | implements | references | cites | conceptually_related_to | shares_data_with | semantically_similar_to | rationale_for | depends_on | produces | consumes | manages | decides | blocks | supports | documents | tests | deploys_to | satisfies_requirement | affects | violates | mitigated_by | relates_to | contains&quot;,
-  &quot;confidence&quot;: &quot;EXTRACTED | INFERRED | AMBIGUOUS&quot;,
-  &quot;confidence_score&quot;: 1.0,
-  &quot;derivation&quot;: &quot;graphify | speckit | security | llm | merged&quot;,
-  &quot;source_refs&quot;: [&quot;path#L10&quot;],
-  &quot;last_updated&quot;: &quot;YYYY-MM-DD&quot;
-}</code></pre>
-<p><code>confidence_score</code> is required unless <code>EXTRACTED</code>. Never invent a relation: skip the edge and warn.</p>
-<h3 id="schema-id-rules">Id rules</h3>
-<div class="table-wrap"><table><thead><tr><th>Source</th><th>Pattern</th><th>Example</th></tr></thead><tbody><tr><td>graphify</td><td>verbatim from graphify</td><td><code>src_auth_session_validatetoken</code></td></tr><tr><td>deterministic scan</td><td><code>file_&lt;sanitized path without extension&gt;</code></td><td><code>file_src_auth_session</code></td></tr><tr><td>spec-kit</td><td><code>spec_&lt;feature&gt;_&lt;artifact&gt;</code></td><td><code>spec_001-auth_fr-001</code>, <code>spec_001-auth_t001</code></td></tr><tr><td>security</td><td><code>sec_&lt;run&gt;_&lt;fingerprint&gt;</code></td><td><code>sec_run-1_aaaa1111</code></td></tr><tr><td>trust boundary</td><td><code>sec_&lt;run&gt;_tb_&lt;slug&gt;</code></td><td><code>sec_run-1_tb_http_edge_to_app</code></td></tr><tr><td>decision</td><td><code>decision_adr_&lt;n&gt;</code></td><td><code>decision_adr_0001</code></td></tr></tbody></table></div>
-<h3 id="schema-map-ledgerjson">map-ledger.json</h3>
+  <p><code>mapkeeper links</code> reads native outputs and emits a cross-reference report. It does not create a graph or re-extract anything.</p>
+<h3 id="links-inputs">Inputs</h3>
+<div class="table-wrap"><table><thead><tr><th>Provider</th><th>Default</th><th>Override</th></tr></thead><tbody><tr><td>Graphify</td><td><code>graphify-out/graph.json</code></td><td><code>--graph &lt;path&gt;</code></td></tr><tr><td>spec-kit</td><td>active feature from <code>.specify/feature.json</code>, else newest <code>specs/*/spec.md</code></td><td>edit <code>feature.json</code></td></tr><tr><td>security-audit</td><td>last run in <code>.mapkeeper/state.json</code></td><td><code>--run &lt;dir&gt;</code>, <code>--no-security</code></td></tr></tbody></table></div>
+<p>Partial input is allowed. Missing providers are recorded in <code>inputs</code> and <code>warnings</code>; nothing is fabricated. If no input exists at all, the CLI exits <code>1</code> and writes no report.</p>
+<h3 id="links-link-types">Link types</h3>
+<div class="table-wrap"><table><thead><tr><th>Type</th><th>From → to</th><th>Evidence</th></tr></thead><tbody><tr><td><code>finding_file</code></td><td>finding fingerprint → file path, with matching Graphify node IDs</td><td><code>findings.json#&lt;fp&gt;</code></td></tr><tr><td><code>finding_requirement</code></td><td>finding fingerprint → requirement ID</td><td><code>findings.json#&lt;fp&gt;</code></td></tr><tr><td><code>requirement_task</code></td><td>requirement ID → task ID</td><td><code>tasks.md#T###</code></td></tr><tr><td><code>task_file</code></td><td>task ID → file path</td><td><code>tasks.md#T###</code></td></tr><tr><td><code>requirement_file</code></td><td>requirement ID → file path, derived through tasks</td><td><code>tasks.md#T###</code></td></tr></tbody></table></div>
+<p>Rules:</p>
+<ul><li>Files match by normalized relative path only; no fuzzy label matching.</li><li>Requirement IDs normalize to <code>FR-001</code>, <code>NFR-001</code>, <code>SR-001</code>, <code>CR-001</code>.</li><li>Rejected findings are counted but never linked. <code>needs_validation</code> findings are linked without severity.</li><li>Graph node IDs are preserved verbatim; Mapkeeper invents none.</li><li>Findings without a file, files without a Graphify node, unknown requirements, requirements without tasks, and missing task files are unresolved.</li></ul>
+<h3 id="links-unresolved-kinds">Unresolved kinds</h3>
+<div class="table-wrap"><table><thead><tr><th>Kind</th><th>Meaning</th></tr></thead><tbody><tr><td><code>finding_no_file</code></td><td>finding has no file/location</td></tr><tr><td><code>finding_no_graph_node</code></td><td>file exists in the finding but no Graphify node matches</td></tr><tr><td><code>finding_unknown_requirement</code></td><td>finding references a requirement absent from the active spec</td></tr><tr><td><code>requirement_no_task</code></td><td>requirement has no task referencing it</td></tr><tr><td><code>task_unknown_requirement</code></td><td>task references an unknown requirement</td></tr><tr><td><code>task_missing_file</code></td><td>task mentions a file that does not exist</td></tr><tr><td><code>invalid_graph</code></td><td>Graphify cache exists but is not valid JSON</td></tr><tr><td><code>invalid_findings</code></td><td>security <code>findings.json</code> exists but is not valid JSON</td></tr></tbody></table></div>
+<p><code>--check</code> exits <code>1</code> when any unresolved item exists. Absent optional providers are warnings, not failures.</p>
+<h3 id="links-output">Output</h3>
+<p><code>.mapkeeper/links.json</code>:</p>
 <pre data-copy><code class="lang-json">{
   &quot;schema_version&quot;: 1,
+  &quot;generated_at&quot;: &quot;2026-11-13T00:00:00.000Z&quot;,
   &quot;source_revision&quot;: &quot;abc123&quot;,
-  &quot;units&quot;: [
+  &quot;inputs&quot;: {
+    &quot;graphify&quot;: { &quot;path&quot;: &quot;graphify-out/graph.json&quot;, &quot;present&quot;: true, &quot;valid&quot;: true, &quot;nodes&quot;: 120 },
+    &quot;speckit&quot;: { &quot;present&quot;: true, &quot;feature_dir&quot;: &quot;specs/001-auth&quot;, &quot;requirements&quot;: 8, &quot;tasks&quot;: 12 },
+    &quot;security&quot;: { &quot;present&quot;: true, &quot;skipped&quot;: false, &quot;run_id&quot;: &quot;run-1&quot;, &quot;findings&quot;: 4, &quot;verdicts&quot;: { &quot;confirmed&quot;: 3, &quot;needs_validation&quot;: 1, &quot;rejected&quot;: 1 } }
+  },
+  &quot;links&quot;: [
     {
-      &quot;id&quot;: &quot;path_src&quot;,
-      &quot;kind&quot;: &quot;path | requirement | component&quot;,
-      &quot;scope&quot;: &quot;src/**  |  &lt;root&gt;  |  specs/x/spec.md#FR-001&quot;,
-      &quot;status&quot;: &quot;mapped | stale | unmapped | out_of_scope&quot;,
-      &quot;node_ids&quot;: [&quot;file_src_index&quot;],
-      &quot;evidence&quot;: [&quot;project-map/graph.json#nodes&quot;],
-      &quot;last_verified_revision&quot;: &quot;abc123&quot;,
-      &quot;last_verified_date&quot;: &quot;YYYY-MM-DD&quot;
+      &quot;type&quot;: &quot;finding_file&quot;,
+      &quot;from&quot;: &quot;aaaa1111&quot;,
+      &quot;to&quot;: &quot;src/auth/session.js&quot;,
+      &quot;graph_node_ids&quot;: [&quot;src_auth_session&quot;],
+      &quot;verdict&quot;: &quot;confirmed&quot;,
+      &quot;severity&quot;: &quot;medium&quot;,
+      &quot;evidence&quot;: &quot;findings.json#aaaa1111&quot;
     }
   ],
-  &quot;runs&quot;: [
-    {
-      &quot;mode&quot;: &quot;INIT&quot;,
-      &quot;revision&quot;: &quot;abc123&quot;,
-      &quot;started_at&quot;: &quot;ISO-8601&quot;,
-      &quot;finished_at&quot;: &quot;ISO-8601&quot;,
-      &quot;counts&quot;: { &quot;mapped&quot;: 4 },
-      &quot;artifacts&quot;: [&quot;project-map/graph.json&quot;]
-    }
-  ]
+  &quot;unresolved&quot;: [],
+  &quot;warnings&quot;: [],
+  &quot;counts&quot;: { &quot;graph_nodes&quot;: 120, &quot;requirements&quot;: 8, &quot;tasks&quot;: 12, &quot;findings&quot;: 4, &quot;links&quot;: 1, &quot;unresolved&quot;: 0, &quot;links_by_type&quot;: { &quot;finding_file&quot;: 1 } }
 }</code></pre>
-<p>Unit semantics:</p>
-<ul><li><code>path</code> units come from tracked files, grouped by top-level tree plus one <code>&lt;root&gt;</code> unit.</li><li><code>requirement</code> units come from spec-kit ids and must have a <code>satisfies_requirement</code> edge to be considered covered.</li><li><code>mapped</code> requires at least one node id and non-empty evidence.</li><li><code>out_of_scope</code> is an explicit human decision, never an automatic escape for unsupported files.</li><li><code>runs</code> keeps the last 50 entries and drives the <code>sync-summary.md</code> history block.</li></ul>
-<h3 id="schema-context-note">context note</h3>
-<p><code>project-map/obsidian-vault/02-LLM-Context.md</code> frontmatter must include <code>project</code>, <code>phase</code>, <code>status</code>, <code>source_revision</code>, <code>generated_at</code>, <code>budget_tokens</code> (100–2000). Body: one top-level heading, ≤ 2000 tokens by <code>chars/4</code>, target 1500. Detail belongs in linked notes, not here.</p>
+<p><code>.mapkeeper/links.md</code> is the human view. It contains only fingerprints, files, IDs, severities, and verdicts — no finding titles, descriptions, or absolute run paths. <code>--out &lt;path&gt;</code> writes the same Markdown to a shareable location.</p>
+<h3 id="links-freshness">Freshness</h3>
+<p>Warnings are added when evidence exists:</p>
+<ul><li>security <code>source_ref</code> differs from the current revision;</li><li>Graphify cache mtime is older than the latest commit;</li><li>spec feature files are older than the latest commit.</li></ul>
+<p>No freshness claim is made for non-git directories.</p>
 </section>
-<section class="doc-section" id="obsidian" data-group="reference">
+<section class="doc-section" id="status" data-group="use">
   <div class="section-head">
-    <h2>Obsidian vault</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/obsidian.md" target="_blank" rel="noopener" aria-label="View source for Obsidian vault">Source</a>
+    <h2>Status and state</h2>
+    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/status.md" target="_blank" rel="noopener" aria-label="View source for Status and state">Source</a>
   </div>
-  <p>The vault is a normal Obsidian vault: open <code>project-map/obsidian-vault/</code> directly.</p>
-<h3 id="obsidian-layout">Layout</h3>
-<pre data-copy><code class="lang-text">obsidian-vault/
-├── 00-Home.md                 # generated hubs (managed blocks)
-├── 01-Index.md                # every node grouped by kind
-├── 02-LLM-Context.md          # ≤1500 tokens, regenerated whole
-├── 10-Architecture/overview.md
-├── 20-Components/             # component, module, service, feature
-├── 30-Requirements/
-├── 40-Decisions/
-├── 50-Tasks/                  # task, milestone
-├── 60-Risks-Issues/           # risk, issue, finding, trust_boundary, control
-├── 70-Data/                   # database, data_entity, api, workflow
-├── 80-Resources/              # file, document, dependency
-└── 90-Meta/                   # project, goal, stakeholder, constraint, ...</code></pre>
-<h3 id="obsidian-note-contract">Note contract</h3>
-<p>Filename = node id with <code>:</code> and <code>/</code> replaced by <code>-</code>. Wikilinks therefore resolve without aliases: <code>file_src_auth_session</code>.</p>
-<p>Each node note is:</p>
-<pre data-copy><code class="lang-markdown">---
-id: &quot;file_src_auth_session&quot;
-kind: &quot;file&quot;
-label: &quot;session.js&quot;
-status: &quot;implemented&quot;
-phase: &quot;DURING&quot;
-confidence: &quot;high&quot;
-derivation: &quot;graphify&quot;
-severity: &quot;high&quot;          # confirmed findings only
-verdict: &quot;confirmed&quot;      # findings only
-managed_by: &quot;mapkeeper&quot;
-tags: [&quot;security&quot;]
-source_refs: [&quot;src/auth/session.js&quot;]
-spec_refs: []
-last_verified: &quot;2026-11-11 abc123&quot;
----
-
-# session.js
-
-&lt;!-- mapkeeper:begin id=summary --&gt;
-...
-&lt;!-- mapkeeper:end id=summary --&gt;
-
-&lt;!-- mapkeeper:begin id=relationships --&gt;
-**Outgoing**
-- affects → [[file_src_index|index.js]]
-&lt;!-- mapkeeper:end id=relationships --&gt;
-
-&lt;!-- mapkeeper:begin id=evidence --&gt;
-- `src/auth/session.js`
-&lt;!-- mapkeeper:end id=evidence --&gt;
-
-## Notes
-
-_Add human notes here; Mapkeeper never edits this section._</code></pre>
-<p>Rules:</p>
-<ul><li>Managed blocks are replaced on every run; text outside them, including <code>## Notes</code>, is preserved.</li><li>Mapkeeper keeps <code>## Notes</code> as the last section so generated content never buries human writing.</li><li>Never delete a note with human notes. <code>--prune</code> only removes mapkeeper-managed notes whose outside-block content is empty.</li><li>Frontmatter is regenerated; do not store human data there (put it in <code>## Notes</code>).</li></ul>
-<h3 id="obsidian-hub-notes">Hub notes</h3>
-<ul><li><code>00-Home.md</code>: overview, key components, risks/findings, coverage counts. Blocks: <code>overview</code>, <code>components</code>, <code>risks</code>, <code>coverage</code>.</li><li><code>01-Index.md</code>: block <code>index</code>, grouped by kind with status.</li><li><code>10-Architecture/overview.md</code>: blocks <code>summary</code>, <code>diagram</code> (Mermaid, top 30 nodes, <code>contains</code> edges omitted).</li></ul>
-<p>Add human sections freely outside blocks. Do not rename block ids; the writer will append duplicates.</p>
-<h3 id="obsidian-context-note">Context note</h3>
-<p><code>02-LLM-Context.md</code> is fully generated and budget-enforced. It is the first file any later agent should read. If it exceeds the budget, move detail into a component note and link it — do not trim the frontmatter.</p>
-<h3 id="obsidian-orphan-and-link-hygiene">Orphan and link hygiene</h3>
-<ul><li><code>mapkeeper doctor</code> reports unresolved wikilinks and coverage gaps.</li><li>Deleting a node from the graph does not delete its note immediately; run <code>init|sync --prune</code> to remove orphaned mapkeeper-managed notes.</li><li>Never point wikilinks at files outside the vault.</li><li>For large vaults, keep node notes short; the graph is the index, notes are for humans.</li></ul>
-</section>
-<section class="doc-section" id="exports" data-group="reference">
-  <div class="section-head">
-    <h2>Architecture exports</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/architecture-exports.md" target="_blank" rel="noopener" aria-label="View source for Architecture exports">Source</a>
-  </div>
-  <p>Three files, one source of truth:</p>
-<div class="table-wrap"><table><thead><tr><th>File</th><th>Audience</th><th>Rule</th></tr></thead><tbody><tr><td><code>architecture-overview.md</code></td><td>humans, PRs, Obsidian exports</td><td>readable, tables, wikilinks</td></tr><tr><td><code>architecture-overview.json</code></td><td>automation, dashboards</td><td>mirrors the Markdown content, no HTML</td></tr><tr><td><code>architecture-overview.html</code></td><td>no-install viewing</td><td>standalone, inline CSS, no CDN, no JS required</td></tr></tbody></table></div>
-<p>All three derive from <code>buildArchitecture({graph, ledger, gaps, security})</code> in <code>scripts/lib/exports.mjs</code>. Never hand-edit one format without regenerating the others.</p>
-<h3 id="exports-shared-content-model">Shared content model</h3>
+  <p><code>mapkeeper status</code> detects the three providers and records local provenance. It never runs a provider.</p>
+<h3 id="status-state-file">State file</h3>
+<p><code>.mapkeeper/state.json</code> is local. <code>.mapkeeper/.gitignore</code> contains <code>*</code> and <code>!.gitignore</code>, so state and reports stay out of version control. <code>--out</code> publishes a report explicitly.</p>
 <pre data-copy><code class="lang-json">{
   &quot;schema_version&quot;: 1,
-  &quot;project&quot;: &quot;&quot;, &quot;phase&quot;: &quot;DURING&quot;, &quot;revision&quot;: &quot;&quot;,
-  &quot;generated_at&quot;: &quot;&quot;,
-  &quot;derivation&quot;: { &quot;available&quot;: false },
-  &quot;summary&quot;: { &quot;nodes&quot;: 0, &quot;edges&quot;: 0, &quot;components&quot;: 0, &quot;requirements&quot;: 0, &quot;findings_confirmed&quot;: 0 },
-  &quot;coverage&quot;: {},
-  &quot;components&quot;: [], &quot;requirements&quot;: [], &quot;findings&quot;: [], &quot;needs_validation&quot;: [],
-  &quot;risks&quot;: [], &quot;decisions&quot;: [], &quot;dependencies&quot;: [],
-  &quot;assumptions&quot;: [], &quot;unknowns&quot;: [], &quot;gaps&quot;: [], &quot;next_actions&quot;: []
+  &quot;observed_at&quot;: &quot;ISO-8601&quot;,
+  &quot;source_revision&quot;: &quot;abc123-dirty&quot;,
+  &quot;project_root&quot;: &quot;/abs/path&quot;,
+  &quot;providers&quot;: {
+    &quot;graphify&quot;: {
+      &quot;skill&quot;: true,
+      &quot;skill_dir&quot;: null,
+      &quot;cli&quot;: true,
+      &quot;version&quot;: &quot;0.9.0&quot;,
+      &quot;cache&quot;: &quot;graphify-out/graph.json&quot;,
+      &quot;cache_mtime&quot;: &quot;ISO-8601&quot;,
+      &quot;report&quot;: &quot;graphify-out/GRAPH_REPORT.md&quot;,
+      &quot;obsidian&quot;: null
+    },
+    &quot;speckit&quot;: {
+      &quot;cli&quot;: true,
+      &quot;version&quot;: &quot;0.16.2&quot;,
+      &quot;initialized&quot;: true,
+      &quot;feature_dir&quot;: &quot;specs/001-auth&quot;,
+      &quot;feature_mtime&quot;: &quot;ISO-8601&quot;,
+      &quot;commands_dir&quot;: &quot;.kilo/commands&quot;,
+      &quot;commands&quot;: [&quot;speckit.specify&quot;, &quot;speckit.plan&quot;, &quot;speckit.tasks&quot;],
+      &quot;hooks&quot;: false
+    },
+    &quot;security&quot;: {
+      &quot;skill&quot;: true,
+      &quot;skill_dir&quot;: null,
+      &quot;last_run&quot;: &quot;/abs/security-audit/app/run-1&quot;,
+      &quot;run_status&quot;: &quot;complete&quot;,
+      &quot;findings&quot;: 4,
+      &quot;source_ref&quot;: &quot;abc123&quot;,
+      &quot;run_id&quot;: &quot;run-1&quot;
+    }
+  },
+  &quot;legacy&quot;: { &quot;project_map&quot;: false, &quot;schema_version&quot;: null }
 }</code></pre>
-<h3 id="exports-markdown-sections">Markdown sections</h3>
-<ol><li>Title with project and revision.</li><li>Summary counts.</li><li>Coverage table.</li><li>Components table with wikilinks.</li><li>Requirements traceability with <code>(gap)</code> markers.</li><li>Security findings: <strong>confirmed</strong> table with severity; <strong>needs validation</strong> table with no severity column.</li><li>Risks/issues, decisions, dependencies.</li><li>Assumptions and unknowns.</li><li>Gaps.</li><li>Recommended next actions.</li></ol>
-<p>Wikilinks use <code>&lt;label&gt;</code> (the pipe is escaped in Markdown tables).</p>
-<h3 id="exports-json">JSON</h3>
-<p>Same data, no presentation strings. Stable key order, 2-space indent, trailing newline. Suitable for CI diffing: only <code>generated_at</code>, coverage counts, and changed nodes should move.</p>
-<h3 id="exports-html">HTML</h3>
-<ul><li>One file, <code>&lt;style&gt;</code> inline, no network requests, no JavaScript.</li><li>Reads in light and dark mode via <code>prefers-color-scheme</code>.</li><li>Tables for components, traceability, and findings.</li><li>Mermaid is <strong>not</strong> executed in the HTML export; the Mermaid source remains in the vault note and the Markdown file. Add a renderer later only if it stays dependency-free.</li><li>All values HTML-escaped. No <code>innerHTML</code>-style injection paths.</li><li>Same content as Markdown; if a section is omitted for layout reasons, that is a bug.</li></ul>
-<h3 id="exports-mermaid">Mermaid</h3>
-<pre data-copy><code class="lang-mermaid">graph TD
-  n_component_api[&quot;API&quot;]
-  n_component_api --&gt;|depends_on| n_database_main[&quot;main&quot;]</code></pre>
-<ul><li>Node ids are prefixed <code>n_</code> and sanitized; labels are truncated to 60 chars.</li><li>Top 30 nodes by degree; <code>contains</code> edges are omitted to keep diagrams readable.</li><li>Broken Mermaid must fail the export, not silently render text.</li></ul>
-<h3 id="exports-when-to-regenerate">When to regenerate</h3>
-<div class="table-wrap"><table><thead><tr><th>Change</th><th>Regenerate</th></tr></thead><tbody><tr><td><code>graph.json</code> changed</td><td><code>export</code></td></tr><tr><td>Only context requested</td><td><code>context</code></td></tr><tr><td>Hand-edited notes</td><td>never (outside managed blocks)</td></tr><tr><td>Ledger-only audit</td><td><code>audit</code> writes the summary, not the exports</td></tr></tbody></table></div>
-<p><code>export</code> refuses to run without a valid <code>graph.json</code>; <code>mapkeeper doctor</code> verifies all four artifacts exist.</p>
+<p><code>skill_dir</code> is relative to the project when the skill is inside it, otherwise absolute. <code>last_run</code> is absolute and local only.</p>
+<h3 id="status-detection">Detection</h3>
+<ul><li><strong>Graphify:</strong> skill directories, <code>graphify --version</code>, <code>graphify-out/</code> artifacts.</li><li><strong>spec-kit:</strong> <code>specify --version</code>, <code>.specify/</code>, active feature, installed <code>speckit.*.md</code> commands, extension hooks.</li><li><strong>security-audit:</strong> skill directories plus the last run recorded in state.</li><li><strong>Legacy:</strong> <code>project-map/graph.json</code> and its schema version.</li></ul>
+<p>Detection is presence-based. It does not validate provider content beyond what <code>status --check</code> explicitly parses.</p>
+<h3 id="status-staleness">Staleness</h3>
+<p>Warnings only, never failures:</p>
+<ul><li>security <code>source_ref</code> differs from the current revision;</li><li>Graphify cache mtime is older than the latest commit;</li><li>spec feature files are older than the latest commit.</li></ul>
+<p>Non-git directories report <code>worktree</code> and skip commit comparisons.</p>
+<h3 id="status-output">Output</h3>
+<pre data-copy><code class="lang-bash">mapkeeper status            # human summary
+mapkeeper status --json     # { state, checks: { failures, warnings } }
+mapkeeper status --check    # exit 1 on unreadable/invalid present artifacts</code></pre>
+<p><code>--check</code> failures are limited to broken present artifacts (invalid Graphify JSON, invalid <code>findings.json</code>). Missing providers and stale artifacts are warnings.</p>
+<h3 id="status-exit-codes">Exit codes</h3>
+<div class="table-wrap"><table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td>0</td><td>success (warnings allowed)</td></tr><tr><td>1</td><td><code>--check</code> failures</td></tr><tr><td>2</td><td>usage error</td></tr></tbody></table></div>
 </section>
-<section class="doc-section" id="troubleshooting" data-group="reference">
+<section class="doc-section" id="troubleshooting" data-group="help">
   <div class="section-head">
     <h2>Troubleshooting</h2>
     <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/references/troubleshooting.md" target="_blank" rel="noopener" aria-label="View source for Troubleshooting">Source</a>
   </div>
-  <p>Start here:</p>
-<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs doctor</code></pre>
-<div class="table-wrap"><table><thead><tr><th>Check</th><th>Meaning</th><th>Fix</th></tr></thead><tbody><tr><td><code>graph</code> fail</td><td><code>graph.json</code> missing or schema-invalid</td><td>run <code>init</code>, or fix the reported field</td></tr><tr><td><code>ledger</code> fail</td><td>a mapped unit lost its evidence, or ids collide</td><td>run <code>sync</code>; set a unit <code>out_of_scope</code> if it should not be mapped</td></tr><tr><td><code>context</code> fail</td><td>frontmatter invalid or over 2000 tokens</td><td>shorten the body; move detail to node notes</td></tr><tr><td><code>blocks</code> fail</td><td>unclosed/duplicate managed block</td><td>restore the matching <code>&lt;!-- mapkeeper:end id=... --&gt;</code></td></tr><tr><td><code>links</code> warn</td><td>a wikilink points at a missing note</td><td>run <code>export</code>; check for a renamed id</td></tr><tr><td><code>graphify</code> warn</td><td>binary or cache absent</td><td>optional: install graphify, or accept the deterministic scan</td></tr><tr><td><code>speckit</code> warn</td><td>no <code>.specify/</code></td><td>optional: only needed for spec traceability</td></tr><tr><td><code>security-skill</code> warn</td><td>no installed skill</td><td>optional; <code>npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit</code></td></tr><tr><td><code>coverage</code> warn</td><td>stale/unmapped units</td><td><code>sync</code>, or mark intentional exclusions <code>out_of_scope</code></td></tr><tr><td><code>artifacts</code> fail</td><td>an export is missing</td><td><code>export</code></td></tr></tbody></table></div>
-<h3 id="troubleshooting-graph-validation-failed">&quot;graph validation failed&quot;</h3>
-<p>The previous valid <code>graph.json</code> is untouched; the rejected candidate is at <code>project-map/.cache/graph.candidate.json</code>.</p>
-<ol><li>Read the first five errors — they are path-addressed (<code>$.nodes[12].id</code>).</li><li>Common causes: duplicate id; inferred node without <code>confidence</code>; edge pointing at a missing node; <code>severity</code> on a <code>needs_validation</code> finding; counts out of date.</li><li>Fix the input (usually an ingestion bug), rerun. Do not hand-edit <code>graph.json</code> to silence the validator.</li></ol>
-<h3 id="troubleshooting-context-note-is-over-budget">Context note is over budget</h3>
-<p><code>02-LLM-Context.md</code> is meant to be a pointer file. Move detail into component/requirement notes and link them:</p>
-<pre data-copy><code class="lang-markdown">- [[20-Components/component_api|API]]</code></pre>
-<p>Then <code>mapkeeper context</code> regenerates it. Never raise the budget to hide bloat; the hard limit is 2000 tokens.</p>
-<h3 id="troubleshooting-units-are-unmapped">Units are unmapped</h3>
-<ul><li>A new directory appeared: <code>sync</code> reseeds path units automatically.</li><li>The files are binary/lockfiles: they are ignored by design; they should not be units.</li><li>The area is intentionally out of scope: set the unit to <code>out_of_scope</code> with a one-line reason in <code>sync-summary.md</code> human text. Do not delete the unit; <code>audit</code> treats a missing path as a failure.</li></ul>
-<h3 id="troubleshooting-graphify-says-no-cache">Graphify says &quot;no cache&quot;</h3>
-<p><code>graphify</code> binary present but no <code>graphify-out/graph.json</code>. Options:</p>
-<ol><li>Accept <code>graphify-fallback</code> (file/import graph) and say so.</li><li>Run graphify yourself, then <code>mapkeeper graph</code>.</li><li>Run <code>mapkeeper init --run-tool</code> if you want Mapkeeper to call <code>graphify update</code> (only with an existing cache).</li></ol>
-<p>Never claim graphify was used when only the fallback ran.</p>
-<h3 id="troubleshooting-a-spec-requirement-has-no-task">A spec requirement has no task</h3>
-<p>This is a real finding, not a Mapkeeper bug. Fix the spec/tasks, or accept the gap in the summary. <code>audit</code> exits 1 until a <code>satisfies_requirement</code> edge exists.</p>
-<h3 id="troubleshooting-security-findings-are-stale">Security findings are stale</h3>
-<p>The run's <code>source_ref</code> no longer matches the repository and an affected file changed. Re-run the audit, or accept <code>stale_source: true</code> knowingly. Never upgrade <code>needs_validation</code> to <code>confirmed</code> by hand.</p>
-<h3 id="troubleshooting-non-git-directory">Non-git directory</h3>
-<p><code>source_revision</code> is <code>worktree</code>; <code>sync</code> cannot diff, so it rescans all files and marks every path unit <code>stale</code> before remapping. That is expected. Reports will show the coverage after remap, not a delta.</p>
-<h3 id="troubleshooting-migrating-an-old-map">Migrating an old map</h3>
-<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs migrate
-node scripts/mapkeeper.mjs doctor</code></pre>
-<p><code>migrate</code> copies the five artifacts into <code>project-map/.backup-v1/</code>, maps legacy <code>type</code>/<code>relationship_type</code>, skips unknown relations with warnings, writes schema v2, seeds the ledger, and regenerates the vault and exports. <code>doctor --migrate</code> does the same when a v1 tree is detected. Old <code>Mapkeeper_Prompt.md</code> users: the prompt is a deprecated wrapper over this skill; keep it if you like, but the CLI is authoritative.</p>
-<h3 id="troubleshooting-notes-were-deleted-unexpectedly">Notes were deleted unexpectedly</h3>
-<p>Only <code>--prune</code> deletes notes, and only mapkeeper-managed notes whose content outside managed blocks is empty. If human notes were lost, restore from version control; Mapkeeper never writes outside blocks.</p>
-<h3 id="troubleshooting-nothing-happens-on-sync">Nothing happens on <code>sync</code></h3>
-<p>No changed files and no stale units. Check <code>--dir</code> points at the repository root, and that files are tracked (or the directory is not a git repo — then a full rescan runs).</p>
-</section>
-<section class="doc-section" id="prompt" data-group="legacy">
-  <div class="section-head">
-    <h2>Legacy prompt</h2>
-    <a class="section-source" href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/Mapkeeper_Prompt.md" target="_blank" rel="noopener" aria-label="View source for Legacy prompt">Source</a>
-  </div>
-  <p><code>Mapkeeper_Prompt.md</code> is generated from these same files and kept for one deprecation cycle. The skill and CLI are authoritative.</p>
-<p><a href="https://github.com/MIQBALHAKIM/Mapkeeper/blob/main/Mapkeeper_Prompt.md" target="_blank" rel="noopener">Open the generated prompt on GitHub</a></p>
-<pre data-copy><code>You are Mapkeeper. Map the repository into project-map/ with the exact layout,
-validate every artifact, and never claim a tool ran unless it did.
-
-  node scripts/mapkeeper.mjs init
-  node scripts/mapkeeper.mjs doctor
-  node scripts/mapkeeper.mjs sync
-  node scripts/mapkeeper.mjs audit</code></pre>
+  <h3 id="troubleshooting-a-provider-is-not-detected">A provider is not detected</h3>
+<p><code>status</code> prints hints; Mapkeeper never installs anything.</p>
+<div class="table-wrap"><table><thead><tr><th>Provider</th><th>Typical fix</th></tr></thead><tbody><tr><td>Graphify</td><td>Install the <code>graphify</code> skill or CLI, then run <code>/graphify</code>; a cache alone still enables links</td></tr><tr><td>spec-kit</td><td>Install <code>specify</code>, run <code>specify init</code> for this project, then install the <code>/speckit.*</code> commands for your agent</td></tr><tr><td>security-audit</td><td>Install the <code>security-audit</code> skill; full audits need an output directory outside the target</td></tr></tbody></table></div>
+<h3 id="troubleshooting-spec-kit-commands-are-missing">spec-kit commands are missing</h3>
+<p><code>status</code> reports “initialized but no <code>speckit.*</code> commands”. Initialize the project with <code>specify init</code> and select the current agent, or add the commands to <code>.kilo/commands/</code> (spec-kit's Kilo integration uses that directory). Mapkeeper will not recreate them.</p>
+<h3 id="troubleshooting-mapkeeper-spec-only-prints-a-command"><code>/mapkeeper spec …</code> only prints a command</h3>
+<p>That is intentional. An agent cannot execute another slash command. Run the printed <code>/speckit.*</code> command, then return to <code>/mapkeeper links</code> or <code>status</code>.</p>
+<h3 id="troubleshooting-no-inputs-found">“no inputs found”</h3>
+<p>There is no <code>graphify-out/graph.json</code>, no <code>.specify/</code> feature, and no security run. Build a Graphify cache, initialize spec-kit, or pass <code>--run &lt;dir&gt;</code>. No report is written.</p>
+<h3 id="troubleshooting-invalid-graphify-cache">Invalid Graphify cache</h3>
+<p><code>status --check</code> fails and <code>links</code> adds <code>invalid_graph</code> when <code>graphify-out/graph.json</code> is not valid JSON. Re-run <code>/graphify --update</code>. Mapkeeper does not repair provider output.</p>
+<h3 id="troubleshooting-invalid-findings">Invalid findings</h3>
+<p><code>findings.json</code> exists but cannot be parsed. Use the security-audit skill's own validator and regenerate the run. Mapkeeper does not rewrite or re-validate a run.</p>
+<h3 id="troubleshooting-links-are-missing">Links are missing</h3>
+<p>Check <code>unresolved</code> first:</p>
+<ul><li><code>finding_no_graph_node</code> — Graphify did not index that file; update the graph.</li><li><code>finding_unknown_requirement</code> — the finding references a requirement absent from the active feature.</li><li><code>requirement_no_task</code> — <code>tasks.md</code> does not mention the requirement.</li><li><code>task_missing_file</code> — the task references a path that does not exist.</li><li><code>task_unknown_requirement</code> — the task references an ID not in <code>spec.md</code>.</li></ul>
+<h3 id="troubleshooting-reports-are-stale">Reports are stale</h3>
+<p><code>links</code> warns when the security run revision, Graphify cache, or spec files predate the latest commit. Refresh the relevant provider. Warnings do not fail <code>--check</code>; only broken link targets do.</p>
+<h3 id="troubleshooting-security-findings-are-absent-from-a-published-report">Security findings are absent from a published report</h3>
+<p>Local reports include fingerprints, files, severities, and verdicts but never titles, descriptions, or absolute run paths. If security was skipped, check <code>--no-security</code> or whether a run is recorded.</p>
+<h3 id="troubleshooting-legacy-project-map-detected">Legacy <code>project-map/</code> detected</h3>
+<p>v3 does not read or write v2 artifacts. They are inert history. Archive or delete them manually; <code>status</code> will keep warning until they are gone.</p>
+<h3 id="troubleshooting-mapkeeper-command-not-found"><code>mapkeeper</code> command not found</h3>
+<p>Run the CLI from the skill checkout:</p>
+<pre data-copy><code class="lang-bash">node scripts/mapkeeper.mjs status</code></pre>
+<p>or install the bin with <code>npm link</code> from the skill directory. The <code>/mapkeeper</code> slash command is separate: copy <code>command/mapkeeper.md</code> into <code>~/.config/kilo/command/</code> or <code>.kilo/command/</code>.</p>
+<h3 id="troubleshooting-the-mapkeeper-command-is-missing-from-the-palette">The <code>/mapkeeper</code> command is missing from the palette</h3>
+<p>Kilo loads commands at session start. Start a new session or reload after installing <code>command/mapkeeper.md</code>.</p>
 </section>
 
     <footer class="page-footer">
@@ -896,61 +621,45 @@ validate every artifact, and never claim a tool ran unless it did.
     <nav class="toc-nav">
       <div class="toc-section">
         <a class="toc-link" data-toc="overview" href="#overview">Overview</a>
-        <div class="toc-sub"><a href="#overview-start-here">Start here</a><a href="#overview-read-this-first">Read this first</a><a href="#overview-output-contract-short-form">Output contract (short form)</a><a href="#overview-choose-the-mode">Choose the mode</a><a href="#overview-procedure">Procedure</a><a href="#overview-non-negotiables">Non-negotiables</a><a href="#overview-adapters-optional-read-only">Adapters (optional, read-only)</a><a href="#overview-answering-questions-from-the-map">Answering questions from the map</a><a href="#overview-validation">Validation</a><a href="#overview-final-response">Final response</a></div>
+        <div class="toc-sub"><a href="#overview-start-here">Start here</a><a href="#overview-provider-handoffs">Provider handoffs</a><a href="#overview-rules">Rules</a><a href="#overview-status">Status</a><a href="#overview-links">Links</a><a href="#overview-references">References</a><a href="#overview-final-response">Final response</a></div>
       </div>
       <div class="toc-section">
         <a class="toc-link" data-toc="install" href="#install">Install</a>
-        <div class="toc-sub"><a href="#install-60-second-start">60-second start</a><a href="#install-what-you-get">What you get</a><a href="#install-install-as-a-skill">Install as a skill</a><a href="#install-install-as-a-spec-kit-extension">Install as a spec-kit extension</a><a href="#install-prefer-prompts">Prefer prompts?</a><a href="#install-commands">Commands</a><a href="#install-adapters">Adapters</a><a href="#install-validation">Validation</a><a href="#install-repository-layout">Repository layout</a><a href="#install-background">Background</a><a href="#install-development">Development</a><a href="#install-license">License</a></div>
+        <div class="toc-sub"><a href="#install-requirements">Requirements</a><a href="#install-install">Install</a><a href="#install-mapkeeper-menu">/mapkeeper menu</a><a href="#install-what-mapkeeper-owns">What Mapkeeper owns</a><a href="#install-status">Status</a><a href="#install-links">Links</a><a href="#install-local-artifacts">Local artifacts</a><a href="#install-providers">Providers</a><a href="#install-legacy-v2">Legacy v2</a><a href="#install-repository-layout">Repository layout</a><a href="#install-development">Development</a><a href="#install-license">License</a></div>
       </div>
       <div class="toc-section">
-        <a class="toc-link" data-toc="commands" href="#commands">Commands</a>
-        <div class="toc-sub"><a href="#commands-menu-mapkeeper">Menu (/mapkeeper)</a><a href="#commands-commands">Commands</a><a href="#commands-options">Options</a><a href="#commands-legacy-aliases">Legacy aliases</a><a href="#commands-typical-sequences">Typical sequences</a><a href="#commands-spec-kit-extension-commands">Spec-kit extension commands</a><a href="#commands-exit-codes">Exit codes</a><a href="#commands-environment">Environment</a></div>
+        <a class="toc-link" data-toc="commands" href="#commands">Router and CLI</a>
+        <div class="toc-sub"><a href="#commands-mapkeeper-menu">/mapkeeper menu</a><a href="#commands-cli">CLI</a><a href="#commands-examples">Examples</a><a href="#commands-exit-codes">Exit codes</a><a href="#commands-removed-in-v3">Removed in v3</a></div>
       </div>
       <div class="toc-section">
-        <a class="toc-link" data-toc="modes" href="#modes">Modes and phases</a>
-        <div class="toc-sub"><a href="#modes-mode-decision-table">Mode decision table</a><a href="#modes-init">INIT</a><a href="#modes-sync-incremental">SYNC (incremental)</a><a href="#modes-audit">AUDIT</a><a href="#modes-full">FULL</a><a href="#modes-export">EXPORT</a><a href="#modes-context">CONTEXT</a><a href="#modes-graph">GRAPH</a><a href="#modes-specs">SPECS</a><a href="#modes-security">SECURITY</a><a href="#modes-phase-handling">Phase handling</a><a href="#modes-token-rules">Token rules</a><a href="#modes-final-response-format">Final response format</a></div>
+        <a class="toc-link" data-toc="graphify" href="#graphify">Graphify</a>
+        <div class="toc-sub"><a href="#graphify-detection">Detection</a><a href="#graphify-handoff">Handoff</a><a href="#graphify-rules">Rules</a><a href="#graphify-links-input">Links input</a></div>
       </div>
       <div class="toc-section">
-        <a class="toc-link" data-toc="contract" href="#contract">Contract</a>
-        <div class="toc-sub"><a href="#contract-output-layout-inside-the-users-repository">Output layout (inside the user's repository)</a><a href="#contract-mandatory-rules">Mandatory rules</a><a href="#contract-write-rules-bind-to-these-not-to-prose">Write rules (bind to these, not to prose)</a><a href="#contract-evidence-rules">Evidence rules</a><a href="#contract-mode-contract">Mode contract</a><a href="#contract-failure-rules">Failure rules</a></div>
+        <a class="toc-link" data-toc="speckit" href="#speckit">spec-kit</a>
+        <div class="toc-sub"><a href="#speckit-detection">Detection</a><a href="#speckit-handoff">Handoff</a><a href="#speckit-rules">Rules</a><a href="#speckit-links-input">Links input</a></div>
       </div>
       <div class="toc-section">
-        <a class="toc-link" data-toc="graphify" href="#graphify">Graphify adapter</a>
-        <div class="toc-sub"><a href="#graphify-detection-honest-in-this-order">Detection (honest, in this order)</a><a href="#graphify-invocation-rules">Invocation rules</a><a href="#graphify-projection-graphify-graphjson">Projection (graphify → graph.json)</a><a href="#graphify-deterministic-fallback-llm-manual-graphify-fallback">Deterministic fallback (llm-manual / graphify-fallback)</a><a href="#graphify-incremental-behavior">Incremental behavior</a><a href="#graphify-query-delegation">Query delegation</a><a href="#graphify-failure-modes-to-report-not-hide">Failure modes to report, not hide</a></div>
+        <a class="toc-link" data-toc="security" href="#security">security-audit</a>
+        <div class="toc-sub"><a href="#security-detection">Detection</a><a href="#security-modes">Modes</a><a href="#security-rules">Rules</a><a href="#security-links-input">Links input</a></div>
       </div>
       <div class="toc-section">
-        <a class="toc-link" data-toc="speckit" href="#speckit">Spec-kit adapter</a>
-        <div class="toc-sub"><a href="#speckit-detection">Detection</a><a href="#speckit-artifact-mapping">Artifact mapping</a><a href="#speckit-traceability-report">Traceability report</a><a href="#speckit-requirement-units">Requirement units</a><a href="#speckit-extension-packaging">Extension packaging</a><a href="#speckit-failure-handling">Failure handling</a></div>
+        <a class="toc-link" data-toc="links" href="#links">Links report</a>
+        <div class="toc-sub"><a href="#links-inputs">Inputs</a><a href="#links-link-types">Link types</a><a href="#links-unresolved-kinds">Unresolved kinds</a><a href="#links-output">Output</a><a href="#links-freshness">Freshness</a></div>
       </div>
       <div class="toc-section">
-        <a class="toc-link" data-toc="security" href="#security">Security-audit adapter</a>
-        <div class="toc-sub"><a href="#security-locating-the-skill-and-a-run">Locating the skill and a run</a><a href="#security-invoking-an-audit">Invoking an audit</a><a href="#security-ingestion-mapping">Ingestion mapping</a><a href="#security-severity-and-verdict-rules-non-negotiable">Severity and verdict rules (non-negotiable)</a><a href="#security-what-mapkeeper-adds">What Mapkeeper adds</a><a href="#security-what-mapkeeper-must-not-do">What Mapkeeper must not do</a></div>
-      </div>
-      <div class="toc-section">
-        <a class="toc-link" data-toc="schema" href="#schema">Graph and ledger schema</a>
-        <div class="toc-sub"><a href="#schema-graphjson">graph.json</a><a href="#schema-node">Node</a><a href="#schema-edge">Edge</a><a href="#schema-id-rules">Id rules</a><a href="#schema-map-ledgerjson">map-ledger.json</a><a href="#schema-context-note">context note</a></div>
-      </div>
-      <div class="toc-section">
-        <a class="toc-link" data-toc="obsidian" href="#obsidian">Obsidian vault</a>
-        <div class="toc-sub"><a href="#obsidian-layout">Layout</a><a href="#obsidian-note-contract">Note contract</a><a href="#obsidian-hub-notes">Hub notes</a><a href="#obsidian-context-note">Context note</a><a href="#obsidian-orphan-and-link-hygiene">Orphan and link hygiene</a></div>
-      </div>
-      <div class="toc-section">
-        <a class="toc-link" data-toc="exports" href="#exports">Architecture exports</a>
-        <div class="toc-sub"><a href="#exports-shared-content-model">Shared content model</a><a href="#exports-markdown-sections">Markdown sections</a><a href="#exports-json">JSON</a><a href="#exports-html">HTML</a><a href="#exports-mermaid">Mermaid</a><a href="#exports-when-to-regenerate">When to regenerate</a></div>
+        <a class="toc-link" data-toc="status" href="#status">Status and state</a>
+        <div class="toc-sub"><a href="#status-state-file">State file</a><a href="#status-detection">Detection</a><a href="#status-staleness">Staleness</a><a href="#status-output">Output</a><a href="#status-exit-codes">Exit codes</a></div>
       </div>
       <div class="toc-section">
         <a class="toc-link" data-toc="troubleshooting" href="#troubleshooting">Troubleshooting</a>
-        <div class="toc-sub"><a href="#troubleshooting-graph-validation-failed">&quot;graph validation failed&quot;</a><a href="#troubleshooting-context-note-is-over-budget">Context note is over budget</a><a href="#troubleshooting-units-are-unmapped">Units are unmapped</a><a href="#troubleshooting-graphify-says-no-cache">Graphify says &quot;no cache&quot;</a><a href="#troubleshooting-a-spec-requirement-has-no-task">A spec requirement has no task</a><a href="#troubleshooting-security-findings-are-stale">Security findings are stale</a><a href="#troubleshooting-non-git-directory">Non-git directory</a><a href="#troubleshooting-migrating-an-old-map">Migrating an old map</a><a href="#troubleshooting-notes-were-deleted-unexpectedly">Notes were deleted unexpectedly</a><a href="#troubleshooting-nothing-happens-on-sync">Nothing happens on sync</a></div>
-      </div>
-      <div class="toc-section">
-        <a class="toc-link" data-toc="prompt" href="#prompt">Legacy prompt</a>
-        
+        <div class="toc-sub"><a href="#troubleshooting-a-provider-is-not-detected">A provider is not detected</a><a href="#troubleshooting-spec-kit-commands-are-missing">spec-kit commands are missing</a><a href="#troubleshooting-mapkeeper-spec-only-prints-a-command">/mapkeeper spec … only prints a command</a><a href="#troubleshooting-no-inputs-found">“no inputs found”</a><a href="#troubleshooting-invalid-graphify-cache">Invalid Graphify cache</a><a href="#troubleshooting-invalid-findings">Invalid findings</a><a href="#troubleshooting-links-are-missing">Links are missing</a><a href="#troubleshooting-reports-are-stale">Reports are stale</a><a href="#troubleshooting-security-findings-are-absent-from-a-published-report">Security findings are absent from a published report</a><a href="#troubleshooting-legacy-project-map-detected">Legacy project-map/ detected</a><a href="#troubleshooting-mapkeeper-command-not-found">mapkeeper command not found</a><a href="#troubleshooting-the-mapkeeper-command-is-missing-from-the-palette">The /mapkeeper command is missing from the palette</a></div>
       </div>
     </nav>
   </aside>
 </div>
 
-<script type="application/json" id="search-index">[{"label":"Overview","section":"Overview","href":"#overview"},{"label":"Start here","section":"Overview","href":"#overview-start-here"},{"label":"Read this first","section":"Overview","href":"#overview-read-this-first"},{"label":"Output contract (short form)","section":"Overview","href":"#overview-output-contract-short-form"},{"label":"Choose the mode","section":"Overview","href":"#overview-choose-the-mode"},{"label":"Procedure","section":"Overview","href":"#overview-procedure"},{"label":"Non-negotiables","section":"Overview","href":"#overview-non-negotiables"},{"label":"Adapters (optional, read-only)","section":"Overview","href":"#overview-adapters-optional-read-only"},{"label":"Answering questions from the map","section":"Overview","href":"#overview-answering-questions-from-the-map"},{"label":"Validation","section":"Overview","href":"#overview-validation"},{"label":"Final response","section":"Overview","href":"#overview-final-response"},{"label":"Install","section":"Install","href":"#install"},{"label":"60-second start","section":"Install","href":"#install-60-second-start"},{"label":"What you get","section":"Install","href":"#install-what-you-get"},{"label":"Install as a skill","section":"Install","href":"#install-install-as-a-skill"},{"label":"Install as a spec-kit extension","section":"Install","href":"#install-install-as-a-spec-kit-extension"},{"label":"Prefer prompts?","section":"Install","href":"#install-prefer-prompts"},{"label":"Commands","section":"Install","href":"#install-commands"},{"label":"Adapters","section":"Install","href":"#install-adapters"},{"label":"Validation","section":"Install","href":"#install-validation"},{"label":"Repository layout","section":"Install","href":"#install-repository-layout"},{"label":"Background","section":"Install","href":"#install-background"},{"label":"Development","section":"Install","href":"#install-development"},{"label":"License","section":"Install","href":"#install-license"},{"label":"Commands","section":"Commands","href":"#commands"},{"label":"Menu (/mapkeeper)","section":"Commands","href":"#commands-menu-mapkeeper"},{"label":"Commands","section":"Commands","href":"#commands-commands"},{"label":"Options","section":"Commands","href":"#commands-options"},{"label":"Legacy aliases","section":"Commands","href":"#commands-legacy-aliases"},{"label":"Typical sequences","section":"Commands","href":"#commands-typical-sequences"},{"label":"Spec-kit extension commands","section":"Commands","href":"#commands-spec-kit-extension-commands"},{"label":"Exit codes","section":"Commands","href":"#commands-exit-codes"},{"label":"Environment","section":"Commands","href":"#commands-environment"},{"label":"Modes and phases","section":"Modes and phases","href":"#modes"},{"label":"Mode decision table","section":"Modes and phases","href":"#modes-mode-decision-table"},{"label":"INIT","section":"Modes and phases","href":"#modes-init"},{"label":"SYNC (incremental)","section":"Modes and phases","href":"#modes-sync-incremental"},{"label":"AUDIT","section":"Modes and phases","href":"#modes-audit"},{"label":"FULL","section":"Modes and phases","href":"#modes-full"},{"label":"EXPORT","section":"Modes and phases","href":"#modes-export"},{"label":"CONTEXT","section":"Modes and phases","href":"#modes-context"},{"label":"GRAPH","section":"Modes and phases","href":"#modes-graph"},{"label":"SPECS","section":"Modes and phases","href":"#modes-specs"},{"label":"SECURITY","section":"Modes and phases","href":"#modes-security"},{"label":"Phase handling","section":"Modes and phases","href":"#modes-phase-handling"},{"label":"Token rules","section":"Modes and phases","href":"#modes-token-rules"},{"label":"Final response format","section":"Modes and phases","href":"#modes-final-response-format"},{"label":"Contract","section":"Contract","href":"#contract"},{"label":"Output layout (inside the user's repository)","section":"Contract","href":"#contract-output-layout-inside-the-users-repository"},{"label":"Mandatory rules","section":"Contract","href":"#contract-mandatory-rules"},{"label":"Write rules (bind to these, not to prose)","section":"Contract","href":"#contract-write-rules-bind-to-these-not-to-prose"},{"label":"Evidence rules","section":"Contract","href":"#contract-evidence-rules"},{"label":"Mode contract","section":"Contract","href":"#contract-mode-contract"},{"label":"Failure rules","section":"Contract","href":"#contract-failure-rules"},{"label":"Graphify adapter","section":"Graphify adapter","href":"#graphify"},{"label":"Detection (honest, in this order)","section":"Graphify adapter","href":"#graphify-detection-honest-in-this-order"},{"label":"Invocation rules","section":"Graphify adapter","href":"#graphify-invocation-rules"},{"label":"Projection (graphify → graph.json)","section":"Graphify adapter","href":"#graphify-projection-graphify-graphjson"},{"label":"Deterministic fallback (llm-manual / graphify-fallback)","section":"Graphify adapter","href":"#graphify-deterministic-fallback-llm-manual-graphify-fallback"},{"label":"Incremental behavior","section":"Graphify adapter","href":"#graphify-incremental-behavior"},{"label":"Query delegation","section":"Graphify adapter","href":"#graphify-query-delegation"},{"label":"Failure modes to report, not hide","section":"Graphify adapter","href":"#graphify-failure-modes-to-report-not-hide"},{"label":"Spec-kit adapter","section":"Spec-kit adapter","href":"#speckit"},{"label":"Detection","section":"Spec-kit adapter","href":"#speckit-detection"},{"label":"Artifact mapping","section":"Spec-kit adapter","href":"#speckit-artifact-mapping"},{"label":"Traceability report","section":"Spec-kit adapter","href":"#speckit-traceability-report"},{"label":"Requirement units","section":"Spec-kit adapter","href":"#speckit-requirement-units"},{"label":"Extension packaging","section":"Spec-kit adapter","href":"#speckit-extension-packaging"},{"label":"Failure handling","section":"Spec-kit adapter","href":"#speckit-failure-handling"},{"label":"Security-audit adapter","section":"Security-audit adapter","href":"#security"},{"label":"Locating the skill and a run","section":"Security-audit adapter","href":"#security-locating-the-skill-and-a-run"},{"label":"Invoking an audit","section":"Security-audit adapter","href":"#security-invoking-an-audit"},{"label":"Ingestion mapping","section":"Security-audit adapter","href":"#security-ingestion-mapping"},{"label":"Severity and verdict rules (non-negotiable)","section":"Security-audit adapter","href":"#security-severity-and-verdict-rules-non-negotiable"},{"label":"What Mapkeeper adds","section":"Security-audit adapter","href":"#security-what-mapkeeper-adds"},{"label":"What Mapkeeper must not do","section":"Security-audit adapter","href":"#security-what-mapkeeper-must-not-do"},{"label":"Graph and ledger schema","section":"Graph and ledger schema","href":"#schema"},{"label":"graph.json","section":"Graph and ledger schema","href":"#schema-graphjson"},{"label":"Node","section":"Graph and ledger schema","href":"#schema-node"},{"label":"Edge","section":"Graph and ledger schema","href":"#schema-edge"},{"label":"Id rules","section":"Graph and ledger schema","href":"#schema-id-rules"},{"label":"map-ledger.json","section":"Graph and ledger schema","href":"#schema-map-ledgerjson"},{"label":"context note","section":"Graph and ledger schema","href":"#schema-context-note"},{"label":"Obsidian vault","section":"Obsidian vault","href":"#obsidian"},{"label":"Layout","section":"Obsidian vault","href":"#obsidian-layout"},{"label":"Note contract","section":"Obsidian vault","href":"#obsidian-note-contract"},{"label":"Hub notes","section":"Obsidian vault","href":"#obsidian-hub-notes"},{"label":"Context note","section":"Obsidian vault","href":"#obsidian-context-note"},{"label":"Orphan and link hygiene","section":"Obsidian vault","href":"#obsidian-orphan-and-link-hygiene"},{"label":"Architecture exports","section":"Architecture exports","href":"#exports"},{"label":"Shared content model","section":"Architecture exports","href":"#exports-shared-content-model"},{"label":"Markdown sections","section":"Architecture exports","href":"#exports-markdown-sections"},{"label":"JSON","section":"Architecture exports","href":"#exports-json"},{"label":"HTML","section":"Architecture exports","href":"#exports-html"},{"label":"Mermaid","section":"Architecture exports","href":"#exports-mermaid"},{"label":"When to regenerate","section":"Architecture exports","href":"#exports-when-to-regenerate"},{"label":"Troubleshooting","section":"Troubleshooting","href":"#troubleshooting"},{"label":"\"graph validation failed\"","section":"Troubleshooting","href":"#troubleshooting-graph-validation-failed"},{"label":"Context note is over budget","section":"Troubleshooting","href":"#troubleshooting-context-note-is-over-budget"},{"label":"Units are unmapped","section":"Troubleshooting","href":"#troubleshooting-units-are-unmapped"},{"label":"Graphify says \"no cache\"","section":"Troubleshooting","href":"#troubleshooting-graphify-says-no-cache"},{"label":"A spec requirement has no task","section":"Troubleshooting","href":"#troubleshooting-a-spec-requirement-has-no-task"},{"label":"Security findings are stale","section":"Troubleshooting","href":"#troubleshooting-security-findings-are-stale"},{"label":"Non-git directory","section":"Troubleshooting","href":"#troubleshooting-non-git-directory"},{"label":"Migrating an old map","section":"Troubleshooting","href":"#troubleshooting-migrating-an-old-map"},{"label":"Notes were deleted unexpectedly","section":"Troubleshooting","href":"#troubleshooting-notes-were-deleted-unexpectedly"},{"label":"Nothing happens on sync","section":"Troubleshooting","href":"#troubleshooting-nothing-happens-on-sync"},{"label":"Legacy prompt","section":"Legacy prompt","href":"#prompt"}]</script>
+<script type="application/json" id="search-index">[{"label":"Overview","section":"Overview","href":"#overview"},{"label":"Start here","section":"Overview","href":"#overview-start-here"},{"label":"Provider handoffs","section":"Overview","href":"#overview-provider-handoffs"},{"label":"Rules","section":"Overview","href":"#overview-rules"},{"label":"Status","section":"Overview","href":"#overview-status"},{"label":"Links","section":"Overview","href":"#overview-links"},{"label":"References","section":"Overview","href":"#overview-references"},{"label":"Final response","section":"Overview","href":"#overview-final-response"},{"label":"Install","section":"Install","href":"#install"},{"label":"Requirements","section":"Install","href":"#install-requirements"},{"label":"Install","section":"Install","href":"#install-install"},{"label":"/mapkeeper menu","section":"Install","href":"#install-mapkeeper-menu"},{"label":"What Mapkeeper owns","section":"Install","href":"#install-what-mapkeeper-owns"},{"label":"Status","section":"Install","href":"#install-status"},{"label":"Links","section":"Install","href":"#install-links"},{"label":"Local artifacts","section":"Install","href":"#install-local-artifacts"},{"label":"Providers","section":"Install","href":"#install-providers"},{"label":"Legacy v2","section":"Install","href":"#install-legacy-v2"},{"label":"Repository layout","section":"Install","href":"#install-repository-layout"},{"label":"Development","section":"Install","href":"#install-development"},{"label":"License","section":"Install","href":"#install-license"},{"label":"Router and CLI","section":"Router and CLI","href":"#commands"},{"label":"/mapkeeper menu","section":"Router and CLI","href":"#commands-mapkeeper-menu"},{"label":"CLI","section":"Router and CLI","href":"#commands-cli"},{"label":"Examples","section":"Router and CLI","href":"#commands-examples"},{"label":"Exit codes","section":"Router and CLI","href":"#commands-exit-codes"},{"label":"Removed in v3","section":"Router and CLI","href":"#commands-removed-in-v3"},{"label":"Graphify","section":"Graphify","href":"#graphify"},{"label":"Detection","section":"Graphify","href":"#graphify-detection"},{"label":"Handoff","section":"Graphify","href":"#graphify-handoff"},{"label":"Rules","section":"Graphify","href":"#graphify-rules"},{"label":"Links input","section":"Graphify","href":"#graphify-links-input"},{"label":"spec-kit","section":"spec-kit","href":"#speckit"},{"label":"Detection","section":"spec-kit","href":"#speckit-detection"},{"label":"Handoff","section":"spec-kit","href":"#speckit-handoff"},{"label":"Rules","section":"spec-kit","href":"#speckit-rules"},{"label":"Links input","section":"spec-kit","href":"#speckit-links-input"},{"label":"security-audit","section":"security-audit","href":"#security"},{"label":"Detection","section":"security-audit","href":"#security-detection"},{"label":"Modes","section":"security-audit","href":"#security-modes"},{"label":"Rules","section":"security-audit","href":"#security-rules"},{"label":"Links input","section":"security-audit","href":"#security-links-input"},{"label":"Links report","section":"Links report","href":"#links"},{"label":"Inputs","section":"Links report","href":"#links-inputs"},{"label":"Link types","section":"Links report","href":"#links-link-types"},{"label":"Unresolved kinds","section":"Links report","href":"#links-unresolved-kinds"},{"label":"Output","section":"Links report","href":"#links-output"},{"label":"Freshness","section":"Links report","href":"#links-freshness"},{"label":"Status and state","section":"Status and state","href":"#status"},{"label":"State file","section":"Status and state","href":"#status-state-file"},{"label":"Detection","section":"Status and state","href":"#status-detection"},{"label":"Staleness","section":"Status and state","href":"#status-staleness"},{"label":"Output","section":"Status and state","href":"#status-output"},{"label":"Exit codes","section":"Status and state","href":"#status-exit-codes"},{"label":"Troubleshooting","section":"Troubleshooting","href":"#troubleshooting"},{"label":"A provider is not detected","section":"Troubleshooting","href":"#troubleshooting-a-provider-is-not-detected"},{"label":"spec-kit commands are missing","section":"Troubleshooting","href":"#troubleshooting-spec-kit-commands-are-missing"},{"label":"/mapkeeper spec … only prints a command","section":"Troubleshooting","href":"#troubleshooting-mapkeeper-spec-only-prints-a-command"},{"label":"“no inputs found”","section":"Troubleshooting","href":"#troubleshooting-no-inputs-found"},{"label":"Invalid Graphify cache","section":"Troubleshooting","href":"#troubleshooting-invalid-graphify-cache"},{"label":"Invalid findings","section":"Troubleshooting","href":"#troubleshooting-invalid-findings"},{"label":"Links are missing","section":"Troubleshooting","href":"#troubleshooting-links-are-missing"},{"label":"Reports are stale","section":"Troubleshooting","href":"#troubleshooting-reports-are-stale"},{"label":"Security findings are absent from a published report","section":"Troubleshooting","href":"#troubleshooting-security-findings-are-absent-from-a-published-report"},{"label":"Legacy project-map/ detected","section":"Troubleshooting","href":"#troubleshooting-legacy-project-map-detected"},{"label":"mapkeeper command not found","section":"Troubleshooting","href":"#troubleshooting-mapkeeper-command-not-found"},{"label":"The /mapkeeper command is missing from the palette","section":"Troubleshooting","href":"#troubleshooting-the-mapkeeper-command-is-missing-from-the-palette"}]</script>
 <script>
 (function(){
   var indexEl=document.getElementById('search-index');
